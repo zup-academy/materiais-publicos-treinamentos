@@ -20,7 +20,9 @@ A maioria dos aplicativos é uma mistura dos dois tipos de _View Controllers_.
 
 A função mais importante de um _View Controller_ é gerenciar uma hierarquia de _views_. Cada _View Controller_ tem uma única _view_ raiz (_root view_) que inclui todo o conteúdo do _View Controller_. A essa _view_ raiz, você adiciona as _views_ de que precisa para exibir seu conteúdo. A figura a seguir ilustra o relacionamento interno entre o _View Controller_ e suas _views_. O _View Controller_ sempre tem uma referência à sua _root view_, assim como cada _root view_ tem referências fortes a suas _subviews_.
 
-![Imagem ilustrando relação entre ViewController e suas views](https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-view-controller-e-views.jpg?raw=true)
+<p align="center">
+<img alt="Imagem ilustrando relação entre ViewController e suas views" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-view-controller-e-views.jpg?raw=true" width="80%"/>
+</p>
 
 >Nota: É uma prática comum usar _[outlets](<to do: ligar com material teorico de outlets>)_ para acessar outras _views_ na hierarquia de _views_ do _View Controller_. Como um _View Controller_ gerencia o conteúdo de todas as suas _views_, os _outlets_ permitem que você guarde referências diretas às _views_ de que precisa. Os próprios _outlets_ são conectados aos objetos das _views_ automaticamente quando as _views_ são carregadas do storyboard. No próximo material teórico estudamos a utilidade de um _outlet_.
 
@@ -28,7 +30,9 @@ A função mais importante de um _View Controller_ é gerenciar uma hierarquia d
 
 Um _View Controller_ atua como um intermediário entre as _views_ que ele gerencia e os dados de seu aplicativo que estão relacionados a elas. Os métodos e propriedades da classe `UIViewController` permitem gerenciar a apresentação visual de seu aplicativo. Ao criar uma subclasse de `UIViewController`, você adiciona quaisquer variáveis de que precisa para gerenciar seus dados nessa subclasse. Adicionar variáveis personalizadas cria um relacionamento como o da figura abaixo, onde o _View Controller_ tem referências aos seus dados e às _views_ usadas para apresentar esses dados. Atualizar os dados a medida que o aplicativo executa suas funções e gerenciar a relação deles com suas _views_ é sua responsabilidade.
 
-![Imagem ilustrando ViewController como intermediário entre dados e views que gerencia](https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-views-e-dados.jpg?raw=true)
+<p align="center">
+<img alt="Imagem ilustrando ViewController como intermediário entre dados e views que gerencia" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-views-e-dados.jpg?raw=true" width="80%"/>
+</p>
 
 *Um View Controller media a relação entre objetos de dados e views.*
 
@@ -50,7 +54,9 @@ Como a _window_ não tem conteúdo próprio visível, é necessário que a utili
 
 O _Root View Controller_ é a âncora da hierarquia de _View Controllers_. Cada _window_ tem exatamente um _Root View Controller_ cujo conteúdo a preenche e define o que é visto inicialmente pelo usuário. A figura a seguir mostra a relação entre o _Root View Controller_ e a _window_.
 
-![Imagem ilustrando relação do ViewController raiz com as entidades que gerenciam as janelas da aplicação](https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-root-view-controller.jpg?raw=true)
+<p align="center">
+<img alt="Imagem ilustrando relação do ViewController raiz com as entidades que gerenciam as janelas da aplicação" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-vc-root-view-controller.jpg?raw=true" width="80%"/>
+<p align="center">
 
 Todo o trabalho de _setup_ das relações vistas acima é executado automaticamente pelo UIKit através dos códigos que guiam o carregamento da aplicação. Somada a outras importantes tarefas, é exatamente o que acontece entre o usuário clicar no ícone da sua aplicação e visualizar o conteúdo inicial que você desenhou em seu arquivo `Main.storyboard` através do Interface Builder.
 

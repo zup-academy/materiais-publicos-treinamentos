@@ -38,9 +38,9 @@ Existem três abordagens principais para definir uma interface de usuário. Voc�
 
 Tradicionalmente, os aplicativos estabelecem sua interface de usuário configurando programaticamente o *frame* de cada *view* em uma hierarquia de *views*. O *frame* define a origem, altura e largura da *view* no sistema de coordenadas da *view* mãe.
 
-![ilustração de frames no sistema de coordenadas](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_views_2x.png)
-
-[//]: <img alt="ilustração de frames no sistema de coordenadas" src="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_views_2x.png" height="320" />
+<p align="center">
+<img alt="ilustração de frames no sistema de coordenadas" src="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_views_2x.png" width="320"/>
+</p>
 
 Para criar o layout de sua interface de usuário, você tinha que calcular o tamanho e a posição de cada *view* em sua hierarquia de *views*. Então, se uma mudança ocorria, você tinha que recalcular o quadro para todas as *views* efetadas.
 
@@ -54,9 +54,9 @@ Embora as máscaras de redimensionamento automático representem uma melhoria it
 
 O Auto Layout define sua interface de usuário usando uma série de *constraints* - restrições de layout. **As restrições geralmente representam um relacionamento entre duas *views***. O Auto Layout então calcula o tamanho e a localização de cada *view* com base nessas restrições. Isso produz layouts que respondem dinamicamente às mudanças internas e externas.
 
-![ilustração de constraints definindo as relações entre as views](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_constraints_2x.png)
-
-[//]: <img alt="ilustração de constraints definindo as relações entre as views" src="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_constraints_2x.png" height="320" />
+<p align="center">
+<img alt="ilustração de constraints definindo as relações entre as views" src="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/layout_constraints_2x.png" width="320" />
+</p>
 
 A lógica usada para projetar um conjunto de *constraints* criando comportamentos específicos é diferente da lógica usada para escrever código procedural ou orientado a objetos. Felizmente, dominar o Auto Layout não é diferente de dominar qualquer outra tarefa de programação. Existem duas etapas básicas: primeiro, você precisa entender a lógica por trás dos layouts baseados em restrições e, em seguida, precisa aprender a API. Você executou com sucesso essas etapas ao aprender outras tarefas de programação. O Auto Layout não é exceção.
 
@@ -66,7 +66,9 @@ O layout de sua hierarquia de *views* é definido como uma série de equações 
 
 Um exemplo de equação é mostrado abaixo.
 
-![ilustração que exemplifica a equação equivalente de uma constraint](https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/auto-layout-teoria-auto-layout-constraints.png?raw=true)
+<p align="center">
+<img alt="ilustração que exemplifica a equação equivalente de uma constraint" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/auto-layout-teoria-auto-layout-constraints.png?raw=true" width="70%" />
+</p>
 
 Essa *constraint* afirma que a borda inicial¹ - *leading edge* - da *view* em vermelho deve ter `8,0` pontos após a borda final² - *trailing edge* - da *view* em azul. Sua equação tem várias partes:
 
@@ -88,7 +90,9 @@ A maioria das *constraints* define um relacionamento entre dois itens em nossa i
 
 No Auto Layout, os atributos definem um recurso que pode ser restringido. Em geral, isso inclui as quatro bordas (inicial, final, superior e inferior), bem como a altura, a largura e os centros vertical e horizontal. Os itens de texto também têm um ou mais atributos de *baseline*.
 
-![ilustração dos atributos de auto layout sobre o frame de uma view de exemplo](https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/attributes_2x.png)
+<p align="center">
+<img alt="ilustração dos atributos de auto layout sobre o frame de uma view de exemplo" src="https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Art/attributes_2x.png" width="460" />
+</p>
 
 [Veja aqui](https://developer.apple.com/documentation/uikit/nslayoutattribute) a lista completa de atributos.
 
