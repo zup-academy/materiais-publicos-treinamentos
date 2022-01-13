@@ -22,7 +22,7 @@ Um _outlet_ pode ser especialmente útil para evitar o trabalho de manipulação
 
 ## Conectando IBOutlets
 
-O XCode ofere alguns níveis de suporte para criar e conectar _outlets_ entre seu Interface Builder e o editor de código. Nesta seção veremos duas possibilidades. Param ambos os exemplos utilizaremos uma aplicativo de exemplo simples contendo apenas um `UILabel` que se destina a exibir uma mensagem de boas vindas. Apenas as contraints básicas de posicionamento foram adicionadas e a fonte ajustada, como é possível perceber na imagem abaixo:
+O XCode oferece alguns níveis de suporte para criar e conectar _outlets_ entre seu Interface Builder e o editor de código. Nesta seção veremos duas possibilidades. Param ambos os exemplos utilizaremos uma aplicativo de exemplo simples contendo apenas um `UILabel` que se destina a exibir uma mensagem de boas vindas. Apenas as contraints básicas de posicionamento foram adicionadas e a fonte ajustada, como é possível perceber na imagem abaixo:
 
 <p align="center">
 <img alt="uma imagem com o app de exemplo em seu estado inicial" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-outlets-projeto-exemplo.png?raw=true" width="60%" />
