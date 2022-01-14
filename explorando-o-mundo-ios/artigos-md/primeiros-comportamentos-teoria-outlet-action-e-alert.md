@@ -33,7 +33,7 @@ O XCode oferece alguns níveis de suporte para criar e conectar _outlets_ entre 
 
 ### Conectando do View Controller para os objetos no Canvas
 
-A primeira forma de conectar suas _views_ com código é usando a referência do _controller_ que gerencia a tela visível na barra de menus no topo do objeto `View Controller` do canvas.
+A primeira forma de conectar suas _views_ com código é usando a referência do _controller_ que gerencia a tela, visível na barra de menus no topo do objeto `View Controller` do canvas.
 
 Primeiro é necessário criar a propriedade armazenada que guardará a referência no código de sua classe `ViewController`:
 
@@ -58,9 +58,9 @@ A partir desse ponto, voltando-se para o Interface Builder, é possível usar o 
 <img alt="um gif animado com a demonstração do suporte do xcode para conexão através do ViewController" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-outlets-conectando-do-vc.gif?raw=true" width="60%" />
 </p>
 
-Perceba que ao soltar o ponteiro do mouse dentro dos limites do componente de _label_ o XCode abre uma caixa de diálogo com as opções de propriedade para conexão. Basta então selecionar o nome da propriedade armazenadas que criamos (`welcomeLabel`) e temos nossa conexão completa.
+Perceba que ao soltar o ponteiro do mouse dentro dos limites do componente de _label_, o XCode abre uma caixa de diálogo com as opções de propriedade para conexão. Basta então selecionar o nome da propriedade armazenada que criamos (`welcomeLabel`) e temos nossa conexão completa.
 
-A partir desse ponto, é possível interagir com o objeto no código do `ViewController`. Podemos por exemplo definir dinamicamente a mensagem que a app deve apresentar ao usuário com o código abaixo.
+A partir desse ponto, é possível interagir com o objeto no código do `ViewController`. Podemos definir dinamicamente a mensagem que a app deve apresentar ao usuário, por exemplo, com o código abaixo:
 
 ``` swift
 import UIKit
@@ -78,7 +78,7 @@ class ViewController: UIViewController {
 }
 ```
 
-Adicionamos a instrução `welcomeLabel.text = "Olá, Rafael!"`, que altera a propriedade de texto do label de boas vindas, ao método `viewDidLoad()` que tem sua execução quando do carregamento da _view_ deste _View Controller_, o que assegura que quando a app renderiza na tela já temos a informação correta atualizada.
+Adicionamos a instrução `welcomeLabel.text = "Olá, Rafael!"`, que altera a propriedade de texto do _label_ de boas vindas, ao método `viewDidLoad()` que tem sua execução quando do carregamento da _view_ deste _View Controller_. Assim, fica assegurado que quando a app renderiza na tela já temos a informação atualizada.
 
 <p align="center">
 <img alt="imagem com o app exemplo funcionando atraves da funcionalidade implementada com o outlet" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-outlets-outlet-aplicado.png?raw=true" width="320" />
@@ -90,13 +90,13 @@ Perceba que nesse momento é possível visualizar as conexões estabelecidas ent
 <img alt="imagem com o inspector de connections mostrando as conexões atuais entre o interface builder e o código" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-outlets-connections-inpector.png?raw=true" width="60%" />
 </p>
 
->Nota: Um cuidado especial é necessário ao gerenciar as conexões. Um erro comum é remover uma propriedade armazenada conectada ao Interface Builder através de um _outlet_ apenas no código, fazendo que a aplicação pare por conta de erros ao tentar carregar as _views_ do Storyboard. Caso precise remover uma propriedade configurada como _outlet_, ou mesmo mudar seu nome, certifique-se de remover a conexão do Interface Builder através do _inspector_ apropriado e refazê-la após da refatoração do código caso seja necessário.
+>Nota: Um cuidado especial é necessário ao gerenciar as conexões. Um erro comum é remover uma propriedade armazenada conectada ao Interface Builder através de um _outlet_ apenas no código, fazendo que a aplicação pare por conta de erros ao tentar carregar as _views_ do Storyboard. Caso precise remover uma propriedade configurada como _outlet_, ou mesmo mudar seu nome, certifique-se de remover a conexão do Interface Builder através do _Connections inspector_, e caso seja necessário, refazê-la após alguma refatoração de código.
 
 ### Conectando do Interface Builder para o código fonte
 
 Conectar objetos desenhados no Interface Builder a seus arquivos de código é uma tarefa corriqueira ao desenvolver as funcionalidades de um aplicativo. E justamente por se repetir tanto, imagina-se que em algum momento esse trabalho fique automático. E todo trabalho automatizado se torna menos propenso a erros quando provido pelas ferramenta que compõem o ambiente de desenvolvimento.
 
-Você deve ter notado no exemplo acima que parte do trabalho ainda ficou a seu cargo: escrever o código que define a propriedade armazenada para o _outlet_. Até mesmo essa parte do trabalho pode ser executada pelo XCode quando conectando nossas _views_ no Storyboard com código.
+Você deve ter notado no exemplo acima que parte do trabalho ainda ficou a seu cargo: escrever o código que define a propriedade armazenada para o _outlet_. Até mesmo essa parte do trabalho pode ser executada pelo XCode quando conectando nossas _views_ no Storyboard com o código.
 
 Para que seja possível aprender essa forma ainda mais assistida de trabalho, voltemos ao estado inicial do projeto exemplo, sem qualquer conexão criada no IB ou alteração no código fonte.
 
@@ -140,7 +140,7 @@ Podemos prosseguir com passo final do exemplo anterior, utilizando a referência
 
 # Entendendo IBActions
 
-Uma _action_ é uma função que é anotada com `@IBAction` e cuja implementação responde a um evento gerado por alguma _view_ que tem as capacidades de um controle, como por exemplo um botão, um slider e outras possíveis _views_. Você pode implementar essa função no código de um controlador e definir graficamente uma conexão a um controle adicionado no arquivo Storyboard (ou arquivo interface builder equivalente). Quando a _view_ for carregada e posteriormente o objeto cuja ação foi conectada receber alguma interação do usuário, automaticamente a função anotada com `@IBAction` será executada como resposta ao evento executando algum comportamento customizado.
+Uma _action_ é uma função que é anotada com `@IBAction` e cuja implementação responde a um evento gerado por alguma _view_ que tem as capacidades de um controle, como por exemplo um botão, um slider e outras possíveis _views_. Você pode implementar essa função no código de um controlador e definir graficamente uma conexão a um controle adicionado no arquivo Storyboard (ou arquivo interface builder equivalente). Quando a _view_ for carregada e posteriormente o objeto cuja ação foi conectada receber alguma interação do usuário, automaticamente a função anotada com `@IBAction` será chamada como resposta ao evento, executando algum comportamento customizado.
 
 <p align="center">
 <img alt="uma imagem com um diagrama ilustrando a relação entre a action com a execução da resposta do controlador" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/primeiros-comportamentos-teoria-actions-diagrama-evento-botao-vc.jpg?raw=true" width="60%" />
@@ -154,7 +154,7 @@ Um método declarado como _action_ deve ter sua assinatura respeitando alguns pa
 }
 ```
 
-Assim como no caso dos _outlets_, a anotação `IBAction` é usada apenas pelo Xcode, para determinar quando um método é uma _action_, não tendo valor real para a semântica o código da função em si.
+Assim como no caso dos _outlets_, a anotação `IBAction` é usada apenas pelo Xcode, para determinar quando um método é uma _action_, não tendo valor real para a semântica do código da função em si.
 
 Para que um método _action_ seja disponibilizado no Interface Builder como conexão, primeiro você deve declará-lo no código do arquivo que controla a porção da sua UI onde o componente está inserido. No nosso exemplo simples, no próprio _View Controller_.
 
@@ -196,11 +196,11 @@ class ViewController: UIViewController {
 
 Como visto nos materiais teóricos, uma das recomendações de design sobre _View Controllers_ é sempre reutilizar um _View Controller_ caso já exista uma implementação padrão na plataforma que atenda as necessidades. E existe uma infinidade de _View Controllers_ já prontos para vários casos de uso no UIKit framework. Desde controladores com implementações para gerenciar listas ou coleções de valores, carregar arquivos do rolo da câmera, até gerenciar arquivos do iCloud e interagir com o hardware do dispositivo para registrar fotos ou vídeos. 
 
-Alguns dos citados acima veremos algumas seções a frente no treinamento. Mas já é possível conhecer um deles, e talvez o mais simples, para resolver o problema de apresentação do código acima. Você deve ter notado que utilizamos a simples e já conhecida função `print(_:separator:terminator:)` para imprimir um valor respondendo à ação do usuário. A implementação pode ser suficiente para completar o fluxo de resposta apenas em tempo de desenvolvimento, já que imprimindo na saída padrão do sistema, apenas temos acesso ao dado no console do XCode. É necessário um mecanismo capaz de interagir com a tela do usuário durante a execução do aplicativo.
+Alguns dos citados acima veremos algumas seções a frente no treinamento. Mas já é possível conhecer um controlador, e talvez o mais simples, para resolver o problema de apresentação do código acima. Você deve ter notado que utilizamos a simples e já conhecida função `print(_:separator:terminator:)` para imprimir um valor respondendo à ação do usuário. A implementação pode ser suficiente para completar o fluxo de resposta apenas em tempo de desenvolvimento, já que imprimindo na saída padrão do sistema, apenas temos acesso ao dado no console do XCode. É necessário um mecanismo capaz de interagir com a tela do usuário durante a execução do aplicativo.
 
-Caso já tenha utilizado aplicativos iOS, você deve estar familiarizado com uma das formas mais simples e diretas de comunicar algo a um usuário, que é o uso de alertas interativos. Como mencionado acima, pra esse fim, o UIKit framework já te oferece uma solução padrão, evitando a necessidade de programar algo customizado: o `UIAlertController`.
+Caso já tenha utilizado aplicativos iOS, você deve estar familiarizado com uma das formas mais simples e diretas de comunicar algo a um usuário, que é o uso de alertas interativos. Como mencionado acima, evitando a necessidade de programar algo customizado pra esse fim, o UIKit framework já te oferece uma solução padrão: o `UIAlertController`.
 
-`UIAlertController` é uma subclasse de `View Controller` e já conta com uma API clara e de fácil utilização. Use esta classe para configurar alertas com a mensagem que você deseja exibir e as ações a serem escolhidas pelo usuário. Após configurar o `UIAlertController` com as ações e o estilo desejado, você pode apresentá-lo usando o método `present(_:animated:completion:)`. O UIKit exibe os alertas como um modal sobre o conteúdo do seu aplicativo.
+`UIAlertController` é uma subclasse de `View Controller` e já conta com uma API clara e de fácil utilização. Use esta classe para configurar alertas com a mensagem que você deseja exibir e as ações a serem escolhidas pelo usuário. Após configurar o `UIAlertController` com as ações e o estilo desejado, você pode apresentá-lo usando o método `present(_:animated:completion:)` através da instância do _View Controller_ atual. O UIKit exibe os alertas como um modal sobre o conteúdo do seu aplicativo.
 
 Como visto acima, além de exibir uma mensagem para um usuário, você pode associar ações ao seu `UIAlertController` para fornecer ao usuário uma maneira de responder. Para cada ação que você adiciona usando o método `addAction(_:)`, o `UIAlertController` configura um botão com os detalhes da ação. Quando o usuário toca nesse botão, o controlador de alerta executa o bloco que você forneceu ao criar o objeto de ação. O código abaixo ilustra a utilização:
 
