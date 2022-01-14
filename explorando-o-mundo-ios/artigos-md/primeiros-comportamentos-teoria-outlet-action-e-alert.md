@@ -1,9 +1,9 @@
-# Entendendo IBOutlets
-
 >Esse material teórico foi atualizado tendo como base as fontes originais em:
 >   - https://developer.apple.com/library/archive/documentation/General/Conceptual/Devpedia-CocoaApp/Outlet.html
 >   - https://developer.apple.com/library/archive/documentation/General/Conceptual/Devpedia-CocoaApp/TargetAction.html
 >   - https://developer.apple.com/documentation/uikit/uialertcontroller
+
+# Entendendo IBOutlets
 
 Um _outlet_ é uma propriedade armazenada que é anotada com `@IBOutlet` e cujo valor você pode definir graficamente em um arquivo Storyboard (ou arquivo interface builder equivalente). Você declara um _outlet_ em uma classe e faz uma conexão entre o _outlet_ e outro objeto no storyboard. Quando a _view_ referente a um _View Controller_ no arquivo Storyboard é carregada, a conexão é estabelecida.
 
