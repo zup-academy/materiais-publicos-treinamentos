@@ -1,5 +1,4 @@
-# Mapeamento Objeto Relacional com Jpa/Hibernate
-
+# Mapeamento Objeto Relacional com JPA/Hibernate
 
 o mercado de desenvolvimento de software é formado pela combinação de diversas técnicas, ferramentas e técnologias para resolver problemas empresarias rotineiros. Dentre essas ferramentas existem a Programação Orientada a Objetos, que tem como objetivo representar as informações de um problema em objetos, onde estes possuem suas proprias caracteristicas (atributos) e  comportamentos (metodos) que podem ou não interagir com outros objetos. Outra ferramenta que é amplamente ultilizada são os Sistemas de Banco de Dados, principalmente os baseados em SQL, que tem uma estrutura para armazenar, consultar, e atualizar informações baseado na teoria da algebra relacional. 
 
@@ -175,6 +174,8 @@ Mapeando na pratica:
 ```java
   @Entity
   public class Pessoa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(nullable = false)
