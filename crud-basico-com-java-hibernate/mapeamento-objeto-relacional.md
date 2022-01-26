@@ -26,14 +26,14 @@ Criaremos uma classe que terá como responsabilidade unica fazer menção a tabe
     private String cpf;
     private String email;
     private String rg;
-    private LocalDate dataNacimento;
+    private LocalDate dataNascimento;
 
-    public Pessoa(String nome, String cpf, String email, String rg, LocalDate dataNacimento) {
+    public Pessoa(String nome, String cpf, String email, String rg, LocalDate dataNascimento) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.rg = rg;
-        this.dataNacimento = dataNacimento;
+        this.dataNascimento = dataNascimento;
     }
 
     /**
@@ -190,7 +190,7 @@ Mapeando na pratica:
     @Column(unique=true,nullable = false)
     private String rg;
 
-    private LocalDate dataNacimento;
+    private LocalDate dataNascimento;
   
     //demais informações otimitidas aqui
   }
