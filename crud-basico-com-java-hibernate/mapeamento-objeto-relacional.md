@@ -47,7 +47,7 @@ Criaremos uma classe que terá como responsabilidade unica fazer menção a tabe
 }
 ```
 
-Ao iniciar o mapeamento de uma entidade temos que nos atentar a duas coisas, primeiro o Hibernate utiliza o construtor vazio como ponto de inserção então é nossa responsabilidade sempre que criarmos um construtor diferente, definir o construtor default. Na imagem acima anotamos ele com @Deprecated para que no momento que o mesmo for utilizado ser indicado o uso deste construtor não é recomendado. O segundo ponto ao qual devemos nos atentar é que para uma classe represente uma tabela ao banco de dados devemos delimitar uma chave primaria, veremos abaixo como fazer isso.
+Ao iniciar o mapeamento de uma entidade temos que nos atentar a duas coisas, primeiro o Hibernate utiliza o construtor vazio como ponto de inserção então é nossa responsabilidade sempre que criarmos um construtor diferente, definir o construtor padrão, que não possui nenhuma entrada e nenhuma atribuição dentro. Na imagem acima anotamos ele com @Deprecated para que no momento que o mesmo for utilizado ser indicado o uso deste construtor não é recomendado. O segundo ponto ao qual devemos nos atentar é que para uma classe represente uma tabela ao banco de dados devemos delimitar uma chave primaria, veremos abaixo como fazer isso.
 
 
 ### Mapeando  a chave primaria 
@@ -80,7 +80,7 @@ A entidade pessoa já possui um atributo com nome id e tipo numerico, este sera 
 
 - GenerationType.TABLE: indica que algum tabela do banco de dados será utilizada para obter valores para chave primaria.
 
-Por padrão escolhemos o valor IDENTITY por delegarmos ao Hibernate que utilize o Dialect do banco de dados qu esta sendo utilizado para os valores para chaves primarias de forma apropriada.
+Por padrão escolhemos o valor IDENTITY por delegarmos ao Hibernate que utilize o Dialect do banco de dados que esta sendo utilizado, para definir a estrategia de recuperação de valores para chaves primarias de forma apropriada.
 
 Logo nossa classe Pessoa ficara da seguinte forma: 
 
