@@ -3,14 +3,14 @@
 
 o mercado de desenvolvimento de software é formado pela combinação de diversas técnicas, ferramentas e técnologias para resolver problemas empresarias rotineiros. Dentre essas ferramentas existem a Programação Orientada a Objetos, que tem como objetivo representar as informações de um problema em objetos, onde estes possuem suas proprias caracteristicas (atributos) e  comportamentos (metodos) que podem ou não interagir com outros objetos. Outra ferramenta que é amplamente ultilizada são os Sistemas de Banco de Dados, principalmente os baseados em SQL, que tem uma estrutura para armazenar, consultar, e atualizar informações baseado na teoria da algebra relacional. 
 
-Então torna-se papel do desenvolvedor em suas rotinas de produção de software, escrever codigo orientado a objetos e utilizar drivers para fazer conexão e realizar operações em banco de dados (BD) relacionais. É comum que  o proprio desenvolvedor seja responsavel por definir o banco de dados, criar consultas, escrever as operações de inserção, remoção e atualização em SQL e submeter através do driver informações que estão mapeadas na memoria do softare atráves de objetos que representem as tabelas que estão na armazenadas no BD. O custo de tempo para escrever todos essses scripts SQL que são recorrentes e pouco alteraveis, é consideravelmente alto, e poderia ser utilizado para construção de funcionalidades que agregam maior valor ao sistema. Visando a diminuição do tempo para escrita de operações aos bancos de dados surgiu-se o que chamamos de Mapeamento Objeto Relacional, que é uma tecninca onde defimos quais classes em nosso software representam as entidades no banco de dados, e é oferecido uma serie de abstrações para que seja possível realizar operações de inserção,remoção, atualização e até mesmo escrita de schemas através da notação de objetos.
+Então torna-se papel do desenvolvedor em suas rotinas de produção de software, escrever codigo orientado a objetos e utilizar drivers para fazer conexão e realizar operações em banco de dados (BD) relacionais. É comum que o proprio desenvolvedor seja responsavel por definir o banco de dados, criar consultas, escrever as operações de inserção, remoção e atualização em SQL e submeter através do driver informações que estão mapeadas na memoria do softare atráves de objetos que representem as tabelas que estão na armazenadas no BD. O custo de tempo para escrever todos essses scripts SQL que são recorrentes e pouco alteraveis, é consideravelmente alto, e poderia ser utilizado para construção de funcionalidades que agregam maior valor ao sistema. Visando a diminuição do tempo de escrita das operações aos bancos de dados surgiu-se o que chamamos de Mapeamento Objeto Relacional, que é uma tecninca onde definimos quais classes em nosso software representam as entidades no banco de dados, e é oferecido uma serie de abstrações para que seja possível realizar operações de inserção,remoção, atualização e até mesmo escrita de schemas através da notação de objetos.
 
 
-O Mapeamento de Objeto Relacional (ORM) nasceu com objetivo de escalar a produtividade de desenvolvedores que tem necessidade de representar as entidades do banco de dados em classes dentro de um software, e submeter scrpits SQL recorrentemente com as informações que estão armazenadas nas classes as respectivas entidades ao qual representam. Os frameworks ORM oferecem atraves de APIs funcionalidades para determinar qual classe faz referência a qual tabela no BD. E também oferece funcionalidades que abstraem a escrita dos scripts de inserção, atulização, consulta e remoção ao BD.
+O Mapeamento de Objeto Relacional (ORM) nasceu com objetivo de escalar a produtividade de desenvolvedores que tem necessidade de representar as entidades do banco de dados em classes dentro de um software, e submeter scrpits SQL recorrentemente com as informações que estão armazenadas nas classes as respectivas entidades a qual representam. Os frameworks ORM oferecem atraves de APIs funcionalidades para determinar qual classe faz referência a qual tabela no BD. E também oferece funcionalidades que abstraem a escrita dos scripts de inserção, atualização, consulta e remoção ao BD.
 
 ## Mapeando minha primeira entidade
 
-Obsevamos na imagem abaixo uma tabela responsavel por armazear informações sobre uma pessoa. Neste contexto as informações que são relevantes sobre a pessoa são rg, cpf, nome, email e data de nascimento. Esta tabela tem como chave primaria um campo numerico unico que é atribuido a cada pessoa. 
+Obsevamos na imagem abaixo uma tabela responsavel por armazenar informações sobre uma pessoa. Neste contexto as informações que são relevantes sobre a pessoa são rg, cpf, nome, email e data de nascimento. Esta tabela tem como chave primaria um campo numerico unico que é atribuido a cada pessoa. 
 
 <p align="center">
 <img alt="ilustração de frames no sistema de coordenadas" src="./imagens/tabela-pessoa.png" width="180"/>
@@ -47,7 +47,7 @@ Criaremos uma classe que terá como responsabilidade unica fazer menção a tabe
 }
 ```
 
-Ao iniciar o mapeamento de uma entidade temos que nos atentar a duas coisas, primeiro o Hibernate utiliza o construtor vazio como ponto de inserção então é nossa responsabilidade sempre que criarmos um construtor diferente, definir o construtor padrão, que não possui nenhuma entrada e nenhuma atribuição dentro. Na imagem acima anotamos ele com @Deprecated para que no momento que o mesmo for utilizado ser indicado o uso deste construtor não é recomendado. O segundo ponto ao qual devemos nos atentar é que para uma classe represente uma tabela ao banco de dados devemos delimitar uma chave primaria, veremos abaixo como fazer isso.
+Ao iniciar o mapeamento de uma entidade temos que nos atentar a duas coisas, primeiro o Hibernate utiliza o construtor vazio como ponto de inserção então é nossa responsabilidade sempre que criarmos um construtor diferente implementar  o construtor padrão. No codigo acima anotamos ele com @Deprecated para que no momento que o mesmo for utilizado ser indicado o uso deste construtor não é recomendado. O segundo ponto ao qual devemos nos atentar é que para uma classe represente uma tabela ao banco de dados devemos delimitar uma chave primaria, veremos abaixo como fazer isso.
 
 
 ### Mapeando  a chave primaria 
@@ -80,7 +80,6 @@ A entidade pessoa já possui um atributo com nome id e tipo numerico, este sera 
 
 - GenerationType.TABLE: indica que algum tabela do banco de dados será utilizada para obter valores para chave primaria.
 
-Por padrão escolhemos o valor IDENTITY por delegarmos ao Hibernate que utilize o Dialect do banco de dados que esta sendo utilizado, para definir a estrategia de recuperação de valores para chaves primarias de forma apropriada.
 
 Logo nossa classe Pessoa ficara da seguinte forma: 
 
@@ -174,7 +173,7 @@ public class Endereco {
 
 Mapeando na pratica:
 ```java
- @Entity
+  @Entity
   public class Pessoa {
     private Long id;
     
