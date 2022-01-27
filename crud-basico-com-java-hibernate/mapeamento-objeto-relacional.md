@@ -12,7 +12,7 @@ O Mapeamento de Objeto Relacional (ORM) nasceu com objetivo de escalar a produti
 Obsevamos na imagem abaixo uma tabela responsavel por armazenar informações sobre uma pessoa. Neste contexto as informações que são relevantes sobre a pessoa são rg, cpf, nome, email e data de nascimento. Esta tabela tem como chave primaria um campo numerico unico que é atribuido a cada pessoa. 
 
 <p align="center">
-<img alt="ilustração de frames no sistema de coordenadas" src="./imagens/nova-tabela-pessoa.png" width="180"/>
+<img alt="ilustração da tabela pessoa" src="./imagens/nova-tabela-pessoa.png" width="180"/>
 </p>
 
 
@@ -101,7 +101,7 @@ Quando o nome da coluna é estritamente igual ao do atributo de uma determinada 
 Para melhor entendimento observaremos a tabela Endereco:
 
 <p align="center">
-<img alt="ilustração de frames no sistema de coordenadas" src="./imagens/tabela-endereco.png" width="180"/>
+<img alt="ilustração da tabela endereco" src="./imagens/tabela-endereco.png" width="180"/>
 </p>
  
 Agora observaremos a classe:
