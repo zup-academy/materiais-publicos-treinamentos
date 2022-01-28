@@ -1,6 +1,6 @@
 # Repository com Spring Data JPA
 
-Existem diversas informações que precisam ser consultadas a partir de uma especificação. E independente de como essas informações estão armazenadas, seja em banco de dados relacionais, ou banco de dados para documentos e até mesmo arquivos de texto,  é importante que estejam agrupadas para facilitar o consumo de um cliente. Criar modulo ou Classes que agrupem estas consultas é chamado de Repositorio e vem sendo um assunto discutido desde 2003 por folwer.
+Existem diversas informações que precisam ser consultadas a partir de uma especificação. E independente de como essas informações estão armazenadas, seja em banco de dados relacionais, ou banco de dados para documentos e até mesmo arquivos de texto,  é importante que estejam agrupadas para facilitar o consumo de um cliente. Agrupar o acesso ao banco em uma abstração para ser usado de acordo com as regras do domínio é um padrão bem conhecido e chamado de Repository. Tem esse nome, porque acessamos o repositório de dados, independente de qual seja.
 
 A criação de repositorios de dados podem ser necessários para abstrair logicas de processamento dos dados, e até mesmo escrita de JPQL ou SQL caso esteja utilizando um banco de dados relacional. Visando maximizar a experiência do desenvolvedor na definição de consultas para obter determinado Objeto ou Coleção de Objeto, apartir de especificações ou metodos para criação, remoção, atualização que foi criado o Spring Data. 
 
@@ -71,8 +71,11 @@ public class ImovelResource {
     }
 
     public Imovel buscarPeloId(Long id){
-        return repository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Não existe cadastro para este id."));
+        
+        Optional<Imovel> possivelImovel = repository.findById(id);
+        
+        return possivelImovel.orElseThrow(()-> new RuntimeException("Não existe cadastro para este id."));
+                
     }
 
     public List<Imovel> buscarTodos(){
