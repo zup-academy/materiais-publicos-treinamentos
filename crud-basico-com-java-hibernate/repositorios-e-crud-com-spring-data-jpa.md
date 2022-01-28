@@ -55,7 +55,8 @@ Apenas com essa implementação podemos utilizar diversos metodos, entre eles es
 3. findAll (Consultar todos): este metodo é capaz de retorna uma Lista de todos Imoveis cadastrados.
 4. deleteById (remova pela chave primaria): este metodo remove o imovel pertencente a seguinte chave primaria.
 
-Nesta altura você esta pensando se o repositorio é da Jpa não deveria aparecer um EntityManager em algum lugar por aqui ? E sim é feito uma chamada ao entity manager para cada metodo, porém,  esta chamada esta asbtraida na classe SimpleJpaRepository. 
+Nesta altura você esta pensando se o repositorio é da Jpa não deveria aparecer um EntityManager em algum lugar por aqui ? E sim é feito uma chamada ao entity manager para cada metodo, porém,  esta chamada esta asbtraida na classe SimpleJpaRepository. O fluxo fica definido da seguinte forma, é feito uma chamada para um determinado metodo do ImovelRepository, por debaixo do panos é identificado qual a entidade que sera utilizada e o metodo do entity manager, após o retorno do metodo do entity manager é feito o encaminhamento para função que chamamos do ImovelRepository, dessa forma não precisamos nos preocupar com estas chamadas e nem mesmo com a implementação da logica.
+
 Veja um exemplo de uso.
 
 ```java
