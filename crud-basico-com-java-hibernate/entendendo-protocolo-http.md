@@ -57,7 +57,7 @@ Vamos supor que queremos listar todos os livros de nossa biblioteca particular. 
 
 Já se quiséssemos criar um livro, poderíamos postar (`POST`) essas informações para o servidor e ele se encarregaria de salvá-las. 
 
-O HTTP define alguns métodos no seu protocólo. Os mais utilizados no dia a dia são o `GET`, `POST`, `PUT`, `PATCH` e `DELETE`. Cada um desses métodos têm uma semântica específica.
+O HTTP define alguns métodos no seu protocolo. Os mais utilizados no dia a dia são o `GET`, `POST`, `PUT`, `PATCH` e `DELETE`. Cada um desses métodos têm uma semântica específica.
 
 
 O método `GET` é o que utilizamos para buscas. A semântica dele diz que não devemos alterar estado no servidor quando fazemos uma requisição com esse método. Logo é um método idempotente.
@@ -134,4 +134,4 @@ Com o HTTPS todo dado no body e no header no HTTP é criptografado, com exceçã
 
 - [Visão geral sobre o HTTP](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Overview)
 - [Status HTTP](https://httpstatusdogs.com/)
-- 
+- [Como o HTTPS funciona](https://howhttps.works/pt-br/)
