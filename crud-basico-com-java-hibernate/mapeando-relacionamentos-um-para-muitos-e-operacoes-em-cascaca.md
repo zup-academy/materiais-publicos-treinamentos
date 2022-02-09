@@ -352,6 +352,14 @@ Repare que o Hibernate gerou um comando `UPDATE` em vez de um `DELETE`, pois nã
 
 ## Dicas do especialista
 
+### Não abuse de operações em cascata
+
+O recurso de `cascade` é bem útil e interessante, e, no geral, faz todo sentido utiliza-lo em suas entidades, mas abusar dele pode trazer problemas difíceis de prever. Como por exemplo, invocar uma simples operação de `merge` em uma entidade que possui muitos relacionamentos aninhados e profundos pode disparar diversas operações em cascata, trazendo efeitos colaterais inesperados ou até mesmo problemas de performance.
+
+Para resolver problemas de efeitos em cascata, só estudando e analisando o mapeamento das entidades envolvidas. E isso nem sempre é uma tarefa fácil, principalmente se não existem testes automatizados, pois alterar algum mapeamento pode acabar quebrando outras partes do sistema
+
+Se for usar operações em cascata, tenha certeza da sua necessidade e de como você pretende trabalhar nos relacionamentos das suas entidades. Sabendo utilizá-lo com sabedoria, você mantém um código muito mais simples de manter e mais orientado a objetos.
+
 ### Favoreça coluna de junção em vez de tabela de junção
 
 Por padrão, em relacionamentos `@OneToMany` a JPA gera a relação no banco de dados utilizando uma tabela de junção (`@JoinTable`), mas entendemos que esta não é a melhor abordagem para este tipo de relacionamento em um modelo relacional na maioria dos casos.
