@@ -62,7 +62,7 @@ class NotaFiscal {
 }
 ```
 
-Com este mapeamento, sempre que carregarmos um objeto do tipo `NotaFiscal`, poderemos também acessar todos os seus itens associados.
+Com este mapeamento, sempre que carregarmos um objeto do tipo `NotaFiscal` poderemos também acessar todos os seus itens associados.
 
 ## Entendendo a convenção para relacionamentos `@OneToMany` da JPA
 
@@ -279,7 +279,7 @@ Estes dois métodos são bastante utilizados pela API de Collections do Java, em
 
 Eu sei que o código acima assusta um pouco, mas não se preocupe, você não precisa implementa-lo na mão. No dia a dia, estes métodos são gerados pela sua IDE com apenas alguns cliques. Mas não se engane, seu papel como desenvolvedor(a) é definir corretamente quais atributos da entidade representam sua identidade, e isso muitas vezes significa conversar com os especialistas de negócio.
 
-## Removendo registros orfãos dos banco de dados
+## Removendo registros orfãos do banco de dados
 
 Após remover um item da nota fiscal, o relacionamento entre eles foi desfeito. Contudo, o registro na tabela de itens ainda existe, ele não foi removido do banco de dados. Por que isto acontece se estamos usando `CascadeType.ALL`?
 
