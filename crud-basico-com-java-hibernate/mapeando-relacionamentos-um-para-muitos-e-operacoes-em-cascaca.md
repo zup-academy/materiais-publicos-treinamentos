@@ -4,7 +4,7 @@ Agora, vamos aprender como mapear relacionamentos um para muitos com JPA e Hiber
 
 ## Mapeando um relacionamento `@OneToMany` com JPA e Hibernate
 
-Imagine que precisamos modelar um funcionalidade para emissão de notas fiscais, algo muito em sistemas financeiros, contabeis, e-commerce etc. Para isso, precisamos modelar duas entidades importantes nesse domínio: **Nota Fiscal** e **Item de Nota Fiscal**. Pensando numa modelagem orientada a objetos, teríamos algo como abaixo:
+Imagine que precisamos modelar uma funcionalidade para emissão de notas fiscais, algo muito comum em sistemas financeiros, contabeis, e-commerce etc. Para isso, precisamos modelar duas entidades importantes nesse domínio: **Nota Fiscal** e **Item de Nota Fiscal**. Pensando numa modelagem orientada a objetos, teríamos algo como abaixo:
 
 ```java
 @Entity
