@@ -1,6 +1,6 @@
 # Mapeando relacionamentos um para muitos e operações em cascata
 
-Nesse material, vamos aprender como mapear relacionamentos um para muitos com JPA e Hibernate através da anotação `@OneToMany` e também como tirar proveito do framework ORM para disparar operações em cascata simplificando assim o código escrito por nós.
+Agora, vamos aprender como mapear relacionamentos um para muitos com JPA e Hibernate através da anotação `@OneToMany` e também como tirar proveito do framework ORM para disparar operações em cascata simplificando assim o código escrito por nós.
 
 ## Mapeando um relacionamento `@OneToMany` com JPA e Hibernate
 
@@ -66,11 +66,11 @@ Com este mapeamento, sempre que carregarmos um objeto do tipo `NotaFiscal`, pode
 
 ## Entendendo a convenção para relacionamentos `@OneToMany` da JPA
 
-A convenção da JPA para relacionamentos `@OneToMany` se dá através de uma tabela de relacionamento, como podemos ver no diagrama a seguir:
+A convenção da JPA para relacionamentos `@OneToMany` se dá através de uma tabela de relacionamento (ou tabela de junção), como podemos ver no diagrama a seguir:
 
-[image "diagrama tabela de juncao"]()
+![Relacionamento @OneToMany via tabela de junção (@JoinTable)](imagens/MER-one-to-many-with-join-table.png "Relacionamento @OneToMany via tabela de junção (@JoinTable)")
 
-Esta tabela de relacionamento (ou tabela de junção) possui as seguintes características:
+Esta tabela de relacionamento possui as seguintes características:
 
 - Nome da tabela será `<nome tabela pai>_<nome tabela filha>`;
 - Esta tabela terá duas colunas FKs, uma para PK da tabela pai e outra para PK da tabela filha;
@@ -100,11 +100,11 @@ Se não quisermos uma tabela de relacionamento, é possível mapearmos uma **col
 private List<Item> itens;
 ```
 
-Ao gerar o schema, o Hibernate nos entregará o schema abaixo:
+Ao gerar o schema, o Hibernate nos entregará um modelo mais simples para representar o relacionamento um para muitos utilizando uma coluna de junção:
 
-[image "diagrama coluna de juncao"]()
+![Relacionamento @OneToMany via coluna de junção (@JoinColumn)](imagens/MER-one-to-many-with-join-column.png "Relacionamento @OneToMany via coluna de junção (@JoinColumn)")
 
-Repare que além de termos definido a relação via coluna de junção, nós também indicamos ao Hibernate que queremos que o nome da coluna na tabela `ITEM` seja `NOTA_ID` em vez da convenção, e que ela seja obrigatória (`NOT NULL` no banco de dados).
+Repare que além de termos definido a relação via coluna de junção, nós também indicamos ao Hibernate que queremos que o nome da coluna na tabela `ITEM` seja `NOTA_ID` em vez da convenção da JPA, e que esta mesma coluna seja obrigatória (constraint `NOT NULL` no banco de dados).
 
 É possível customizar ainda mais o mapeamento usando as anotações `@JoinTable` e `@JoinColumn`. Para saber mais detalhes sobre as duas anotações, consulte a documentação (Javadoc).
 
@@ -116,7 +116,9 @@ Precisamos adicionar um novo item associado com uma nota fiscal. Poderíamos cri
 O ideal é trabalharmos através da coleção de itens existente em `NotaFiscal`, seja para adicionar um novo item ou mesmo remover um já existente. Para isso, precisamos instanciar um novo `Item`, buscar uma `NotaFiscal` já cadastrada no banco e, por fim, adicionar este novo `Item` aos itens da nota fiscal que buscamos. O código seria similar a este:
 
 ```java
-// (assuma que o código está dentro de um contexto transacional)
+/**
+ * (assuma que o código está dentro de um contexto transacional)
+ */ 
 
 // instancia novo item
 Item novoItem = new Item(produto, 2);
@@ -198,7 +200,9 @@ Com a operação em cascata configurada, não precisamos mais persistir a instâ
 Da mesma forma que um usuário adiciona um item em uma nota fiscal, ele também pode remover este mesmo item posteriormente, se assim desejar. Semelhante ao que vimos no trecho de código anterior, para remover um item, nós também devemos trabalhar em cima da coleção de itens existente na nota fiscal. O código ficará similar a este:
 
 ```java
-// (assuma que o código está dentro de um contexto transacional)
+/**
+ * (assuma que o código está dentro de um contexto transacional)
+ */ 
 
 Item item = new Item();
 item.setId(2); // usar um ID que exista no banco
@@ -346,13 +350,13 @@ UPDATE item
 
 Repare que o Hibernate gerou um comando `UPDATE` em vez de um `DELETE`, pois não há necessidade de deletar a entidade filha, mas somente sua relação com a entidade pai. Tudo vai depender de como definimos o mapeamento do relacionamento, ou seja, se foi mapeado como `@JoinTable` ou `@JoinColumn`, se o atributo `orphanRemoval` está habilitado ou não, o tipo de `cascade` configurado etc.
 
-## Dicas do Especialista
+## Dicas do especialista
 
 ### Favoreça coluna de junção em vez de tabela de junção
 
 Por padrão, em relacionamentos `@OneToMany` a JPA gera a relação no banco de dados utilizando uma tabela de junção (`@JoinTable`), mas entendemos que esta não é a melhor abordagem para este tipo de relacionamento em um modelo relacional na maioria dos casos.
 
-Dessa forma, sempre que possível, favoreça usar a anotação `@JoinColum` para indicar a JPA que o modelo gerado no banco de dados deve ser feita via uma coluna de junção em vez de uma tabela de junção. Isso facilitará não só a escrita de consultas nativas em SQL, como também pode colaborar para o desempenho destas consultas ao evitar JOINs entre tabelas.
+Dessa forma, sempre que possível, favoreça usar a anotação `@JoinColum` para indicar a JPA que o modelo gerado no banco de dados deve ser feita via uma coluna de junção em vez de uma tabela de junção. Isso facilitará não só a escrita de consultas nativas em SQL, como também pode colaborar para o desempenho destas consultas ao evitar JOINs entre tabelas, juntamente com o menor uso de storage e menor consumo de memória para indexação.
 
 ### Boas práticas ao implementar `equals` e `hashCode` com Hibernate
 
@@ -362,3 +366,10 @@ Por isso, indicamos os artigos da JBoss e do blog do Vlad Mihalcea abaixo na qua
 
 - [JBoss Wiki: Equals and HashCode](https://community.jboss.org/wiki/EqualsandHashCode)
 - [The best way to implement equals, hashCode, and toString with JPA and Hibernate](https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/)
+
+### Artigos que valem a pena a leitura
+
+- [The best way to map a @OneToMany relationship with JPA and Hibernate](https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/) 
+- [How does orphanRemoval work with JPA and Hibernate](https://vladmihalcea.com/orphanremoval-jpa-hibernate/)
+- [The best way to implement equals, hashCode, and toString with JPA and Hibernate](https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/)
+- [Toda entidade tem uma identidade](http://blog.triadworks.com.br/toda-entidade-tem-uma-identidade)
