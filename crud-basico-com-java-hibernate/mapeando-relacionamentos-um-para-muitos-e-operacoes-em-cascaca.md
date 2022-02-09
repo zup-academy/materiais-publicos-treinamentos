@@ -37,7 +37,7 @@ class Item {
 }
 ```
 
-Agora, precisamos relaciona-las, afinal de contas, uma nota fiscal pode possuir um ou mais itens. Se pensarmos bem, em um modelo relacional teríamos um relacionamento **um para muitos** entre as entidades. Para expressar esse relacionamento, nós precisamos de um atributo que guarde todos os itens de uma nota fiscal. Uma maneira de expressá-lo seria através de uma coleção Java, como um `List`. O código ficaria:
+Agora, precisamos relaciona-las, afinal de contas, uma nota fiscal pode possuir um ou mais itens. Se pensarmos bem, em um modelo relacional teríamos um relacionamento **um para muitos** entre as entidades. Para expressar esse relacionamento em um modelo orientado a objetos, nós precisamos de um atributo que guarde todos os itens de uma nota fiscal. Uma maneira de expressá-lo seria através de uma coleção Java, como um `List`. O código ficaria:
 
 ```java
 @Entity
