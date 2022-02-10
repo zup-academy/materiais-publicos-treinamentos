@@ -64,7 +64,7 @@ class NotaFiscal {
 
 Com este mapeamento, sempre que carregarmos um objeto do tipo `NotaFiscal` poderemos também acessar todos os seus itens associados.
 
-## Entendendo a convenção para relacionamentos `@OneToMany` da JPA
+### Entendendo a convenção para relacionamentos `@OneToMany` da JPA
 
 A convenção da JPA para relacionamentos `@OneToMany` se dá através de uma tabela de relacionamento (ou tabela de junção), como podemos ver no diagrama a seguir:
 
@@ -108,7 +108,7 @@ Repare que além de termos definido a relação via coluna de junção, nós tam
 
 É possível customizar ainda mais o mapeamento usando as anotações `@JoinTable` e `@JoinColumn`. Para saber mais detalhes sobre as duas anotações, consulte a documentação (Javadoc).
 
-## Persistindo objetos envolvidos em relacionamentos `@OneToMany`
+### Persistindo objetos envolvidos em relacionamentos `@OneToMany`
 
 Precisamos adicionar um novo item associado com uma nota fiscal. Poderíamos criar um Repository no Spring Boot para entidade `Item` com todas as operações básicas de persistência, mas será que isto é necessário? A entidade
 `Item` é um conceito relativamente fraco dentro do nosso domínio, pois um item só deve existir enquanto uma nota fiscal existir. Além disso, as chances são de que não tenhámos um cadastro de itens no sistema, mas sim uma funcionalidade que nos permita adicionar itens à uma nota fiscal já existente dentro do sistema, ou mesmo criar uma nota fiscal com todos seus itens inclusos.
@@ -195,7 +195,7 @@ class NotaFiscal {
 
 Com a operação em cascata configurada, não precisamos mais persistir a instância de `Item` antes de associa-la a sua nota fiscal.
 
-## Removendo objetos em um relacionamento `@OneToMany`
+### Removendo objetos em um relacionamento `@OneToMany`
 
 Da mesma forma que um usuário adiciona um item em uma nota fiscal, ele também pode remover este mesmo item posteriormente, se assim desejar. Semelhante ao que vimos no trecho de código anterior, para remover um item, nós também devemos trabalhar em cima da coleção de itens existente na nota fiscal. O código ficará similar a este:
 
@@ -223,7 +223,7 @@ Ao executar o código acima nenhum erro ocorre, mas o item associado a nota fisc
 
 Por que isso aconteceu se a lógica do código parece estar correta?
 
-## Definindo a identidade de uma entidade
+### Definindo a identidade de uma entidade
 
 Quando mapeamos uma entidade, a JPA nos obriga a mapear o identificador único (a chave primária da tabela) da nossa entidade com a anotação `@Id`, pois a JPA precisa ter conhecimento de como diferenciar uma entidade de outra dentro do contexto de persistência e no banco de dados. E, muitas vezes, esse mesmo identificador único é o que difere as entidades dentro do nosso modelo de domínio, ele é a **identidade** da nossa entidade.
 
@@ -279,7 +279,7 @@ Estes dois métodos são bastante utilizados pela API de Collections do Java, em
 
 Eu sei que o código acima assusta um pouco, mas não se preocupe, você não precisa implementa-lo na mão. No dia a dia, estes métodos são gerados pela sua IDE com apenas alguns cliques. Mas não se engane, seu papel como desenvolvedor(a) é definir corretamente quais atributos da entidade representam sua identidade, e isso muitas vezes significa conversar com os especialistas de negócio.
 
-## Removendo registros orfãos do banco de dados
+### Removendo registros orfãos do banco de dados
 
 Após remover um item da nota fiscal, o relacionamento entre eles foi desfeito. Contudo, o registro na tabela de itens ainda existe, ele não foi removido do banco de dados. Por que isto acontece se estamos usando `CascadeType.ALL`?
 
@@ -317,7 +317,7 @@ Para entender melhor o que estou querendo dizer, imagine que tenhamos um mapeame
 private List<Item> itens;
 ```
 
-Agora, imagine que tenhámos essa lógica de negócio para remover o primeiro item de uma nota fiscal. Para isso, basta carregarmos a entidade `NotaFiscal` do banco de dados e remover seu item:
+Agora, imagine que tenhámos uma lógica de negócio para remover o primeiro item de uma nota fiscal. Para isso, basta carregarmos a entidade `NotaFiscal` do banco de dados e em seguida remover seu item:
 
 ```java
 NotaFiscal nota = entityManager.find(NotaFiscal.class, 42);
