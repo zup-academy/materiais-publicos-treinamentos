@@ -279,7 +279,7 @@ com persistência ou JPA. Decidir quando usar ou não vai depender de caso para 
 atrapalhar mais do que ajudar.
 
 No caso da JPA, se usado corretamente, pode facilitar a escrita de consultas JPQL, diminuir idas ao banco
-de dados, melhorar a performance diminuindo o número de comandos SQL enviados ao banco, ajudar em operações em cascata e até permitir que tenhámos regras de negócio mais claras em código. Isso dependerá do cenário e da necessidade do relacionamento.
+de dados, melhorar a performance gerando comandos SQL mais eficientes, ajudar em operações em cascata e até permitir que tenhámos regras de negócio mais claras em código. Isso dependerá do cenário e da necessidade do relacionamento.
 
 Mas como já vimos, ter um relacionamento bidirecional também pode trazer algumas dificuldades com relação
 a inconsistência dos objetos, pois esta responsabilidade passa a ser do desenvolvedor e não mais do framework
