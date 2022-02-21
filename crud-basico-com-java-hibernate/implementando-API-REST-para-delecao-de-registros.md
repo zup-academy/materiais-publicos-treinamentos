@@ -100,7 +100,7 @@ public class RemoveLivroController {
 }
 ```
 
-O código acima seria suficiente para remover a entidade do banco de dados, mas ainda precisamos informar ao cliente que a entidade foi removida com sucesso através de um status HTTP. No caso do método `DELETE`, temos alguns possíveis status de sucesso:
+O código acima seria suficiente para remover a entidade do banco de dados, mas ainda precisamos informar ao cliente que a entidade foi removida com sucesso através de um status HTTP. No caso do método `DELETE`, temos [alguns possíveis status de sucesso](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/DELETE):
 
 - `OK (200)`: a entidade foi deletada e temos corpo na resposta: algum payload ou representação descrevendo o status;
 - `No Content (204)`: a entidade foi deletada e não temos corpo na resposta;
