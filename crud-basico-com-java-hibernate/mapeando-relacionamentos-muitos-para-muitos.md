@@ -99,7 +99,7 @@ public class Aluno{
     private LocalDate dataMatricula;
 
 
-    @JoinColumn(name="aluno_disciplina",
+    @JoinTable(name="aluno_disciplina",
         joinColumns = @JoinColumn(name = "aluno_id"),
         inverseJoinColumns = @JoinColumn(name = "disciplina_id")
     )
@@ -120,7 +120,7 @@ public class Aluno{
      * @deprecated construtor para uso exclusivo do hibernate
      */
     @Deprecated
-    public Pessoa(){
+    public Aluno(){
 
     }
 }
@@ -160,7 +160,7 @@ public class Disciplina{
 }
 ```
 
-Muitos desenvolvedores considerariam o trabalho feito e o mapeamento terminado, porém este mapeamendo reflete um problema em performance no momento em que é feito uma remoção de disciplina para um aluno. Quando usamos um objeto do tipo `List` para mapear relacionamentos Muitos para Muitos, o Hibernate entende que é necessário remover todos registros do relacionamento e re-inserir apenas os que não foram solicitado a sua remoção. Do ponto de vista do Banco de Dados é feito N novos insertes e associações de chaves primarias a estas tabelas.
+Muitos desenvolvedores considerariam o trabalho feito e o mapeamento terminado, porém este mapeamendo reflete um problema em performance no momento em que é feito uma remoção de disciplina para um aluno. Quando usamos um objeto do tipo `List` para mapear relacionamentos Muitos para Muitos, o Hibernate em alguma das suas versões, entende que é necessário remover todos registros do relacionamento e re-inserir apenas os que não foram solicitado a sua remoção. Do ponto de vista do Banco de Dados é feito N novos insertes e associações de chaves primarias a estas tabelas.
 
 ### Então qual é a maneira mais eficiente de Mapear estes relacionamentos?
 
@@ -177,7 +177,7 @@ public class Aluno{
     // demais atributos otimitos
 
 
-    @JoinColumn(name="aluno_disciplina",
+    @JoinTable(name="aluno_disciplina",
         joinColumns = @JoinColumn(name = "aluno_id"),
         inverseJoinColumns = @JoinColumn(name = "disciplina_id")
     )
