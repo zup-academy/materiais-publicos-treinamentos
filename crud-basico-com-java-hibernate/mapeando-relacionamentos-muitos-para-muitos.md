@@ -201,3 +201,4 @@ public class Aluno{
 - [Melhor maneira de mapear o relacionamento JPA e Hibernate ManyToMany](https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/)
 - [Como sincronizar associações de entidades bidirecionais com JPA e Hibernate](https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/)
 - [Como sincronizar associações de entidades bidirecionais com JPA e Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/)
+- [Cuidados ao definir Relacionamentos Muitos para Muitos Bidirecional](https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/crud-basico-com-java-hibernate/cuidados-ao-mapear-relacionamentos-muitos-para-muitos-bidirecional.md)

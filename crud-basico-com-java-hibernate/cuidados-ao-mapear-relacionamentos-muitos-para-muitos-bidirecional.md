@@ -2,7 +2,7 @@
 
 Não é de hoje que sabemos que JPA e Hibernate proporcionam agilidade e produtividade atráves de suas APIS. Mapear relacionamentos nunca foi tão simples, porém, quando lidamos com relacionamentos para Muitos (`ToMany`) devemos nós atentar para manter a consistência das colleções, e para não executar consultas indesejadas. 
 
-Neste artigo iremos no atentar em manter a sincronização das colleções, em relacionamentos Muitos para Muitos.
+Neste artigo iremos nos atentar em manter a sincronização das colleções, em relacionamentos Muitos para Muitos.
 
 ## Mantendo a consistência de Relacionamentos Muitos para Muitos Bidirecional
 
@@ -51,10 +51,12 @@ public class Aluno{
 
     public void adicionar(Disciplina disciplina){
         this.disciplinas.add(disciplina);
+        disciplina.adicionar(this);
     }
 
     public void remover(Disciplina disciplina){
         this.disciplinas.remove(disciplina);
+        disciplina.remover(this);
     }
 }
 ```
