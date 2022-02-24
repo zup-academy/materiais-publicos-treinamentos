@@ -141,9 +141,6 @@ public class Disciplina{
     private String ementa;
     private LocalDateTime criadoEm=LocalDateTime.now();
 
-    @ManyToMany(mappedBy="disciplinas")
-    private List<Aluno> alunos= new ArrayList<>();
-
     public Disciplina(String titulo, Integer duracaoEmHoras, String ementa){
         this.titulo=titulo;
         this.duracaoEmHoras=duracaoEmHoras;
@@ -164,7 +161,7 @@ Muitos desenvolvedores considerariam o trabalho feito e o mapeamento terminado, 
 
 ### Então qual é a maneira mais eficiente de Mapear estes relacionamentos?
 
-Substituindo a Collection `List` para `Set` sera reduzido as operações de remoção para apenas entidade que contém o identificador informado. Iremos também cuidar de sincronizar os eventos de relação entre as duas entidades através da criação de metodos. Observe o mapeamento abaixo.
+Substituindo a Collection `List` para `Set` sera reduzido as operações de remoção para apenas entidade que contém o identificador informado. Observe o mapeamento abaixo.
 
 
 
@@ -191,43 +188,16 @@ public class Aluno{
 
     public void adicionar(Disciplina disciplina){
         this.disciplinas.add(disciplina);
-        disciplina.adicionar(this);
     }
     
     public void remover(Disciplina disciplina){
         this.disciplinas.remove(disciplina);
-        disciplina.remover(this);
     }
 }
 ```
 
-```java
-@Entity
-public class Disciplina{
-    @Id
-    @GeneratedValue(strategy=IDENTITY)
-    private Long id;
-    // demais atributos omitidos
-    @ManyToMany(mappedBy="disciplinas")
-    private Set<Aluno> alunos= new HashSet<>();
-
-    //construtores omitidos
-
-    public void adicionar(Aluno aluno){
-        this.alunos.add(aluno);
-    }
-    
-    public void remover(Aluno aluno){
-      this.alunos.remove(aluno);
-    }
-}
-```
 
 ## Link para aprofundamento
 - [Melhor maneira de mapear o relacionamento JPA e Hibernate ManyToMany](https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/)
 - [Como sincronizar associações de entidades bidirecionais com JPA e Hibernate](https://vladmihalcea.com/jpa-hibernate-synchronize-bidirectional-entity-associations/)
 - [Como sincronizar associações de entidades bidirecionais com JPA e Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/)
-
-
-
-
