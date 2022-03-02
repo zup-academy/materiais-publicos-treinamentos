@@ -42,7 +42,7 @@ Você pode fornecer _constraints_ adicionais para especificar a altura, a largur
 
 Você também pode posicionar uma _stack view_ com base em sua primeira ou última linha de base, em vez de usar a posição do eixo Y superior, inferior ou central. Assim como o tamanho da _stack view_, essas linhas de base são calculadas com base no conteúdo da _stack view_.
 
-> Nota: O alinhamento via _baseline_ funciona apenas em _views_ cuja altura corresponde à altura do tamanho do conteúdo intrínseco. Se a vista for esticada ou comprimida, a linha de base aparecerá no local errado.
+> Nota: O alinhamento via _baseline_ funciona apenas em _views_ cuja altura corresponde à altura do tamanho do conteúdo intrínseco. Se a _view_ for esticada ou comprimida, a linha de base aparecerá no local errado.
 
 #### Layouts comuns com Stack Views
 
