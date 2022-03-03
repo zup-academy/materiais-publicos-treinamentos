@@ -1,44 +1,73 @@
-# Atualicação de Recursos de uma API REST com Spring 
+# Atualização de Recursos de uma API REST com Spring 
 
-Não é de hoje que definir um designer de um `endpoint` para atualização de uma API REST é assunto para duvidas. Tarefas como definir o verbo HTTP, Status HTTP de retorno e até como definir as resposabilidades do codigo estão altamente relacionadas a interpretação das documentações oficiais de cada Metodo HTTP, e até descisões de designer de codigo entre equipes. Dado que cada pessoa pode interpretar determinada informações de diferentes formas, torna-se complexo manter um padrão universal.
+Não é de hoje que definir um designe de um `endpoint` para atualização de uma API REST é assunto para duvidas. Tarefas como definir o verbo HTTP, Status HTTP de retorno e até como definir as resposabilidades do codigo estão altamente relacionadas a interpretação das documentações oficiais de cada Metodo HTTP, e até descisões de designer de codigo entre equipes. Dado que cada pessoa pode interpretar determinada informações de diferentes formas, torna-se complexo manter um padrão universal.
 
 ## Atualização Completa Vs Atualização Parcial
 
-Hoje no protocolo HTTP existem verbos especificos para atualiazações que contemplem toda representação de um recurso ou parte dela.
+Hoje no protocolo HTTP existem verbos especificos para atualiazações que contemplem toda representação de um recurso ou parte dela. Quando falamos de API REST os tipos de atualização são diferenciados pelos verbos `PUT` e `PATCH`. `PUT` quando vamos alterar todos campos de um recurso, e  `PATCH` para quando iremos alterar alguns campos. 
 
+Abaixo tem-se a representação de um recurso Pessoa,a representação esta em JSON.
 
-
-### Atualização Completa
-
-Ao direcionar nossa energia para implementar um endpoint de atualização, o primeiro passo a se observar é a quais informações desejamos atualizar em determinado recurso. Quando definimos que iremos atualizar todas as informações é o que chamamos de atualização completa. Veja abaixo o exemplo de uma atualização.
-
-
-Aqui temos um recurso Pessoa, que representa as informações de nome e email.
 
 ```json
 {
+    "id": 1,
+    "nome":"Matheus Souza Alegre",
+    "email": "matheus.alegre@email.com"
+}
+```
+
+Para melhor entendimento das atualizações, veja abaixo o que tange cada uma delas.
+
+### Atualização Completa (PUT)
+
+Ao direcionar nossa energia para implementar um endpoint de atualização, o primeiro passo a se observar é a quais informações desejamos atualizar em determinado recurso. Quando definimos que iremos atualizar todas as informações é o que chamamos de atualização completa, estas são representas pelo verbo PUT. Veja abaixo o exemplo de uma atualização.
+
+
+Aqui temos um recurso Pessoa, que representa as informações de id, nome e email.
+
+```json
+{
+    "id":1,
     "nome":"Matheus Souza Alegre",
     "email": "matheus.alegre@email.com"
 }
 ```
 
 Quando iremos enviamos uma solicitação para alteração do nome e email para `Matheus Alegre` e `m.alegre@email.com` respectivamente
-, estamos alterandoi toda a representação deste recurso, então logo estamos implementando uma atualização completa. Veja o resultado abaixo.
+, estamos alterando toda a representação deste recurso. Para fazer essa solicitação utilizaremos o verbo `PUT`  para o seguinte endereco "/pessoas/1", veja como seria o corpo da requisição.
 
 ```json
+
 {
+
+    "id":1,
     "nome":"Matheus Alegre",
     "email": "m.alegre@email.com"
 }
 ```
-### Atualização Parcial
 
-Como o proprio nome já diz, é feito uma alteração em uma fração de uma representação de um recurso. Olhando para o exemplo anterior, onde existe um recurso pessoa que contém um nome e um email, caso seja alterado apenas o nome ou email, estaremos atualizando parcialmente determinada representação. Veja o exemplo abaixo.
+### Atualização Parcial (PATCH)
+
+Como o proprio nome já diz, é feito uma alteração em uma fração de uma representação de um recurso. Olhando para o exemplo anterior, onde existe um recurso pessoa que contém um id, nome e um email, caso seja alterado apenas o nome ou email, estaremos atualizando parcialmente determinada representação. Veja o exemplo abaixo.
+
+Aqui temos a representação do nosso recurso.
 
 ```json
 {
+    "id": 2,
     "nome":"Adriano Ferreira Moraes",
     "email": "adriano.moraes@email.com"
+}
+```
+
+Para submeter uma atualização do email, seria feito uma requisição do tipo `PATCH` para o endereco "/pessoas/2" com o corpo abaixo.
+
+
+
+```json
+{
+    "email": "adriano.ferreira@email.com"
 }
 ```
 
@@ -46,11 +75,11 @@ Após a alteração do email, para `adriano.ferreira@email.com` obtemos a seguin
 
 ```json
 {
+    "id": 2,
     "nome":"Adriano Ferreira Moraes",
-    "email": "adriano.ferreira@email.com"
+    "email":"adriano.ferreira@email.com"
 }
 ```
-
 
 ## PUT vs PATCH
 
@@ -99,7 +128,7 @@ public class AtualizaPessoaController{
     public ResponseEntity<Void> atualizar(@RequestBody @Valid AtualizaPessoaRequest request, @PathVariable Long id){
        Pessoa pessoa = repository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-       pessoa.atualiza(request);
+       pessoa.atualiza(request.getNome(),request.getEmail());
 
        repository.save(pessoa);
 
@@ -139,9 +168,9 @@ public class AtualizaPessoaController{
         private String email;
 
 
-        public void atualiza(AtualizaPessoaRequest alteracoesPessoa){
-            this.nome=alteracoesPessoa.getNome();
-            this.email=alteracoesPessoa.getEmail();
+        public void atualiza(String nome, String email){
+            this.nome=nome;
+            this.email=email;
         }
 
     
@@ -178,6 +207,20 @@ public class AtualizaEmailPessoaController{
        return ResponseEntity.noContent().build();
     }
 }
+```
+
+```java
+    public class AtualizaEmailPessoaRequest{
+       
+        @NotBlank
+        private String email;
+
+        public String getEmail(){
+            return this.email;
+        }
+
+    
+    }
 ```
 
 ## Link para aprofundamento
