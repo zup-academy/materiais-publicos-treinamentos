@@ -18,11 +18,11 @@ Para usar uma _stack view_, abra o Storyboard que você deseja editar. Arraste u
 
 ### Stack View e Auto Layout
 
-A _stack view_ usa o Auto Layout para posicionar e dimensionar suas _views_. A _stack view_ alinha a primeira e a última _view_ com suas bordas ao longo do eixo da _stack view_. Em uma _stack view_ horizontal, isso significa que a borda inicial (_leading edge_) da primeira _view_ é fixada à borda inicial da _stack view_ e a borda final (trailing edge) da última _view_ é fixada à borda final da _stack view_. Em _stack views_ verticais, as bordas superior e inferior são fixadas nas bordas superior e inferior da _stack view_, respectivamente. Se você definir a propriedade (`isLayoutMarginsRelativeArrangement`)[https://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme] da _stack view_ como `true` (no Interface Builder, através do atributo _Layout Margins_ do _Size Inspector_), a _stack view_ fixará seu conteúdo na margem configurada em vez de na borda.
+A _stack view_ usa o Auto Layout para posicionar e dimensionar suas _views_. A _stack view_ alinha a primeira e a última _view_ com suas bordas ao longo do eixo da _stack view_. Em uma _stack view_ horizontal, isso significa que a borda inicial (_leading edge_) da primeira _view_ é fixada à borda inicial da _stack view_ e a borda final (trailing edge) da última _view_ é fixada à borda final da _stack view_. Em _stack views_ verticais, as bordas superior e inferior são fixadas nas bordas superior e inferior da _stack view_, respectivamente. Se você definir a propriedade [`isLayoutMarginsRelativeArrangement`](https://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme) da _stack view_ como `true` (no Interface Builder, através do atributo _Layout Margins_ do _Size Inspector_), a _stack view_ fixará seu conteúdo na margem configurada em vez de na borda.
 
-Para todas os tipos de **distribuição**, exceto a distribuição (`UIStackView.Distribution.fillEqually`)[https://developer.apple.com/documentation/uikit/uistackview/distribution/fillequally], a _stack view_ usa a propriedade (`intrinsicContentSize`)[https://developer.apple.com/documentation/uikit/uiview/1622600-intrinsiccontentsize] de cada _view_ ao calcular seu tamanho ao longo do eixo da _stack_. (`UIStackView.Distribution.fillEqually`)[https://developer.apple.com/documentation/uikit/uistackview/distribution/fillequally] redimensiona todas as _views_ para que tenham o mesmo tamanho, preenchendo a _stack view_ ao longo de seu eixo. Se possível, a _stack view_ estica todas as _views_ para corresponder à _view_ com o maior tamanho intrínseco ao longo do eixo da _stack_.
+Para todas os tipos de **distribuição**, exceto a distribuição [`UIStackView.Distribution.fillEqually`](https://developer.apple.com/documentation/uikit/uistackview/distribution/fillequally), a _stack view_ usa a propriedade [`intrinsicContentSize`](https://developer.apple.com/documentation/uikit/uiview/1622600-intrinsiccontentsize) de cada _view_ ao calcular seu tamanho ao longo do eixo da _stack_. [`UIStackView.Distribution.fillEqually`](https://developer.apple.com/documentation/uikit/uistackview/distribution/fillequally) redimensiona todas as _views_ para que tenham o mesmo tamanho, preenchendo a _stack view_ ao longo de seu eixo. Se possível, a _stack view_ estica todas as _views_ para corresponder à _view_ com o maior tamanho intrínseco ao longo do eixo da _stack_.
 
-Para todos os **alinhamentos**, exceto o alinhamento (`UIStackView.Alignment.fill`)[https://developer.apple.com/documentation/uikit/uistackview/alignment/fill], a _stack view_ usa a propriedade `intrinsicContentSize` de cada _view_ ao calcular seu tamanho perpendicular ao eixo da _stack_. (`UIStackView.Alignment.fill`)[https://developer.apple.com/documentation/uikit/uistackview/alignment/fill] redimensiona todas as _views_ para que elas preencham a _stack view_ perpendicularmente ao seu eixo. Se possível, a _stack view_ estica todas as _views_ para corresponder à _view_ com o maior tamanho intrínseco perpendicular ao eixo da _stack_.
+Para todos os **alinhamentos**, exceto o alinhamento [`UIStackView.Alignment.fill`](https://developer.apple.com/documentation/uikit/uistackview/alignment/fill), a _stack view_ usa a propriedade `intrinsicContentSize` de cada _view_ ao calcular seu tamanho perpendicular ao eixo da _stack_. [`UIStackView.Alignment.fill`](https://developer.apple.com/documentation/uikit/uistackview/alignment/fill) redimensiona todas as _views_ para que elas preencham a _stack view_ perpendicularmente ao seu eixo. Se possível, a _stack view_ estica todas as _views_ para corresponder à _view_ com o maior tamanho intrínseco perpendicular ao eixo da _stack_.
 
 <p align="center">
 <img alt="Imagem de exemplo das propriedades de distribuição e alinhamento aplicadas" src="https://docs-assets.developer.apple.com/published/60e0116332/cd8978aa-c754-456a-b2b3-d5485952fc9d.png" width="60%"/>
@@ -36,13 +36,13 @@ Embora uma _stack view_ permita que você organize seu conteúdo sem usar o Auto
 
 * Perpendicular ao eixo da _stack view_, seu tamanho é igual ao tamanho da maior _view gerenciada_.
 
-* Se a propriedade (`isLayoutMarginsRelativeArrangement`)[https://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme] da _stack view_ estiver definida como `true`, o tamanho da _stack view_ será aumentado para incluir espaço para as margens.
+* Se a propriedade [`isLayoutMarginsRelativeArrangement`](https://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme) da _stack view_ estiver definida como `true`, o tamanho da _stack view_ será aumentado para incluir espaço para as margens.
 
-Você pode fornecer _constraints_ adicionais para especificar a altura, a largura ou ambos da _stack view_. Nesses casos, a _stack view_ ajusta o layout e o tamanho de suas _views gerenciadas_ para preencher a área especificada. O layout varia com base nas propriedades da _stack view_. Consulte as enums (`UIStackView.Distribution`)[https://developer.apple.com/documentation/uikit/uistackview/distribution] e (`UIStackView.Alignment`)[https://developer.apple.com/documentation/uikit/uistackview/alignment] para obter uma descrição completa de como a _stack view_ lida com espaço extra ou espaço insuficiente para seu conteúdo.
+Você pode fornecer _constraints_ adicionais para especificar a altura, a largura ou ambos da _stack view_. Nesses casos, a _stack view_ ajusta o layout e o tamanho de suas _views gerenciadas_ para preencher a área especificada. O layout varia com base nas propriedades da _stack view_. Consulte as enums [`UIStackView.Distribution`](https://developer.apple.com/documentation/uikit/uistackview/distribution) e [`UIStackView.Alignment`](https://developer.apple.com/documentation/uikit/uistackview/alignment) para obter uma descrição completa de como a _stack view_ lida com espaço extra ou espaço insuficiente para seu conteúdo.
 
 Você também pode posicionar uma _stack view_ com base em sua primeira ou última linha de base, em vez de usar a posição do eixo Y superior, inferior ou central. Assim como o tamanho da _stack view_, essas linhas de base são calculadas com base no conteúdo da _stack view_.
 
-> Nota: O alinhamento via _baseline_ funciona apenas em _views_ cuja altura corresponde à altura do tamanho do conteúdo intrínseco. Se a vista for esticada ou comprimida, a linha de base aparecerá no local errado.
+> Nota: O alinhamento via _baseline_ funciona apenas em _views_ cuja altura corresponde à altura do tamanho do conteúdo intrínseco. Se a _view_ for esticada ou comprimida, a linha de base aparecerá no local errado.
 
 #### Layouts comuns com Stack Views
 
@@ -86,17 +86,17 @@ A abaixo mostra uma _stack view_ vertical com todas as quatro bordas fixadas em 
 
 Uma _stack view_ gerencia a posição e o tamanho de suas _views internas_. Há várias propriedades que definem como a _stack view_ apresenta seu conteúdo.
 
-* A propriedade (`axis`)[https://developer.apple.com/documentation/uikit/uistackview/1616223-axis] determina a orientação da _stack_, seja vertical ou horizontalmente.
+* A propriedade [`axis`](https://developer.apple.com/documentation/uikit/uistackview/1616223-axis) determina a orientação da _stack_, seja vertical ou horizontalmente.
 
-* A propriedade (`distribution`)[https://developer.apple.com/documentation/uikit/uistackview/1616233-distribution] determina o layout das _views_ internas ao longo do eixo da _stack_.
+* A propriedade [`distribution`](https://developer.apple.com/documentation/uikit/uistackview/1616233-distribution) determina o layout das _views_ internas ao longo do eixo da _stack_.
 
-* A propriedade (`alignment`)[https://developer.apple.com/documentation/uikit/uistackview/1616243-alignment] determina o layout das _views_ dispostas perpendicularmente ao eixo da _stack_.
+* A propriedade [`alignment`](https://developer.apple.com/documentation/uikit/uistackview/1616243-alignment) determina o layout das _views_ dispostas perpendicularmente ao eixo da _stack_.
 
-* A propriedade (`spacing`)[https://developer.apple.com/documentation/uikit/uistackview/1616225-spacing] determina o espaçamento mínimo entre as _views_ internas.
+* A propriedade [`spacing`](https://developer.apple.com/documentation/uikit/uistackview/1616225-spacing) determina o espaçamento mínimo entre as _views_ internas.
 
-* A propriedade (`isBaselineRelativeArrangement`)[https://developer.apple.com/documentation/uikit/uistackview/1616224-isbaselinerelativearrangement] determina se o espaçamento vertical entre as _views_ é medido a partir dos _baselines_.
+* A propriedade [`isBaselineRelativeArrangement`](https://developer.apple.com/documentation/uikit/uistackview/1616224-isbaselinerelativearrangement) determina se o espaçamento vertical entre as _views_ é medido a partir dos _baselines_.
 
-* A propriedade (`isLayoutMarginsRelativeArrangement`)[https://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme] determina se a _stack view_ apresenta suas _views_ internas em relação às suas margens de layout.
+* A propriedade [`isLayoutMarginsRelativeArrangement`](ttps://developer.apple.com/documentation/uikit/uistackview/1616220-islayoutmarginsrelativearrangeme) determina se a _stack view_ apresenta suas _views_ internas em relação às suas margens de layout.
 
 Normalmente, você usa uma _stack view_ única para dispor um pequeno número de itens. Você pode criar hierarquias de _views_ mais complexas aninhando _stack views_ dentro de outras _stack views_. Por exemplo, a figura abaixo mostra uma _stack view_ vertical contendo duas _stack views_ horizontais. Cada uma das _stack views_ horizontais contém um _label_ e um campo de texto.
 
