@@ -33,6 +33,10 @@ class Comentario {
 }
 ```
 
+Se olharmos para o schema no banco de dados compatível com o mapeamento acima, teríamos um modelo como abaixo:
+
+![Relacionamento Unidirecional via tabela de junção](imagens/MER-unidirectional-oneToMany.png "Relacionamento Unidirecional via tabela de junção")
+
 Atualmente, podemos recuperar todos os comentários de um artigo através do relacionamento existente entre
 eles: este relacionamento, **um para muitos**, foi mapeado através da anotação `@OneToMany`. Dessa forma, sempre
 que invocarmos o método `getComentarios` de uma instância de `Artigo` a JPA nos devolverá todos os comentários
@@ -107,18 +111,18 @@ List<Comentario> comentarios = this.manager
 System.out.println("Total de comentários: " + comentarios.size());
 ```
 
-Ter o mapeamento nas duas pontas pode ajudar em consultas mais complexas ou facilitar a escrita de lógicas
-de negócio dentro da aplicação.
+Ter o mapeamento nas duas pontas pode ajudar em consultas mais complexas ou facilitar a escrita de lógicas de negócio dentro da aplicação.
 
 ## Relacionamento bidirecional
 
-Ao fazer o mapeamento acima algumas mudanças inesperadas ocorrem no schema do banco de dados e nos comandos SQL gerados pelo Hibernate. Por exemplo, a partir de agora além da tabela de junção `ARTIGO_COMENTARIO` criada por padrão pelo mapeamento `@OneToMany`, o Hibernate também criou uma coluna de junção (FK) na tabela `COMENTARIO` para a PK da tabela `ARTIGO`.
+Ao fazer o mapeamento acima algumas mudanças inesperadas ocorrem no schema do banco de dados e nos comandos SQL gerados pelo Hibernate. Por exemplo, a partir de agora além da tabela de junção `ARTIGO_COMENTARIOS` criada por padrão pelo mapeamento `@OneToMany`, o Hibernate também criou uma coluna de junção (FK) na tabela `COMENTARIO` para a PK da tabela `ARTIGO`:
 
-Para JPA, existem dois relacionamentos unidirecionais: um relacionamento **um para muitos** entre `Artigo` e `Comentario`, representado através da tabela `ARTIGO_COMENTARIO` e um outro relacionamento **muitos para um**, representado através da coluna com chave estrangeira (FK) `artigo_id` na tabela `COMENTARIO`.
+![Mapeamento incorreto resultando em dois relacionamento unidirecionais](imagens/MER-unidirectional-oneToMany-and-manyToOne.png "Mapeamento incorreto resultando em dois relacionamento unidirecionais")
+
+Para JPA, existem dois relacionamentos unidirecionais: um relacionamento **um para muitos** entre `Artigo` e `Comentario`, representado através da tabela `ARTIGO_COMENTARIOS` e um outro relacionamento **muitos para um**, representado através da coluna com chave estrangeira (FK) `artigo_id` na tabela `COMENTARIO`.
 
 Contudo, não é isso que desejamos. Precisamos que a JPA interprete estes dois relacionamentos como se
-fossem o mesmo, como se fossem um **relacionamento bidirecional**. Para isso, temos que definir o atributo
-`mappedBy` da anotação `@OneToMany`, cujo valor indica o atributo que representa a outra ponta do relacionamento. O mapeamento da entidade `Artigo` mudará para:
+fossem o mesmo, como se fossem um **relacionamento bidirecional**. Para isso, temos que definir o atributo `mappedBy` da anotação `@OneToMany`, cujo valor indica o atributo que representa a outra ponta do relacionamento. O mapeamento da entidade `Artigo` mudará para:
 
 ```java
 @Entity
@@ -134,10 +138,12 @@ public class Artigo {
 }
 ```
 
-Ao tornar o relacionamento bidirecional via `mappedBy` a JPA vai entender que se trata de um único relacionamento no modelo orientado a objetos como também no modelo relacional. Mas a pergunta que fica é: como o Hibernate gerou o schema do banco de dados?
+Ao tornar o relacionamento bidirecional via atributo `mappedBy` da anotação `@OneToMany` a JPA vai entender que se trata de um único relacionamento no modelo orientado a objetos como também no modelo relacional. Mas a pergunta que fica é: como o Hibernate gerou o schema do banco de dados?
 
 Para a JPA, em um relacionamento bidirecional, a classe que define o atributo `mappedBy` é considerada o **lado fraco da relação**, também chamado de _inverse side_. Enquanto a outra classe, cujo o atributo é indicado pelo
-`mappedBy`, é considerada o **lado forte da relação**, também chamado de _owning side_. No nosso caso, o lado forte é a entidade `Comentario`, enquanto o lado fraco é a entidade `Artigo`. No fim, quando o Hibernate gerar o schema do banco, será criado uma coluna FK na tabela `COMENTARIO`.
+`mappedBy`, é considerada o **lado forte da relação**, também chamado de _owning side_. No nosso caso, o lado forte é a entidade `Comentario`, enquanto o lado fraco é a entidade `Artigo`. No fim, quando o Hibernate olhar para o schema do banco de dados, ele espera encontrar uma coluna FK na tabela `COMENTARIO`:
+
+![Relacionamento Bidirecional via coluna de junção](imagens/MER-bidiretional-oneToMany.png "Relacionamento Bidirecional via coluna de junção")
 
 Entenda o lado forte da relação como a classe que define o mapeamento no banco de dados. Normalmente, através das anotação `@JoinColumn`, para uma coluna de junção, ou `@JoinTable`, para uma tabela de junção. Por padrão, em um relacionamento bidirecional **um para muitos**, será criada uma coluna de junção na entidade dona da relação.
 
@@ -154,6 +160,8 @@ public class Comentario {
     private Artigo artigo;
 }
 ```
+
+Um detalhe que confunde um pouco os desenvolvedores, é que em um relacionamento bidirecional a JPA entra em discordância com o modelo de domínio. O que estou querendo dizer é que para domínio, para o negócio, o lado forte da relação é claramente a classe `Artigo`, enquanto o lado fraco é a classe `Comentario`.
 
 ## Trabalhando de forma orientada a objetos com relacionamento bidirecional
 
@@ -215,7 +223,7 @@ class Artigo {
 }
 ```
 
-O método adiciona teria uma responsabilidade bem definida e garantiria a consistência do nosso relacionamento. Embora não seja obrigatório, nós podemos ir até mais longe: para que nenhum desenvolvedor(a) acabe trabalhando diretamente com a coleção sem passar pelo novo método, precisamos remover o método `setComentarios` e, se possível, retornar uma cópia segura ou imutável da coleção ao invocar o método `getComentarios`. Nosso código ficaria como a seguir:
+O método adiciona teria uma responsabilidade bem definida e garantiria a consistência do nosso relacionamento. Esse mesmo design orientado a objetos também pode ser utilizado para a lógica de remoção de um comentário para garantir a consistência entre os objetos, como podemos ver aqui:
 
 ```java
 @Entity
@@ -223,10 +231,20 @@ class Artigo {
 
     // ...
 
-    public void adiciona(Comentario comentario) {
-        comentario.setArtigo(this);
-        this.comentarios.add(comentario);
+    public void remove(Comentario comentario) {
+        comentario.setArtigo(null);
+        this.comentarios.remove(comentario);
     }
+}
+```
+
+Embora não seja obrigatório, nós podemos ir até mais longe blindando nosso código contra modificações indevidas: para que nenhum desenvolvedor(a) acabe trabalhando diretamente com a coleção sem passar pelo novo método, precisamos remover o método `setComentarios` e, se possível, retornar uma cópia segura ou imutável da coleção ao invocar o método `getComentarios`. Nosso código ficaria como a seguir:
+
+```java
+@Entity
+class Artigo {
+
+    // ...
 
     public List<Comentario> getComentarios() {
         // retorna cópia segura e imutável da coleção
@@ -237,7 +255,7 @@ class Artigo {
 }
 ```
 
-Com essa abordagem, conseguimos forçar o desenvolvedor(a) a usar sempre o método `adiciona` e, caso ele tente
+Com essa abordagem, conseguimos forçar o desenvolvedor(a) a usar sempre o método `adiciona` e `remove` e, caso ele tente
 modificar a coleção diretamente, uma exceção será lançada:
 
 ```java

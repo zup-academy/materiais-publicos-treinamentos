@@ -19,7 +19,7 @@ Uma modelagem de dados eficiente conteria duas tabelas, uma para representaras a
 
 Dado que um Endereço só existe caso houver um cadastro de uma Pessoa, é caracterizado um uma relação de dominancia, onde o Endereço é a entidade subordinada e a Pessoa é a entidade Dominanate. A relação de dominancia implica que se uma Pessoa for excluida os endereços dela também devem ser excluidos. 
 
-A Jpa oferece a anotação @ManyToOne para mapear relacionamentos Muitos para Um, e veremos abaixo como utiliza-la.
+A Jpa oferece a anotação `@ManyToOne` para mapear relacionamentos Muitos para Um, e veremos abaixo como utiliza-la.
 
 
 ```java
@@ -88,9 +88,9 @@ public class Endereco {
 }
 ```
 
-Ao observar a entidade Endereço, observamos que ela possui um Objeto do tipo Pessoa, que foi maepado como entidade, e sobre este objeto se encontra a anotação @ManyToOne. 
+Ao observar a entidade Endereço, observamos que ela possui um Objeto do tipo Pessoa, que foi maepado como entidade, e sobre este objeto se encontra a anotação `@ManyToOne`. 
 
-Neste artigo aprendemos que uma relação de muitos para é definida quando uma entidade carrega como chave estrangeira a chave primaria de outra entidade. Também aprendemos esta relação é uma dependencia de existencia, ou seja, que para uma entidade existir é necessário que outra exista previamente. Como a JPA/Hibernate mapeam as chaves primarias para Objetos em Memoria, e que em um relacionamento Muitos para Um, isto significa que uma classe que represente uma entidade, deve conter um objeto da classe que represente outra entidade previamente anotada com @ManyToOne.
+Neste artigo aprendemos que uma relação de muitos para é definida quando uma entidade carrega como chave estrangeira a chave primaria de outra entidade. Também aprendemos esta relação é uma dependencia de existencia, ou seja, que para uma entidade existir é necessário que outra exista previamente. Como a JPA/Hibernate mapeam as chaves primarias para Objetos em Memoria, e que em um relacionamento Muitos para Um, isto significa que uma classe que represente uma entidade, deve conter um objeto da classe que represente outra entidade previamente anotada com `@ManyToOne`.
 
 
 
