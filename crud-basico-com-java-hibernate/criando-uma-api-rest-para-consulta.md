@@ -44,3 +44,9 @@ public class ConsultarPessoasController{
 }
 
 ```
+
+## Links para aprofundamento
+
+- Entendendo o HTTP GET
+    - [rfc](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1)
+    - [mozzila developer](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Methods/GET)
