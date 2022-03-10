@@ -89,7 +89,7 @@ Por exemplo, para indicarmos ao Hibernate que a coleção de comentários da ent
 private List<Comentario> comentarios;
 ```
 
-A partir desse momento, sempre que carregarmos um artigo seus comentários serão carregados juntamente pelo Hibernate. Portanto, ao executarmos o mesmo trecho de código anterior veríamos no console da IDE um `SELECT` gerado pelo Hibernate semelhante a este:
+A partir desse momento, sempre que carregarmos um artigo sua coleção de comentários será carregado juntamente pelo Hibernate. Portanto, ao executarmos o mesmo trecho de código anterior veríamos no console da IDE um `SELECT` gerado pelo Hibernate semelhante a este:
 
 ```sql
 -- carrega artigo juntamente com seus comentarios
@@ -105,6 +105,8 @@ SELECT a.*,
  WHERE 
     a.id = ?
 ```
+
+Repare que o Hibernate gerou um único `SELECT` com dois `LEFT OUTER JOIN`'s para carregar todos os dados do banco, mas nem sempre isso será possível, apesar do framework tentar fazer o seu melhor. Dito isso, não se assuste se ver duas ou mais queries no console da IDE.
 
 Por padrão, todos os relacionamentos `@*ToMany` são considerados Lazy pela JPA, ou seja, os relacionamentos  mapeados com `@OneToMany` e `@ManyToMany` são carregados de maneira preguiçosa por padrão. Enquanto os mapeamentos `@*ToOne`, como `@OneToOne` e `@ManyToOne`, são considerados como Eager por padrão.
 
