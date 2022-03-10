@@ -59,10 +59,12 @@ SELECT a.*
 
 -- busca comentarios do artigo
 SELECT c.*
-  FROM comentario c
- INNER JOIN artigo_comentarios ac
-    ON c.id = ac.comentario_id
- WHERE ac.artigo_id = ?
+  FROM artigo_comentarios ac
+ INNER JOIN
+    comentario c
+        ON ac.comentario_id = c.id
+ WHERE 
+    ac.artigo_id = ?
 ```
 
 Para tentar otimizar ao máximo a performance da aplicação, o Hibernate só executa as consultas quando elas são de fato necessárias, evitando assim idas desnecessárias ao banco de dados. Esse comportamento é conhecido como **Lazy Loading**, ou do português, **carregamento preguiçoso**.
@@ -119,7 +121,7 @@ Quando trabalhamos com relacionamentos `LAZY`, é muito importante que os relaci
 Por exemplo, no exemplo abaixo a `EntityManager` é fechada antes de inicializar (carregar) a coleção de comentários do artigo:
 
 ```java
-EntityManager manager = // obtem a EntityManager
+EntityManager manager = // ...
 
 Artigo artigo = manager.find(Artigo.class, 24);
 
