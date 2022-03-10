@@ -108,7 +108,7 @@ SELECT a.*,
     a.id = ?
 ```
 
-Repare que o Hibernate gerou um único `SELECT` com dois `LEFT OUTER JOIN`'s para carregar todos os dados do banco, mas nem sempre isso será possível, apesar do framework tentar fazer o seu melhor. Dito isso, não se assuste se ver duas ou mais queries no console da IDE.
+Repare que o Hibernate gerou um único `SELECT` com dois `LEFT OUTER JOIN`'s para carregar todos os dados do banco em vez de dois `SELECT`'s. Apesar do framework tentar fazer o seu melhor, nem sempre isso será possível por causa de configuração e complexidade do mapeamento. Dito isso, não se assuste se você ver duas ou mais queries no console da IDE ao carregar uma entidade.
 
 Por padrão, todos os relacionamentos `@*ToMany` são considerados Lazy pela JPA, ou seja, os relacionamentos  mapeados com `@OneToMany` e `@ManyToMany` são carregados de maneira preguiçosa por padrão. Enquanto os mapeamentos `@*ToOne`, como `@OneToOne` e `@ManyToOne`, são considerados como Eager por padrão.
 
