@@ -1,7 +1,7 @@
-####Este material é uma tradução de um artigo existente, o link do artigo original é:
+#### Este material é uma tradução de um artigo existente, o link do artigo original é:
 https://reflectoring.io/zero-downtime-deployments-with-feature-flags/
 
-#Zero Downtime em alterações no banco de dados com feature flags.
+# Zero Downtime em alterações no banco de dados com feature flags.
 
 Sempre que fazemos uma alteração em nosso esquema de banco de dados, também temos que fazer uma alteração no código que usa esse esquema de banco de dados.
 
@@ -11,7 +11,7 @@ Quando excluímos uma coluna do banco de dados, precisamos alterar o código par
 
 Vamos analisar como podemos coordenar as alterações de código com as alterações do banco de dados e implantá-las em nosso ambiente de produção sem Downtime.
 
-##O problema: coordenar as alterações do banco de dados com as alterações de código
+## O problema: coordenar as alterações do banco de dados com as alterações de código
 
 Se liberarmos a alteração do banco de dados e a alteração do código ao mesmo tempo, dobramos o risco de que algo dê errado. Acoplamos o risco da alteração do banco de dados com o risco da alteração do código.
 
@@ -25,7 +25,7 @@ Com feature flags, podemos implantar alterações e códigos de banco de dados a
 
 Este tutorial fornece um guia passo a passo sobre como liberar alterações de banco de dados e as alterações de código correspondentes com segurança e sem tempo de inatividade usando Spring Boot, Flyway e feature flags implementados com uma plataforma de feature flags como LaunchDarkly .
 
-##Exemplo de caso de uso: dividir uma coluna de banco de dados em duas
+## Exemplo de caso de uso: dividir uma coluna de banco de dados em duas
 
 Como caso de uso de exemplo, vamos dividir uma coluna de banco de dados em duas.
 Inicialmente, nosso aplicativo se parece com isso:
@@ -46,7 +46,7 @@ No final, queremos que o aplicativo fique assim:
 
 Neste guia, veremos todas as alterações que precisamos fazer no banco de dados e no código e como liberá-las da forma mais segura possível usando sinalizadores de recursos e várias implantações.
 
-###Etapa 1: desacoplar alterações de banco de dados de alterações de código
+### Etapa 1: desacoplar alterações de banco de dados de alterações de código
 
 Antes mesmo de começarmos a alterar o código ou o esquema do banco de dados, queremos desacoplar a execução das alterações do banco de dados da implantação de um aplicativo Spring Boot.
 
@@ -92,7 +92,7 @@ class FlywayController {
 Sempre que chamarmos /flywayMigrate via HTTP POST agora, o Flyway executará todos os scripts de migração que ainda não foram executados. Observe que você deve proteger esse endpoint no aplicativo real, para que nem todos possam chamá-lo.
 Com essa alteração, podemos implantar uma nova versão do código sem sermos forçados a alterar o esquema do banco de dados ao mesmo tempo. Faremos uso disso na próxima etapa.
 
-###Etapa 2: implantar o novo código por trás de um sinalizador de recurso
+### Etapa 2: implantar o novo código por trás de um sinalizador de recurso
 
 Em seguida, escrevemos o código que precisamos para trabalhar com o novo esquema de banco de dados:
 
@@ -136,7 +136,7 @@ O sinalizador booleano featureFlagService.readFromNewCustomerSchema() define se 
 
 Com a ajuda de feature flags, implantamos o novo código ainda sem tocar no banco de dados, o que faremos na próxima etapa.
 
-###Etapa 3: adicionar as novas colunas do banco de dados
+### Etapa 3: adicionar as novas colunas do banco de dados
 
 Com a implantação do novo código na etapa anterior, também implantamos um novo script SQL para o Flyway executar. Após a implantação bem-sucedida, agora podemos chamar o /flywayMigrateendpoint que preparamos na etapa 1. Isso executará o script SQL e atualizará o esquema do banco de dados com os campos novos streetNumber e street.
 
@@ -148,7 +148,7 @@ Essas novas colunas estarão vazias por enquanto. Observe que mantivemos a colun
 
 As feature flags ainda estão desabilitadas por enquanto, de modo que tanto as leituras quanto as gravações vão para a coluna address do banco de dados antigo.
 
-###Etapa 4: ativar gravações nas novas colunas do banco de dados
+### Etapa 4: ativar gravações nas novas colunas do banco de dados
 
 Em seguida, ativamos o writeToNewCustomerSchema feature flag para que o aplicativo agora grave nas novas colunas do banco de dados, mas ainda leia da antiga:
 
@@ -162,7 +162,7 @@ Ainda não podemos mudar o novo código para ler dados do banco de dados, porque
 
 Para preencher as novas colunas para todos os clientes, precisamos executar uma migração.
 
-###Etapa 5: migrar dados para as novas colunas do banco de dados
+### Etapa 5: migrar dados para as novas colunas do banco de dados
 
 Em seguida, vamos executar uma migração que passa por todos os resgistros no banco de dados cujos campos streetNumber e street ainda estão vazios, lê o campo address e o migra para os novos campos:
 
@@ -172,13 +172,13 @@ Em seguida, vamos executar uma migração que passa por todos os resgistros no b
 
 Essa migração pode ser um script SQL, algum código personalizado ou pessoas reais analisando os dados do CUSTOMER um por um e fazendo a migração manualmente. Depende do caso de uso, da qualidade dos dados e da complexidade da tarefa de migração para decidir o melhor caminho.
 
-##Migrações de dados com Flyway?
+## Migrações de dados com Flyway?
 
 Observe que o tipo de migração sobre o qual estamos falando nesta seção geralmente não é uma tarefa para o Flyway. Flyway é para executar scripts que migram o esquema de banco de dados de um estado para outro. Migrar dados é uma tarefa muito diferente.
 
 Sim, o Flyway pode ser usado para migrar dados. Afinal, uma migração de dados pode muito bem ser apenas um script SQL. No entanto, uma migração de dados pode causar problemas como consultas de longa duração e bloqueios de tabela, o que não deve acontecer no contexto de uma migração Flyway porque temos pouco controle sobre isso.
 
-###Etapa 6: ativar as leituras das novas colunas do banco de dados
+### Etapa 6: ativar as leituras das novas colunas do banco de dados
 
 Agora que todos os dados do cliente foram migrados para a nova estrutura de dados, podemos ativar a feature flag para usar o novo código para ler do banco de dados:
 
@@ -188,7 +188,7 @@ Agora que todos os dados do cliente foram migrados para a nova estrutura de dado
 
 O novo código agora está sendo usado para escrever e ler do banco de dados. O código antigo e a coluna address do banco de dados antigo não são mais usados.
 
-###Etapa 7: remover o código antigo e a coluna do banco de dados
+### Etapa 7: remover o código antigo e a coluna do banco de dados
 
 O último passo é limpar:
 
@@ -202,7 +202,7 @@ Também devemos remover as feature flag do código agora porque não estamos mai
 
 Agora também podemos renomear o NewCustomerRepository para CustomerRepository e NewCustomer para Customer, tornando assim o código limpo e compreensível mais uma vez.
 
-##Implante com confiança
+## Implante com confiança
 
 As 7 etapas acima serão distribuídas em várias implantações do aplicativo. Alguns deles podem ser combinados em uma única implantação, mas haverá pelo menos duas implantações: uma para implantar o novo código e os sinalizadores de recurso e outra para remover o código antigo e os sinalizadores de recurso.
 
