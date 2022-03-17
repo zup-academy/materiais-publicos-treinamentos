@@ -110,3 +110,8 @@ public class NossoControllerAdvice {
 
 }
 ```
+
+## Links para aprofundamento
+
+- [Definindo Status HTTP para Exceções personalizadas](https://www.baeldung.com/spring-response-status)
+- [Tratamento de execeções com Spring](https://www.baeldung.com/exception-handling-for-rest-with-spring)
