@@ -6,9 +6,9 @@ Neste passo a passo construiremos juntos a funcionalidade da tela de adição de
 <img alt="Imagem da especificação de tela" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-lt2-especificacao-alvo.jpg?raw=true" width="80%"/>
 </p>
 
-## Finalizando a implementação da view
+## Finalizando a implementação da _view_
 
-Para que possamos fazer nossas primeiras alterações, vamos primeiro conhecer o estado atual da view da atividade. Abra o arquivo `Main.storyboard` que vive dentro do grupo `View/` do projeto base. Você deve encontrar seu _storyboard_ de acordo com a imagem do Interface Builder abaixo.
+Para que possamos fazer nossas primeiras alterações, vamos primeiro conhecer o estado atual da _view_ da atividade. Abra o arquivo `Main.storyboard` que vive dentro do grupo `View/` do projeto base. Você deve encontrar seu _storyboard_ de acordo com a imagem do Interface Builder abaixo.
 
 <p align="center">
 <img alt="Imagem do Interface Builder no estado inicial do projeto" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-lt2-imitation-despesas-view-inicial.png?raw=true" width="80%"/>
@@ -24,7 +24,7 @@ Consulte a imagem com a especificação da tela e note que nesta área temos alg
 
 Identificados os padrões, utilizando nosso conhecimento prévio, vamos começar a adicionar os primeiros elementos. Primeiro vamos contar com uma _stack view_ vertical para a área do formulário.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"vert"_.
 * Utilize o _drag and drop_ para arrastar o elemento de Vertical Stack View para o _Document Outline_, posicionando-o abaixo do `Cabecalho Stack View`.
 * Altere o identificador no _Document Outline_ para `Nova Entrada Stack View`.
@@ -34,7 +34,7 @@ Ignore por enquanto algum possível problema apontado pelo Interface Builder, es
 
 Dentro do `Nova Entrada Stack View`, adicione um novo UILabel que servirá de subtítulo para essa seção da UI.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"uil"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Label para o Document Outline, tomando cuidado para garantir a hierarquia.
 * Altere o identificador no _Document Outline_ para `Nova Entrada Label`.
@@ -47,17 +47,17 @@ Altere as propriedades visuais do _label_ através do _Attributes Inspector_.
 
 Com o título já definido, vamos adiante para adicionar a primeira dupla de _label_ e campo de texto para o formulário.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"uil"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Label para o Document Outline, abaixo do `Nova Entrada Label`.
 * Com o _label_ selecionado, no _Attributes Inspector_ altere sua fonte para `System 14.0`
-* Novamente, clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Novamente, clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"text"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Text Field para o Document Outline, abaixo do Label anterior.
 * Selecione o campo de texto e altere sua fonte para `System 12.0`.
-* Tembém altere o identificador para o _label_ e para o campo de texto para `Label` e `Text Field`.
+* Também altere o identificador para o _label_ e para o campo de texto para `Label` e `Text Field`.
 
-Para atingir o arranjo adequado para os dois ultimos elementos adicionados, vamos contar com uma _stack view_ horizontal.
+Para atingir o arranjo adequado para os dois últimos elementos adicionados, vamos contar com uma _stack view_ horizontal.
 
 * Pressionando a tecla _command ⌘_, selecione os dois últimos elementos adicionados.
 * Clique no ícone inferior direito do Interface Builder referente à feature _Embed In_, e em seguida selecione a opção _Stack View_ da seção _Embed In View_.
@@ -75,7 +75,7 @@ Assim, já tendo nossos elementos dispostos, vamos organizar seus valores.
 * Selecione o campo de texto e adicione "Título curto para o item" como valor para o _Placeholder_.
 * Repita o procedimento para as outras duas _stack views_ com os valores `Stack View Tipo`, "Tipo:" e "1: Eletrônicos - 2: Escritório", além de `Stack View Valor`, "Valor:", "R$ 100,00", respectivamente.
 
-Perceba agora, que com a diferença dos tamanhos de texto para os _labels_, perdemos a característica de largura compatível entre os campos de texto do form, requirida pela especificação de design. Para corrigir o problema e garantir a característica vamos adicionar _constraints_ do Auto Layout para igualar as larguras.
+Perceba agora, que com a diferença dos tamanhos de texto para os _labels_, perdemos a característica de largura compatível entre os campos de texto do form, requerida pela especificação de design. Para corrigir o problema e garantir a característica vamos adicionar _constraints_ do Auto Layout para igualar as larguras.
 
 * Pressionando a tecla _command ⌘_, selecione os campos de texto.
 * Clique no ícone inferior direito _Add New Constraints_.
@@ -89,11 +89,11 @@ Um último ponto muito importante ainda antes de avançar para a representação
 
 Por fim, podemos ir adiante para o botão que adiciona novas entradas no relatório. 
 
-Perceba que o botão deve ser colocado no canto direito da tela, tendo sua largura apenas com base no seu tamanho instrínseco. Isso pode parecer confuso se pensarmos que a propriedade _Alignment_ do `Nova Entrada Stack View`, configurada como _Fill_, força as _arranged subviews_ a preencherem todo o espaço na direção (horizontal) contrária ao seu eixo (vertical) - você pode testar isso adicionando um novo Filled Button abaixo da última _stack_ horizontal nesse momento. 
+Perceba que o botão deve ser colocado no canto direito da tela, tendo sua largura apenas com base no seu tamanho intrínseco. Isso pode parecer confuso se pensarmos que a propriedade _Alignment_ do `Nova Entrada Stack View`, configurada como _Fill_, força as _arranged subviews_ a preencherem todo o espaço na direção (horizontal) contrária ao seu eixo (vertical) - você pode testar isso adicionando um novo Filled Button abaixo da última _stack_ horizontal nesse momento. 
 
 Para conseguir alcançar o layout desejado mesmo com esse comportamento, que é esperado, podemos usar uma tática interessante. É possível envolver o botão com uma nova _stack view_ vertical, invertendo apenas nesse ponto específico da hierarquia o valor para a propriedade _Alignment_.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"uib"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Filled Button para o Document Outline, abaixo da `Stack View Valor`.
 * Com o botão selecionado no _Document Outline_, altere seu identificador para `Botao Adicionar`, clique no ícone inferior direito referente à feature _Embed In_, e em seguida selecione a opção _Stack View_ da seção _Embed In View_.
@@ -119,7 +119,7 @@ Nesse momento devemos ter algo como mostra a imagem abaixo.
 <img alt="Imagem do Interface Builder com a seção do formulário construída" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-lt2-imitation-view-secao-formulario.png?raw=true" width="80%"/>
 </p>
 
-Não se preocupe se algo ainda parecer estranho em relação às alturas dos campos de texto nessa prévia, provavelmente seja apenas o Interface Builder confuso em relação aos calculos no canvas. Você pode rodar sua aplicação nesse momento para se certificar de que tudo vai bem _(comentando o código dos componentes que ainda possam conter erros de compilação)_.
+Não se preocupe se algo ainda parecer estranho em relação às alturas dos campos de texto nessa prévia, provavelmente seja apenas o Interface Builder confuso em relação aos cálculos no canvas. Você pode rodar sua aplicação nesse momento para se certificar de que tudo vai bem _(comentando o código dos componentes que ainda possam conter erros de compilação)_.
 
 ### A seção _Relatório parcial_
 
@@ -127,7 +127,7 @@ Com as _views_ que possibilitam a entrada de novas despesas já dispostas, preci
 
 Consulte novamente a imagem com a especificação da tela e note que nesta outra área também temos alguns padrões bem definidos de posicionamento e espaçamento entre os elementos. Podemos contar novamente com as _stack views_ para tirar proveito da facilidade que elas oferecem.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"vert"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Vertical Stack View para o _Document Outline_, posicionando-o abaixo do `Nova Entrada Stack View`.
 * Altere o identificador no _Document Outline_ para `Despesas Stack View`.
@@ -136,33 +136,33 @@ Consulte novamente a imagem com a especificação da tela e note que nesta outra
 
 Possivelmente as ambiguidades entre os tamanhos dos componentes gerenciados estão dificultando o preenchimento da _stack view_ principal pelo seu eixo vertical. Então vamos fornecer o ajuste necessário para que a _stack view_ saiba se orientar a respeito.
 
-* Com a referencia de `Despesas Stack View` selecionada no _Document Outline_, acesse a seção do _Size Inspector_.
+* Com a referência de `Despesas Stack View` selecionada no _Document Outline_, acesse a seção do _Size Inspector_.
 * Na parte inferior da seção, mais precisamente no item _Content Hugging Priority_, diminua o valor referente a direção vertical para `249`.
 
 Com o valor para _content hugging priority_ reduzido, maior a probabilidade de que seja a _stack view_ com o conteúdo do relatório que se estenda para preencher algum espaço restante da diferença para os tamanhos intrínsecos dos componentes - lembre-se da analogia da tensão de um elástico.
 
-Com o container da seção pronto, nos concentram os em adicionar os elementos necessários. Começando pelo _label_.
+Com o contêiner da seção pronto, nos concentram os em adicionar os elementos necessários. Começando pelo _label_.
 
-* Pressionando a tecla _option ⌥_, clique sobre o `Nova Entrada Label` e arraste uma cópia do mesmo para dentro da nova _stack view_, aproveitando o estilo prédefinido.
-* Selecione a referencia copiada no _Document Outline_ e aproveite para alterar seu identificador para `Relatorio Label`
+* Pressionando a tecla _option ⌥_, clique sobre o `Nova Entrada Label` e arraste uma cópia do mesmo para dentro da nova _stack view_, aproveitando o estilo predefinido.
+* Selecione a referência copiada no _Document Outline_ e aproveite para alterar seu identificador para `Relatorio Label`
 * Altere também o valor textual do _label_ para "Relatório Parcial", no _Attributes Inspector_.
 
 Além do _label_ que serve de título, vamos precisar de uma _view_ para a lista de despesas, e de uma _stack view_ horizontal para os _labels_ que vão mostrar o valor total.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"uiv"_.
 * Utilize o _drag and drop_ para arrastar um elemento de View para o _Document Outline_, posicionando-o abaixo do `Relatorio Label`.
 * Altere o identificador da nova _view_ para `Lista de Despesas` e, com ela selecionada, navegue até o _Identity Inspector_.
-* Na seção _Custom Class_, altere o valor de _Class_ para `ListaDeDespesasView`, usando o suporte do Interface Builder para autocompletar o valor.
+* Na seção _Custom Class_, altere o valor de _Class_ para `ListaDeDespesasView`, usando o suporte do Interface Builder para auto completar o valor.
 * Na seção _Size Inspector_, altere o valor da propriedade _Content Hugging Priority_ referente à direção vertical para `249`, permitindo assim que a lista se expanda para preencher o espaço vazio, caso exista.
 * Caso queira, para que seja fácil visualizar o elemento no Canvas, altere o _background color_ para _System Secondary Background Color_.
 
 Em seguida, vamos aos _labels_.
 
-* Clique no ícone _(+)_ superior direito do Interface Buider ou use o atalho _⌘⇧ + L_.
+* Clique no ícone _(+)_ superior direito do Interface Builder ou use o atalho _⌘⇧ + L_.
 * No campo de busca digite _"uil"_.
 * Utilize o _drag and drop_ para arrastar um elemento de Label para o _Document Outline_, posicionando-o abaixo da `ListaDeDespesasView`.
-* Pressionando a tecla _option ⌥_, clique no novo _label_ e arraste para baixo para criar um cópia no mesmo nível hierarquico.
+* Pressionando a tecla _option ⌥_, clique no novo _label_ e arraste para baixo para criar um cópia no mesmo nível hierárquico.
 * Altere os identificadores de ambos os _labels_ para `Total Label` e `Valor Total Label`, respectivamente.
 * Selecione ambos os _labels_, clique no ícone inferior direito referente a feature _Embed In_, e em seguida selecione _Stack View_ na seção _Embed In View_.
 * Altere o identificador da nova _stack view_ para `Totais Stack View`.
@@ -190,19 +190,19 @@ Com todos os ajustes feitos, devemos ter nosso Interface Builder de acordo com a
 
 ### Organizando o projeto
 
-Agora é hora de começar a preparar o View Controller para seja possível gerenciar a funcionalidade. Antes de tudo precisamos seguir nossa convenção para organização de grupos e pastas também na camada de controle, assim como ter um nome mais adequado para o controlador.
+Agora é hora de começar a preparar o View Controller para que seja possível gerenciar a funcionalidade. Antes de tudo precisamos seguir nossa convenção para organização de grupos e pastas também na camada de controle, assim como ter um nome mais adequado para o controlador.
 
-* Abra o arquivo View Controller no editor de código, seleciona o identificador `ViewController` à frente da palavra reservada `class`, e com um clique com o botão direito, selecione _Refactor > Rename_.
+* Abra o arquivo View Controller no editor de código, selecione o identificador `ViewController` à frente da palavra reservada `class`, e com um clique com o botão direito, selecione _Refactor > Rename_.
 * Substitua o nome para `RelatorioDeDespesasViewController`. _(perceba que tanto o código, quanto o nome do arquivo e referência ao mesmo dentro storyboard foram substitúidos corretamente)_
-* Em seguida, no _Project Nabigator_, clique com o direito sobre a pasta com o nome do projeto (a mais interna, que tem o ícone adequado de pasta), e selecione _New Group_.
+* Em seguida, no _Project Navigator_, clique com o direito sobre a pasta com o nome do projeto (a mais interna, que tem o ícone adequado de pasta), e selecione _New Group_.
 * Para o novo grupo, agora em estado de edição, dê o nome de `Scenes`. Arraste a referência da pasta para mais próximo das já existentes _Models/_ e _View/_.
 * Como não é necessário criar grupos internos, já que temos uma única cena na aplicação, apenas arraste o arquivo `RelatorioDeDespesasViewController.swift` para dentro do grupo `Scenes`.
 
-Pronto, temos nossos grupos com alguma convenção sendo seguida e devidamente organizados
+Pronto, temos nossos grupos devidamente organizados e com alguma convenção sendo seguida.
 
 ### Conectando _outlets_ e _actions_
 
-Já temos quase tudo pronto para começar a codificar nossa solução. Precisamos apenas das devidas ligações entre as views representadas no arquivo `Main.storyboard` e nosso código Swift. Fazemos isso agora.
+Já temos quase tudo pronto para começar a codificar nossa solução. Precisamos apenas das devidas ligações entre as views representadas no arquivo `Main.storyboard` e nosso código Swift. Faremos isso agora.
 
 <p align="center">
 <img alt="Animação da conexão dos outlets para a lista de despesas e label com valor total" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-lt2-imitation-outlets.gif?raw=true" width="80%"/>
@@ -266,7 +266,7 @@ Pronto! Nosso _controller_ está pronto para darmos seguimento a implementação
 
 ## Conhecendo o domínio
 
-A partir do ponto onde estamos já é possível responder a eventos gerados pelo usuário através da UI, e receber os dados gerados pelos mesmos. Mas antes de escrevermos qualquer código, primeiro é necessário se fazer algumas perguntas.
+A partir do ponto onde estamos já é possível responder a eventos gerados pelo usuário através da UI, e receber os dados gerados pelos mesmos. Mas antes de escrevermos qualquer código adicional, primeiro é necessário fazer algumas perguntas.
 
 1. O que eu quero fazer quando o usuário toca no botão _Adicionar +_
 1. Quais tipos de validação devem ser feitas na interação?
@@ -279,9 +279,9 @@ Respondendo a essas perguntas conhecemos um pouco mais sobre o domínio do probl
 
 Nossa funcionalidade tem por objetivo principal registrar dados de **despesas**, através de um **relatório de despesas** em um pseudo-aplicativo de solicitação de reembolsos para itens do seu home office. 
 
-Por meio de um formulário simples o usuário pode incluir uma despesa informando seu título, tipo e valor. Além das propriedade autoexplicativas, o tipo de despesa tem uma característica mais específica: ele pode ser uma das opções entre **Eletrônicos** e **Escritório**, que são representados pelos valores `1` e `2`, respectivamente. O tipo precisa também fornecer uma representação textual adequada para a apresentação na lista de despesas.
+Por meio de um formulário simples o usuário pode incluir uma despesa informando seu título, tipo e valor. Além das propriedades auto explicativas, o tipo de despesa tem uma característica mais específica: ele pode assumir uma das opções entre **Eletrônicos** e **Escritório**, que são representados pelos valores `1` e `2`, respectivamente. O tipo precisa também fornecer uma representação textual adequada para a apresentação na lista de despesas.
 
-Através do evento gerado pelo toque do botão de adição de novas despesas, se faz necessário garantir que os dados enviados por ele estejam de acordo com a representação de uma despesa. Sendo assim, é necessário os dados sejam validados de maneira prévia. 
+Através do evento gerado pelo toque do botão de adição de novas despesas, se faz necessário garantir que os dados enviados por ele estejam de acordo com a representação de uma despesa. Sendo assim, é necessário que os dados sejam validados de maneira prévia. 
 
 O **relatório de despesas** que a funcionalidade visa registrar possui uma data de criação, um valor total e as despesas que são adicionadas. Para conter alguns detalhes de implementação que ainda vamos estudar mais a frente, e facilitar o escopo desta tarefa, já existe uma implementação para uma entidade do modelo representando o conjunto de despesas adicionadas a um relatório, a estrutura `Despesas`.
 
@@ -295,7 +295,7 @@ Com os requisitos e detalhes de funcionamento claros, já é possível modelar n
 
 ## Implementando o modelo
 
-Agora que temos tudo bem definido, podemos prosseguir com a implementação para o modelo conceitual produzido anteriormente. Comecando por `RelatorioDeDespesas`, abra o arquivo que vive no grupo `Models/`, e perceba que já existe a implementação de parte do modelo. Os detalhes de implementação do código existente não são importantes para o escopo desta atividade, então concentre-se em expressar a ideia do relatório apenas.
+Agora que temos tudo bem definido, podemos prosseguir com a implementação para o modelo conceitual produzido anteriormente. Começando por `RelatorioDeDespesas`, abra o arquivo que vive no grupo `Models/`, e perceba que já existe a implementação de parte do modelo. Os detalhes de implementação do código existente não são importantes para o escopo desta atividade, então concentre-se em expressar a ideia do relatório apenas.
 
 Adicione a seguinte implementação para o modelo:
 
@@ -357,11 +357,11 @@ struct Despesa {
 }
 ```
 
-Como o tipo da despesa no nosso caso de uso, para efeitos práticos, é intrínsecamente ligado à própria despesa, modelamos como um tipo interno à `Despesa`, e referências a ele podem ser feitas a partir de `Despesa.Tipo`.
+Como o tipo da despesa no nosso caso de uso é intrínsecamente ligado à própria despesa, para efeitos práticos, modelamos como um tipo interno à `Despesa`. Referências a ele podem ser feitas a partir de `Despesa.Tipo`.
 
 ## Finalizando a implementação: O View Controller como um agente intermediário
 
-Neste ponto da atividade temos representações para a View e para o Modelo do domínio da aplicação, no entanto, embora a lógica base para adição de despesas a um formulário e as regras para apresentação estejam estabelecida a aplicação não é capaz de cumprir seu propósito. Isso pode ser uma boa ilustração de como esses dois grandes grupos de objetos do padrão arquitetural MVC, segundo a visão da plataforma iOS, são dependentes do View Controller atuando como um agente intermediário.
+Neste ponto da atividade temos representações para a View e para o Modelo do domínio da aplicação, no entanto, embora a lógica base para adição de despesas e as regras para apresentação estejam estabelecidas, a aplicação ainda não é capaz de cumprir seu propósito. Isso pode ser uma boa ilustração de como esses dois grandes grupos de objetos do padrão arquitetural MVC, segundo a visão da plataforma iOS, são dependentes do View Controller atuando como um agente intermediário.
 
 Para todas as interações entre o que ocorre na fronteira com o usuário (view, UI) e com o coração do aplicativo (modelo, dados, lógica) o View Controller é responsável por ser o mediador.
 
@@ -437,6 +437,8 @@ class RelatorioDeDespesasViewController: UIViewController {
 }
 ```
 
+> Nota: Caso a complexidade do código para a validação adicione dificuldades no entendimento do fluxo base do controlador, pode ser interessante a construção de componentes específicos para conter essa responsabilidade. Isso pode trazer grandes vantagens à implementação.
+
 Bastante código foi introduzido aqui, no entanto, você já deve estar familiarizado com ele dadas as atividades realizadas anteriormente no nosso treino. Vamos então focar nos pontos específicos que merecem destaque.
 
 ``` swift
@@ -458,7 +460,7 @@ Bastante código foi introduzido aqui, no entanto, você já deve estar familiar
     }
 ```
 
-Parte do trabalho de garantir que o dado informado esteja dentro do esperado começa na _view_, com as configurações adequadas dos _inputs_, no entanto, como já é esperado, recebemos as informações no controlador como texto. Assim, parte do trabalho de validar é, num contexto controlado, fazer o _parse_ dos dados buscando adequa-los ao modelo. É exatamente o que o código destaca acima faz.
+Parte do trabalho de garantir que o dado informado esteja dentro do esperado começa na _view_, com as configurações adequadas dos _inputs_. No entanto, como já é esperado, recebemos as informações no controlador como texto. Assim, parte do trabalho de validar é, num contexto controlado, fazer o _parse_ dos dados buscando adequa-los ao modelo. É exatamente o que o código destaca acima faz.
 
 Inicializamos um tipo de despesa, representado pela enum `Despesa.Tipo`, a partir do número inteiro informado pelo usuário, previamente convertido através da string em `tipoTextField.text`. Assim como no caso anterior, o decimal necessário para representar o valor da despesa é construído através da string eventualmente em `valorTextField.text`. Em qualquer dos casos onde haja falha, temos um erro de validação sendo informado ao usuário, ao invés do prosseguimento da adição.
 
@@ -511,9 +513,7 @@ class RelatorioDeDespesasViewController: UIViewController {
 }
 ```
 
-Avançamos com este código para o ponto onde já seria possível garantir que o relatório adicione a nova despesa. Mas qual relatório? 
-
-Ainda não temos no nosso View Controller nenhuma forma de manter o estado de um relatório de despesas.
+Avançamos com este código para o ponto onde já seria possível garantir que o relatório adicione a nova despesa. Mas qual relatório? Ainda não temos no nosso View Controller nenhuma forma de manter o estado de um relatório de despesas.
 
 ### Gerenciando o relatório de despesas
 
@@ -535,7 +535,7 @@ Mas por esta abordagem podemos impor ao View Controller a responsabilidade de sa
 
 Embora já não seja lá muito fácil, ou mesmo usual, a abordagem de escrever testes unitários para o comportamento do controlador, imagine que fossemos por este caminho e gostaríamos de faze-lo. Como garantir que o comportamento seja verificado em isolamento? =/ Todo o comportamento depende da implementação de `RelatorioDeDespesas` e não há uma forma de mudar isso, como usando mocks, por exemplo.
 
-Indo nessa direção, poderíamos supor então a utilização do padrão _Dependency Injection_ através de inicializadores para prover a instância de forma mais flexível, podendo assim facilmente passar outro objeto em seu lugar em situações como a citada.
+Indo nessa direção, poderíamos supor então a utilização do padrão _Dependency Injection_ através de inicializadores para prover a instância de forma mais flexível, podendo assim facilmente passar outro objeto em seu lugar em situações como a citada acima.
 
 ``` swift
 class RelatorioDeDespesasViewController: UIViewController {
@@ -576,7 +576,7 @@ class RelatorioDeDespesasViewController: UIViewController {
     // código posterior omitido
 ```
 
-O código acima já seria suficiente para suprir a necessidade de trocar a implementação de `RelatorioDeDespesas` para o View Controller, mas ainda apresenta algumas dificuldades. Imagine que nosso modelo evolua, e sua inicialização se torne mais complexa, necessitando por exemplo de outro objeto como parâmetro. O que acontece com o código do View Controller? =/
+O código acima já seria suficiente para suprir a necessidade de trocar a implementação de `RelatorioDeDespesas` para o View Controller em um possível teste, mas ainda apresenta algumas dificuldades. Imagine que nosso modelo evolua, e sua inicialização se torne mais complexa, necessitando por exemplo de outro objeto como parâmetro. O que acontece com o código do View Controller? =/
 
 Isso mesmo que você deve ter imaginado. Se o View Controller satisfaz a própria dependência do `RelatorioDeDespesas`, ele acaba de ser penalizado por isso, e deve também suprir as necessidades que o mesmo possa requerer. Por esse raciocínio também não vamos seguir por esta abordagem. Vamos usar ainda a ideia de receber a injeção da dependência, mas não através de inicializadores.
 
@@ -593,7 +593,7 @@ class RelatorioDeDespesasViewController: UIViewController {
 
 Perceba a alteração do código. Para que possamos trabalhar com a propriedade armazenada sem o compilador exercer controle e nos obrigar a inicialização, podemos utilizar um _optional type_ para gerenciar a referência de `RelatorioDeDespesas`.
 
-Mas de onde virá então a referência para a instância? A resposta é: "Isso não é da conta do View Controller!". Ele apenas precisa contar com a referência, depende dela, e portante delega a responsabilidade de receber a mesma para cima. A melhor forma de resolver o problema nesse ponto, é considerar que o problema não é dele. 
+Mas de onde virá então a referência para a instância? A resposta é: "Isso não é da conta do View Controller!". Ele precisa contar com a referência, depende dela, mas apenas isso. Ele não toma controle sobre sua criação e delega para cima essa responsabilidade. Qualquer que seja o módulo da aplicação que queira contar com seus serviços agora é responsável por prover a instância e injetar essa dependência através da propriedade para o correto funcionamento. A melhor forma de resolver o problema de código nesse ponto, é considerar que o problema não é dele. 
 
 Para dar mais clareza então sobre quem vai se responsabilizar por isso, podemos pensar um pouco mais sobre o contexto de utilização deste pseudo-aplicativo.
 
@@ -672,7 +672,7 @@ Nossas despesas estão sendo adicionadas - você pode adicionar um `print(despes
 
 ### Atualizando a View com as alterações observadas no Modelo
 
-Até o momento a resposta mais precisa para a pergunta que permaneceu aberta na seção anterior é: "porque não implementamos! 🤷🏻‍♂️". Então vamos adicionar o código responsável por atualizar as views necessárias para uma nova versão ou estado de um relatório de despesas.
+Até o momento a resposta mais precisa para a pergunta que permaneceu aberta na seção anterior é: "porque não implementamos! 🤷🏻‍♂️". Então vamos adicionar o código responsável por atualizar as _views_ necessárias para uma nova versão ou estado de um relatório de despesas.
 
 ``` swift
 import UIKit
@@ -715,13 +715,13 @@ Já temos a função que realiza o trabalho necessário. Basta então que a invo
     }
 ```
 
-O compilador nos impediria por conta da necessidade do _unwrapping_ do opcional em `relatorioDeDespesas`. Poderíamos seguir por este caminho. Mas já imagine outras alterações no modelo, provenientes de outros possíveis eventos. Em todos as funções que potencialmente alteram o modelo se faria necessário. 
+O compilador nos impediria por conta da necessidade do _unwrapping_ do opcional em `relatorioDeDespesas`. Poderíamos seguir por este caminho. Mas já imagine outras alterações no modelo provenientes de outros possíveis eventos. Em todos as funções que potencialmente alteram o modelo se faria necessário a adição desse tipo de código. Parece muito trabalho. 
 
-Por outro lado poderíamos supor receber um opcional `relatorioDeDespesas` como parâmetro em `atualizaViews`, afrouxando sua interface. Mas isso por si só já não faria sentido, dado que não se espera atualizar as views em um condição onde não exista um relatório de despesas. =/
+Por outro lado poderíamos supor receber um opcional `relatorioDeDespesas` como parâmetro em `atualizaViews(relatorio:)`, afrouxando sua interface. Mas isso por si só já não faria sentido, dado que não se espera atualizar as _views_ em uma situação onde não exista um relatório de despesas. =/
 
 O que pretendemos então aqui, é garantir a integridade do dado ao invocarmos a função `atualizaViews`, mas fazer isso de forma mais prática. Podemos então lançar mão da feature de _property observers_ do Swift.
 
-Usando um _property observer_ para `relatorioDeDespesas` com uma clausula `didSet`, podemos isolar o trabalho necessário para responder a alguma alteração de estado do objeto observado, e de quebra ganhamos como bônus a invocação automática do bloco de código. Com essa abordagem menos imperativa (mais ao estilo reativa) facilitamos, e muito, a implementação do View Controller, suavizando a responsabilidade das funções que manipulam o modelo.
+Usando um _property observer_ para `relatorioDeDespesas`, com uma clausula `didSet` podemos isolar o trabalho necessário para responder a alguma alteração de estado do objeto observado, e de quebra ganhamos como bônus sua invocação automática. Com essa abordagem menos imperativa, mais ao estilo reativa, facilitamos, e muito, a implementação do View Controller, suavizando a responsabilidade das funções que atualizam o modelo.
 
 ``` swift
 class RelatorioDeDespesasViewController: UIViewController {
@@ -738,11 +738,11 @@ class RelatorioDeDespesasViewController: UIViewController {
     // código posterior omitido
 ```
 
-Repare na verificação adicional garantida pela propriedade `isViewLoaded`. Ela se faz necessária porque, de outra forma, a inicialização do controlador falharia. O _property observer_ dispararia uma atualização de view assim que o código do `SceneDelegate` executasse `relatorioViewController.relatorioDeDespesas = relatorio`, num momento onde a view para o View Controller ainda não teria sido carregada. Dessa forma o _binding_ dos _outlets_ ainda não teria ocorrido, e uma instrução como `listaDeDespesasView.atualiza(relatorio.despesas)` não seria possível.
+Repare na verificação adicional garantida pela propriedade `isViewLoaded`. Ela se faz necessária porque, de outra forma, a inicialização do controlador falharia. O _property observer_ dispararia uma atualização de view assim que o código do `SceneDelegate` executasse `relatorioViewController.relatorioDeDespesas = relatorio` - num momento onde a `view` para o View Controller ainda não teria sido carregada. Dessa forma o _binding_ dos _outlets_ ainda não teria ocorrido, e uma instrução como `listaDeDespesasView.atualiza(relatorio.despesas)` não seria possível.
 
-> Nota: Uma curiosidade é que poderíamos imaginar uma checagem análoga com `guard let _ = view else { return }` para assegurar que a View! para o ViewController exista. No entanto, a documentação de View Controller deixa claro que isso deve ser evitado, a menos que você intencionalmente queria que a `view` esteja na memória. Acessar a propridade `view` de um View Controller quando esta for `nil` faz com que automaticamente o controlador dispare a chamada para `loadView()` forçando o carregamento das root view para a memória. No geral, é recomendado não interferir no ciclo de vida programado e deixar as coisas seguirem seu curso normalmente.
+> Nota: Uma curiosidade é que poderíamos imaginar uma checagem análoga com `guard let _ = view else { return }` para assegurar que a `view: View!` para o ViewController exista. No entanto, a documentação de View Controller deixa claro que isso deve ser evitado, a menos que você intencionalmente queira fazer com que a `view` esteja na memória. Acessar a propridade `view` de um View Controller quando esta for `nil` faz com que automaticamente o controlador dispare a chamada para `loadView()` forçando o carregamento da _root view_ para a memória. No geral, é recomendado não interferir no ciclo de vida programado e deixar as coisas seguirem seu curso normalmente.
 
-Fechando nossa atividade, adicione uma chamada para `atualizaViews` no implementação de `viewDidLoad` para assegurar que a aplicação tenha seu estado inicial correto quando do carregamento da tela, evitando que os valores da representação da view no arquivo storyboard sejam usado como padrão.
+Fechando nossa atividade, adicione uma chamada para `atualizaViews` na implementação de `viewDidLoad`. Assim asseguramos que a aplicação tenha seu estado inicial correto quando do carregamento da tela, evitando que os valores da representação da _view_ no arquivo _storyboard_ sejam usados como padrão.
 
 ``` swift
     override func viewDidLoad() {
@@ -759,4 +759,4 @@ Pronto! Neste momento nossa implementação está completa. Fique à vontade par
 
 ## Conclusão
 
-Conseguimos concluir nosso trabalho passando por todos os pontos do desenvolvimento de uma tela. Espero que tenha curtido navegar por este caminho cognitivo e construir a funcionalidade entendendo os aspectos da arquitetura padrão de um projeto iOS. Existem pontos positivos e negativo no design proposto pelo padrão, assim como algumas alternativas a ele propostas pela comunidade, mas já temos um bom ponto de partida para pensar sobre a solução e como as decisões de design podem impactar a qualidade do código proposto do dia-a-dia do desenvolvimento.
+Conseguimos concluir nosso trabalho passando por todos os pontos do desenvolvimento de uma tela. Espero que tenha curtido navegar por este caminho cognitivo e construir a funcionalidade entendendo os aspectos da arquitetura padrão de um projeto iOS. Existem pontos positivos e negativos no design proposto pelo padrão, assim como algumas alternativas a ele propostas pela comunidade, mas já temos um bom ponto de partida para pensar sobre nossas solução e como as decisões de design podem impactar a qualidade do código proposto do dia-a-dia do desenvolvimento.
