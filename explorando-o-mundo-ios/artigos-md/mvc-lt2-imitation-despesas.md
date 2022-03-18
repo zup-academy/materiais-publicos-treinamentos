@@ -414,7 +414,7 @@ class RelatorioDeDespesasViewController: UIViewController {
         }
          
         guard let valorEmTexto = valorTextField.text,
-              let _ = Decimal(string: valorEmTexto) else {
+              let _ = Converter.paraDecimal(string: valorEmTexto) else {
             return (false, "Valor inválido")
         }
             
@@ -452,7 +452,7 @@ Bastante código foi introduzido aqui, no entanto, você já deve estar familiar
         }
          
         guard let valorEmTexto = valorTextField.text,
-              let _ = Decimal(string: valorEmTexto) else {
+              let _ = Converter.paraDecimal(string: valorEmTexto) else {
             return (false, "Valor inválido")
         }
             
@@ -502,8 +502,8 @@ class RelatorioDeDespesasViewController: UIViewController {
         let tipo = Despesa.Tipo(rawValue: Int(codigo))!
         
         let despesa = Despesa(titulo: tituloTextField.text!,
-                tipo: tipo,
-                valor: Decimal(string: valorTextField.text!)!)
+                              tipo: tipo,
+                              valor: Converter.paraDecimal(string: valorTextField.text!)!)
         
         // relatorio.adiciona(despesa) já é possível
     }
@@ -655,8 +655,8 @@ class RelatorioDeDespesasViewController: UIViewController {
         let tipo = Despesa.Tipo(rawValue: Int(codigo))!
         
         let despesa = Despesa(titulo: tituloTextField.text!,
-                tipo: tipo,
-                valor: Decimal(string: valorTextField.text!)!)
+                              tipo: tipo,
+                              valor: Converter.paraDecimal(string: valorTextField.text!)!)
         
         relatorioDeDespesas?.adiciona(despesa)
     }
@@ -686,8 +686,8 @@ class RelatorioDeDespesasViewController: UIViewController {
         let tipo = Despesa.Tipo(rawValue: Int(codigo))!
         
         let despesa = Despesa(titulo: tituloTextField.text!,
-                tipo: tipo,
-                valor: Decimal(string: valorTextField.text!)!)
+                              tipo: tipo,
+                              valor: Converter.paraDecimal(string: valorTextField.text!)!)
         
         relatorioDeDespesas?.adiciona(despesa)
     }
