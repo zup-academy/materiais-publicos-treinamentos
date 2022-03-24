@@ -1,6 +1,6 @@
 # Introdução a Bloqueio (Locking) Implicito e Explicito
 
-Existem ambientes na qual encontra-se um alto nivel de disputa por um determinado recurso, sistemas de reservar de cadeiras de em um cinema, reserva de leitos em hospitais e salas de aulas em determinadas universidades  trazem uma dinâmica onde diversos usuarios optam por reservar o mesmo recurso.
+Existem ambientes na qual encontra-se um alto nivel de disputa por um determinado recurso, sistemas de reserva de cadeiras em um cinema, reserva de leitos em hospitais e salas de aulas em determinadas universidades trazem uma dinâmica onde diversos usuarios optam por reservar o mesmo recurso.
 
 Olhando para o sistema podemos lidar com esta concorrência a nivel de thread, porém, ficamos refens do mesmo problema caso seja necessário levantar uma nova instância do sistema em outra maquina. A solução para esta problematica é determinar um mecanismo para lidar com a concorrência destes sistemas distribuidos de maneira centralizada, e o primeiro sistema externo em comum é o Banco de Dados.
 
@@ -12,7 +12,7 @@ Para que a integridade de determinado registro/linha seja mantida o banco de dad
 
 ### O que são esses bloqueios?
 
-Imagine que exista uma tabela para armazenar as ordens de manutenção de uma oficina de uma fazenda, dentro dessas ordens seja necessário armazenar um titulo e uma descrição, e exista também um campo para inserir o nome de qual funcionario realizara esta ordem. Veja a representação abaixo.
+Imagine que exista uma tabela para armazenar as ordens de manutenção de uma oficina, dentro dessas ordens seja necessário armazenar um titulo e uma descrição, e exista também um campo para inserir o nome de qual funcionario realizara esta ordem. Veja a representação abaixo.
 
 <p align="center">
 <img alt="ilustração da tabela pessoa" src="./imagens/tabela-ordem-de-manutencao.png" width="180"/>
@@ -42,7 +42,7 @@ Na imagem abaixo se encontrar duas Interface de Linhas de Comando (CLI), ambas c
 
 Na primeira janela com nome de `Usuario 2` é executado o comando, neste momento é inserido um bloqueio implicito no registro da tabela ordem_manutencao com id igual a um. Na outra janela é pedido para fazer o mesmo comando porém a transação fica esperando, pois a transação do `Usuario 2` não foi commitada ou revertida.
 
-Caso um comando de Consulta (Select) fosse disparado na janela com titulo `Usuario 1` seria possível realizar a leitura do registro, pois o bloqueio exclusivo trata define a permissão exclusiva para transação  na operação de escrita.
+Caso um comando de Consulta (Select) fosse disparado na janela com titulo `Usuario 1` seria possível realizar a leitura do registro, pois o bloqueio exclusivo define a permissão exclusiva para transação na operação de escrita.
 
 ![Transações concorrentes](./imagens/transacoes-concorrentes.png)
 
@@ -72,7 +72,7 @@ O Bloqueio Exclusivo invocado de maneira implicita ou explicita são utéis em s
 
 ## Observação 
 
-O SGBD utilizado foi o Dbeaver e o banco de dados foi um Postgres. Para melhor entidimento da mecânica dos bloqueio leia a documentação sugerida na sessão abaixo.
+O SGBD utilizado foi o Dbeaver e o banco de dados foi um Postgres. Para melhor entendimento da mecânica dos bloqueio leia a documentação sugerida na sessão abaixo.
 
 # Links para Aprofundamento
 - [Select Postgres Documentação ](https://www.postgresql.org/docs/9.0/sql-select.html)
