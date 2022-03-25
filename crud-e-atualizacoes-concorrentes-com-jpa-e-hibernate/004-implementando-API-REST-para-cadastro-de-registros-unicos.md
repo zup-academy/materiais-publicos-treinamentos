@@ -274,7 +274,7 @@ Essa anotação não é utilizada no atributo da entidade, mas sim na classe, vi
 })
 @Entity
 class Aluno {
-
+    // atributos e métodos
 }
 ```
 
