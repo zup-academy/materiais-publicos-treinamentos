@@ -270,7 +270,7 @@ Essa anotação não é utilizada no atributo da entidade, mas sim na classe, vi
 
 ```java
 @Table(uniqueConstraints = { 
-    @UniqueConstraint(name = "UK_EMAIL", columnNames = { "email" }) 
+    @UniqueConstraint(name = "UK_ALUNO_EMAIL", columnNames = { "email" }) 
 })
 @Entity
 class Aluno {
@@ -282,7 +282,7 @@ Agora, ao iniciar a aplicação o Hibernate vai gerar nossa `UNIQUE` constraint 
 
 ```sql
 ALTER TABLE aluno
-  ADD CONSTRAINT UK_EMAIL UNIQUE (email);
+  ADD CONSTRAINT UK_ALUNO_EMAIL UNIQUE (email);
 ```
 
 É justamente via anotação `@UniqueConstraint` que podemos definir um nome para nossa constraint, quais colunas participam da constraint, além de constraints diferentes para outras colunas e mesmo chaves compostas.
