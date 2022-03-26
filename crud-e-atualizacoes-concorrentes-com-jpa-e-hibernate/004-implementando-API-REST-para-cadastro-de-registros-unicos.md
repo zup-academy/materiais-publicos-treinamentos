@@ -285,7 +285,7 @@ ALTER TABLE aluno
   ADD CONSTRAINT UK_ALUNO_EMAIL UNIQUE (email);
 ```
 
-É justamente via anotação `@UniqueConstraint` que podemos definir um nome para nossa constraint, quais colunas participam da constraint, além múltiplas constraints diferentes para outras colunas e mesmo chaves compostas.
+É justamente via anotação `@UniqueConstraint` que podemos definir um nome para nossa constraint, quais colunas participam da constraint, além múltiplas constraints diferentes para outras colunas ou mesmo chaves compostas.
 
 ### Cuidados ao implementar um exception handler para constraints do banco
 
