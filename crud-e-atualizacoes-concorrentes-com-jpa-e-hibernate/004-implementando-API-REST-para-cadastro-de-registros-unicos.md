@@ -258,9 +258,9 @@ Pronto! Estamos retornando uma mensagem de erro mais amigável para o usuário j
 
 Com a constraint `UNIQUE` definida na tabela a lógica de validação no controller pode parecer desnecessária e/ou redundante, e de fato ela é, mas está tudo bem! 
 
-Embora a validação na aplicação não seja de fato 100% eficaz pois ela pode falhar em momentos de alta concorrência, ela nos permite validar os dados antes de bater no banco de dados, ou antes de executar algum procedimento mais custoso na aplicação, como também nos permite logar o erro e lançar uma mensagem de erro mais amigável para o usuário.
+Embora a validação na aplicação não seja de fato 100% eficaz pois ela pode falhar em momentos de alta concorrência, ela nos permite validar os dados antes de bater no banco de dados, ou antes de executar algum procedimento mais custoso na aplicação, como também nos permite logar o erro e lançar uma mensagem mais amigável para o usuário. Tê-la na borda mais externa do sistema permite que a aplicação falhe rapidamente, liberando assim recursos do servidor, como threads, memória, conexões abertas com o banco de dados e outros serviços etc, ou seja, é a implementação de uma boa prática conhecida como **Fail Fast**.
 
-A verdade, é que em aplicações web é muito comum que lógicas de validação de entrada de usuários estejam duplicadas em várias camadas da arquitetura ou aplicação. Para cita algumas: no browser, no dispositivo mobile, no controller da aplicação, nas regras de negócio, nas entidades da JPA e banco de dados.
+A verdade, é que em aplicações web é muito comum que lógicas de validação de entrada de usuários estejam duplicadas em várias camadas da arquitetura ou aplicação. Para citar algumas: no browser, no dispositivo mobile, no controller da aplicação, nas regras de negócio, nas entidades da JPA e banco de dados.
 
 ### Definindo o nome da constraint de unicidade no banco de dados
 
