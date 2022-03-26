@@ -264,9 +264,9 @@ A verdade, é que em aplicações web é muito comum que lógicas de validação
 
 ### Definindo o nome da constraint de unicidade no banco de dados
 
-Se você reparou com atenção, ao definir a nossa constraint de unicidade via anotação `@Column(unique = true)` na entidade `Aluno`, o Hibernate gerou uma constraint com um nome auto-gerado **aleatório**. E isso pode ser um problema em alguns times ou projetos onde há uma padronização de nomenclatura dos objetos criados no banco de dados, incluindo tabelas, colunas, indexes e contraints. Por esse motivo, para termos controle sobre os nomes das constraints de unicidade gerado pelo Hibernate precisamos utilizar outra anotação da JPA especifica para `UNIQUE` constraints, a anotação `@UniqueConstraint`.
+Se você reparou com atenção, ao definir a nossa constraint de unicidade via anotação `@Column(unique = true)` na entidade `Aluno`, o Hibernate gerou uma constraint com um nome auto-gerado **aleatório**: `uk_rrtn7wgfxo0jfwkhby23f72cn`. E as chances são de que isso seja um problema em alguns times ou projetos de software onde há uma padronização de nomenclatura dos objetos criados no banco de dados, incluindo tabelas, colunas, indexes e contraints. Por esse motivo, para termos controle sobre os nomes das constraints de unicidade gerado pelo Hibernate precisamos utilizar outra anotação da JPA especifica para `UNIQUE` constraints, a anotação `@UniqueConstraint`.
 
-Essa anotação não é utilizada no atributo da entidade, mas sim na classe, via anotação `@Table`, como abaixo:
+Diferentemente da anotação `@Column`, essa anotação não é utilizada no atributo da entidade, mas sim na classe, via anotação `@Table`, como abaixo:
 
 ```java
 @Table(uniqueConstraints = { 
@@ -278,14 +278,14 @@ class Aluno {
 }
 ```
 
-Agora, ao iniciar a aplicação o Hibernate vai gerar nossa `UNIQUE` constraint com o nome definido no atributo `name` da anotação `@UniqueConstraint` usando um comando DDL semelhante a este aqui:
+Agora, ao iniciar a aplicação o Hibernate vai gerar nossa `UNIQUE` constraint para coluna `EMAIL` com o nome definido por nós no atributo `name` da anotação `@UniqueConstraint` usando um comando DDL semelhante a este aqui:
 
 ```sql
 ALTER TABLE aluno
   ADD CONSTRAINT UK_ALUNO_EMAIL UNIQUE (email);
 ```
 
-É justamente via anotação `@UniqueConstraint` que podemos definir um nome para nossa constraint, quais colunas participam da constraint, além de constraints diferentes para outras colunas e mesmo chaves compostas.
+É justamente via anotação `@UniqueConstraint` que podemos definir um nome para nossa constraint, quais colunas participam da constraint, além múltiplas constraints diferentes para outras colunas e mesmo chaves compostas.
 
 ### Cuidados ao implementar um exception handler para constraints do banco
 
