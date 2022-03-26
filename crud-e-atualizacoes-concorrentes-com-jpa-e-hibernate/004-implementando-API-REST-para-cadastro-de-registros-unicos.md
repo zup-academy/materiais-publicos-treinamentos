@@ -6,7 +6,7 @@ Nesse conteúdo veremos como podemos implementar uma API REST responsável por c
 
 Precisamos implementar um cadastro de alunos em uma universidade. Esse cadastro ocorre num sistema interno da universidade, portanto precisamos criar uma API REST para expor essa funcionalidade. Um ponto importante, o sistema **não** deve permitir o cadastro de alunos duplicados, e, para isso, deve-se usar o email do aluno como chave de negócio para garantir a unicidade no sistema.
 
-Para cadastrar um novo aluno no sistema de uma universidade precisamos dos dados básicos deste aluno, como nome, email e ID do curso. Portanto, teríamos a representação de aluno em uma classe `Aluno` mapeado com anotações da JPA, como abaixo:
+Para cadastrar um novo aluno no sistema de uma universidade precisamos dos dados básicos deste aluno, como nome, email e ID do curso. Portanto, teríamos a seguinte representação de aluno em uma classe `Aluno` mapeado com anotações da JPA:
 
 ```java
 @Entity
@@ -24,7 +24,7 @@ class Aluno {
 }
 ```
 
-E claro, como vamos gravar esta entidade no banco de dados nós precisamos de uma classe Repository do Spring Data. O código da interface `AlunoRepository` seria bem simples com graças ao Spring Data JPA:
+E claro, como vamos gravar esta entidade no banco de dados nós precisamos de uma classe Repository do Spring Data. O código da interface `AlunoRepository` seria bem simples graças ao Spring Data JPA:
 
 ```java
 @Repository
