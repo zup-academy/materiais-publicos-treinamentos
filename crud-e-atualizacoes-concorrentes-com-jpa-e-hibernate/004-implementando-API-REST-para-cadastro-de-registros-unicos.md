@@ -314,9 +314,21 @@ Aqui a criatividade do desenvolvedor(a) é quem manda! Implemente seu exception 
 
 ### Erros de constraints podem ocorrer somente no commit da transação
 
-Vimos que para capturar a `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto, ele pode não funcionar em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`.
+Vimos que para capturar a `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto, ele pode não funcionar em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`:
 
-Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso do comando `INSERT`, geralmente esta decisão está atrelada ao mapeamento da entidade, por exemplo se usamos uma chave auto-incremento (`GenerationType.IDENTITY`) ou sequence (`GenerationType.SEQUENCE`) no banco; se usamos operações em cascata, se há uma consulta no meio de operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação.
+```java
+try {
+    entityManager.persist(aluno); // não gera INSERT, logo não dispara erros de constraints
+    // ...
+    // outras lógicas de negócio...
+    // ...
+    entityManager.getTransaction().commit(); // gera INSERT somente no ultimo momento
+} catch (ConstraintViolationException e) {
+    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "erro de constraints no banco de dados");
+}
+```
+
+Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso de persistir uma nova entidade, geralmente esta decisão está atrelada ao mapeamento da entidade, por exemplo se usamos uma chave auto-incremento (`GenerationType.IDENTITY`) ou sequence (`GenerationType.SEQUENCE`) no banco; se usamos operações em cascata, se há uma consulta no meio de operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação.
 
 De qualquer forma, se você precisar forçar o envio do comando para o banco você pode recorrer ao **flushing manual** do contexto de persistência da JPA via métodos `saveAndFlush()` ou simplesmente `flush()`, ambos da interface da `JpaRepository` do Spring Data JPA.
 
