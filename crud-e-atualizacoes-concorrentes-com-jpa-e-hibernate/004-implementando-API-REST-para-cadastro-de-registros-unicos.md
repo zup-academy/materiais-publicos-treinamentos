@@ -289,7 +289,7 @@ ALTER TABLE aluno
 
 ### Cuidados ao implementar um exception handler para constraints do banco
 
-Um detalhe é que a exceção `ConstraintViolationException` do Hibernate encapsula todos os erros de constraints lançados pelo banco de dados, sejam estes erros de constraints do tipo `UNIQUE`, `NOT NULL`, `PRIMARY KEY`, `FOREIGN KEY` entre outras. O que o Hibernate não conseguir validar a nível de aplicação o banco se encarregará de fazer. 
+Um detalhe é que a exceção `ConstraintViolationException` do Hibernate encapsula todos os erros de constraints lançados pelo banco de dados, sejam estes erros de constraints do tipo `UNIQUE`, `NOT NULL`, `PRIMARY KEY`, `FOREIGN KEY`, entre outras. O que o Hibernate não conseguir validar antecipadamente a nível de aplicação sobra para banco de dados fazer. 
 
 Dessa forma, uma boa implementação de exception handler deve levar isso em consideração olhando para nome da constraint lançada pelo banco e informando a mensagem de erro adequada:
 
