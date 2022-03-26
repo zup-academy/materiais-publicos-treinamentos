@@ -314,7 +314,7 @@ Aqui a criatividade do desenvolvedor(a) é quem manda! Implemente seu exception 
 
 ### Erros de constraints podem ocorrer somente no commit da transação
 
-Vimos que para capturar a `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto, ele pode não funcionar em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`:
+Vimos que para capturar a exceção `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto do ponto de vista de tratamento de erros, ele pode não funcionar como esperado em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`:
 
 ```java
 try {
@@ -328,7 +328,7 @@ try {
 }
 ```
 
-Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso de persistir uma nova entidade, é comum que esta decisão esteja atrelada ao mapeamento da entidade de alguma forma, por exemplo se usamos uma chave auto-incremento (`GenerationType.IDENTITY`) ou sequence (`GenerationType.SEQUENCE`) no banco. Outros casos tem a ver com uso de operações em cascata, se há uma consulta JPQL ou nativa no meio das operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação, ela é a sua fonte da verdade.
+Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso de persistir uma nova entidade, é comum que esta decisão esteja atrelada ao mapeamento da entidade de alguma forma, por exemplo se usamos uma chave auto-incremento (`IDENTITY`) ou sequence (`SEQUENCE`) no banco. Outros casos tem a ver com uso de operações em cascata, se há uma consulta JPQL ou SQL no meio das operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação, ela é a sua fonte da verdade.
 
 De qualquer forma, se você precisar forçar o envio dos comandos SQL para o banco você pode sempre recorrer ao **flushing manual** do contexto de persistência da JPA. Por exemplo, invocando os métodos `saveAndFlush()` ou simplesmente `flush()`, ambos da interface da `JpaRepository` do Spring Data JPA.
 
