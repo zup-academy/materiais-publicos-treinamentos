@@ -324,7 +324,7 @@ try {
     // ...
     entityManager.getTransaction().commit(); // gera INSERT somente no ultimo momento
 } catch (ConstraintViolationException e) {
-    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "erro de constraints no banco de dados");
+    // trata erro de constraints
 }
 ```
 
