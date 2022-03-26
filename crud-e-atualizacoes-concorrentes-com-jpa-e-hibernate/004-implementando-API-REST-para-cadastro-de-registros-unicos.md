@@ -153,7 +153,7 @@ Nesse momento, a pergunta que fica é: quando essa constraint é violada, qual e
 
 Adicionar constraints no banco, próximas dos dados, sem dúvida é a melhor estratégia que podemos adotar para maioria gritante dos casos, mas isso também quer dizer que quando o banco detecta alguma violação dessas constraints ele precisa informar a aplicação sobre essa violação, e a forma como ele faz isso é lançando um erro da camada de persistência.
 
-Se não capturarmos e tratarmos esse erro lançado pelo banco de dados, ele vai subir todas as camadas da aplicação e estourar na cara do usuário com um Status de erro HTTP `500 (Internal Server Error)`, semelhante a este:
+Se não capturarmos e tratarmos esse erro lançado pelo banco de dados ele vai subir todas as camadas da aplicação e estourar na cara do usuário com um Status de erro HTTP `500 (Internal Server Error)`, semelhante a este:
 
 ```json
 HTTP/1.1 500
@@ -242,10 +242,10 @@ Date: Mon, 25 Mar 2022 14:25:27 GMT
 
 {
     "status": 422,
-	"error": "Unprocessable Entity",
-	"message": "aluno existente no sistema (unique constraint)",
-	"timestamp": "2022-03-25T14:25:27.7656076",
-	"path": "/api/contatos"
+    "error": "Unprocessable Entity",
+    "message": "aluno existente no sistema (unique constraint)",
+    "timestamp": "2022-03-25T14:25:27.7656076",
+    "path": "/api/contatos"
 }
 ```
 
