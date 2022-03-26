@@ -125,7 +125,7 @@ O problema dessa solução é que ela funcionaria somente em uma única máquina
 
 Para resolver este problema precisamos que esta validação de unicidade esteja centralizada de tal forma que, independente do número de máquinas, ela seja segura e confiável. Por estarmos trabalhando com um banco de dados relacional e, por ele ser o responsável por manter a integridade e consistência dos dados, nada mais justo do que delegar esta regra de validação para ele, afinal ele já faz isso muito bem há mais de 45 anos.
 
-Para isso, precisamos adicionar uma restrição de unicidade (ou **UNIQUE constraint**) para coluna `email` na tabela `ALUNO` no banco de dados. Conseguimos isto habilitando o atributo `unique` da anotação `@Column` na entidade:
+Para isso, precisamos definir uma restrição de unicidade (ou **UNIQUE constraint**) para coluna `email` na tabela `ALUNO` no banco de dados. Conseguimos isto habilitando o atributo `unique` da anotação `@Column` na entidade:
 
 ```java
 @Entity
