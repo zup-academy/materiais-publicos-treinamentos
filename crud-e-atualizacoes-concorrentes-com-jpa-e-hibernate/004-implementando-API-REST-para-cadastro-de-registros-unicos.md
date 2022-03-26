@@ -314,7 +314,7 @@ Aqui a criatividade do desenvolvedor(a) é quem manda! Implemente seu exception 
 
 ### Erros de constraints podem ocorrer somente no commit da transação
 
-Vimos que para capturar a exceção `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto do ponto de vista de tratamento de erros, ele pode não funcionar como esperado em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`:
+Vimos que para capturar a exceção `ConstraintViolationException` nós utilizamos um bloco `try-catch` ao invocar o método `save` do `AlunoRepository`, e embora esteja correto do ponto de vista de tratamento de erros ele pode não funcionar como esperado em alguns casos. Para que a constraint entre em ação se faz necessário que o Hibernate envie o comando SQL `INSERT` para o banco de dados, mas o detalhe aqui é que o Hibernate pode enviar este comando tardiamente, por exemplo no final da transação, ou seja, somente no momento do `COMMIT`:
 
 ```java
 try {
