@@ -324,3 +324,6 @@ De qualquer forma, se você precisar forçar o envio do comando para o banco voc
 
 - [Defining Unique Constraints in JPA](https://www.baeldung.com/jpa-unique-constraints)
 - [PostgreSQL - CONSTRAINTS](https://www.tutorialspoint.com/postgresql/postgresql_constraints.htm)
+- [JavaDoc: @UniqueConstraint](https://docs.oracle.com/javaee/7/api/javax/persistence/UniqueConstraint.html)
+- [A beginner’s guide to flush strategies in JPA and Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpahibernate-flush-strategies/)
+- [How do JPA and Hibernate define the AUTO flush mode](https://vladmihalcea.com/how-do-jpa-and-hibernate-define-the-auto-flush-mode/)
