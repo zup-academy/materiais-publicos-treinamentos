@@ -328,7 +328,7 @@ try {
 }
 ```
 
-Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso de persistir uma nova entidade, é comum que esta decisão esteja atrelada ao mapeamento da entidade de alguma forma, por exemplo se usamos uma chave auto-incremento (`GenerationType.IDENTITY`) ou sequence (`GenerationType.SEQUENCE`) no banco. Outros casos tem a ver com uso de operações em cascata, se há uma consulta JPQL ou nativa no meio das operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação.
+Não é fácil prever quando o Hibernate poderá enviar os comandos SQL para o banco de dados, mas no caso de persistir uma nova entidade, é comum que esta decisão esteja atrelada ao mapeamento da entidade de alguma forma, por exemplo se usamos uma chave auto-incremento (`GenerationType.IDENTITY`) ou sequence (`GenerationType.SEQUENCE`) no banco. Outros casos tem a ver com uso de operações em cascata, se há uma consulta JPQL ou nativa no meio das operações de escrita etc. Por esse motivo, sempre olhe o SQL gerado nos logs da aplicação, ela é a sua fonte da verdade.
 
 De qualquer forma, se você precisar forçar o envio dos comandos SQL para o banco você pode sempre recorrer ao **flushing manual** do contexto de persistência da JPA. Por exemplo, invocando os métodos `saveAndFlush()` ou simplesmente `flush()`, ambos da interface da `JpaRepository` do Spring Data JPA.
 
