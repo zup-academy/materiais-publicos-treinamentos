@@ -97,7 +97,7 @@ Embora não exista um requisito de negócio para que o email de um usuário seja
 ```java
 @Table(uniqueConstraints = { 
     @UniqueConstraint(name = "Unique_usuario_cpf_email", columnNames = { "cpf", "email" }),
-    @UniqueConstraint(name = "UK_email", columnNames = { "email" }),
+    @UniqueConstraint(name = "UK_email", columnNames = { "email" }) // nova constraint
 })
 @Entity
 class Usuario {
