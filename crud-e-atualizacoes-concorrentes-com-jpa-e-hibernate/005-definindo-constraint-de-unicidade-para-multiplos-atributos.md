@@ -1,6 +1,6 @@
 # Definindo constraint de unicidade para múltiplos atributos com JPA e Hibernate
 
-Nesse conteúdo veremos como podemos definir constraints de unicidade para múltiplos atributos de uma entidade. Vamos conhecer a anotação `@UniqueConstraint` como utilizá-la para declarar constraints `UNIQUE` em duas ou mais colunas de uma tabela.
+Nesse conteúdo veremos como podemos definir constraints de unicidade para múltiplos atributos de uma entidade. Vamos conhecer a anotação `@UniqueConstraint` da JPA e aprender como utilizá-la para declarar constraints `UNIQUE` em duas ou mais colunas de uma tabela.
 
 ## Definindo constraints de unicidade simples
 
