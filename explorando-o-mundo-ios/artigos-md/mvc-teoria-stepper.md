@@ -45,7 +45,9 @@ O valor máximo deve ser maior ou igual ao valor mínimo. Se você definir um va
 
 1. Adicione uma propriedade armazenada chamada `valor` para conter um numero inteiro: `private var valor: Int = 1`. Em seguida, adicione um observador `didSet` que invoque a função `atualizaView(valor:)` para o novo valor, além de garantir um chamada inicial para `atualizaView(valor:)` no corpo da função `viewDidLoad()`.
 
-    <gif-3>
+    <p align="center">
+    <img alt="Animação com a demonstração da definição da propriedade e chamadas para a função responsável pela atualização da view" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-doc-uistepper-3.gif?raw=true" width="75%" />
+    </p>
 
     ``` swift
         private var valor: Int = 1 {
@@ -70,11 +72,15 @@ O valor máximo deve ser maior ou igual ao valor mínimo. Se você definir um va
         }
     ```
 
-    <gif-4>
+    <p align="center">
+    <img alt="Animação com a demonstração da implementação da action resposta à alteração do valor do stepper" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-doc-uistepper-4.gif?raw=true" width="75%" />
+    </p>
 
 1. Teste a aplicação exemplo e perceba seu funcionamento.
 
-    <gif-5>
+    <p align="center">
+    <img alt="Animação com a demonstração da implementação da action resposta à alteração do valor do stepper" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-doc-uistepper-5.gif?raw=true" width="25%" />
+    </p>
 
 1. Adicionalmente, consulte o item [Tópicos](#tópicos) abaixo e pesquise sobre outras propriedades e método úteis para um ajuste fino de sua funcionalidade. Teste as possibilidades.
 
