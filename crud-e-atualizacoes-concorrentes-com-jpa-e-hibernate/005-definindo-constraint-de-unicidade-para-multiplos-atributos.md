@@ -22,7 +22,7 @@ class Usuario {
 }
 ```
 
-Um dos requisitos da plataforma é que uma pessoa física (CPF) possa ter múltiplos usuários desde que seu email não se repita, ou seja, não é permitido cadastrar usuários duplicados no banco de dados, tendo como chave de unicidade os atributos `cpf` e `email`. Por esse motivo, um desenvolvedor(a) mais desatento(a) poderia acabar mapeando os atributos da entidade com `@Column` como abaixo:
+Um dos requisitos da plataforma é que uma pessoa física (CPF) possa ter múltiplos usuários desde que seu email não se repita, ou seja, não é permitido cadastrar usuários duplicados no banco de dados tendo como chave de unicidade seus atributos `cpf` e `email`. A regra parece um pouco confusa, por esse motivo, um desenvolvedor(a) mais desatento(a) poderia acabar mapeando os atributos da entidade com `@Column` como abaixo:
 
 ```java
 @Entity
