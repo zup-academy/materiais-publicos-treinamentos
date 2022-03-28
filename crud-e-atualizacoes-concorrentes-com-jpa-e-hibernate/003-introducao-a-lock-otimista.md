@@ -14,7 +14,7 @@ Suponha que o insumo com id igual a um, é uma camiseta estampada e conta com ap
 ```json
     {
         "id":1,
-        "nome":"camiseta estampada nike",
+        "nome":"camiseta estampada",
         "quantidade":1
     }
 ```
@@ -24,25 +24,24 @@ Agora imagine que o `vendedor 1` e `vendedor 2` estão atendendo clientes difere
 ```json
     {
         "id":1,
-        "nome":"camiseta estampada nike",
+        "nome":"camiseta estampada",
         "quantidade":0
     }
 ```
-
 
  O `vendedor 2` não ciente que a quantidade foi alterada para zero, finaliza a compra, e o resultado é que o registro que representa a camiseta fica da seguinte forma. 
 
 ```json
     {
         "id":1,
-        "nome":"camiseta estampada nike",
+        "nome":"camiseta estampada",
         "quantidade":-1
     }
 ```
 
 A anomalia de atualização perdida foi dada quando o `vendedor 2` acha que a camiseta ainda esta disponivel, porém não esta.
 
-A solução para esta problematica pode ser feita através de um mecanismo de detecção de conflitos. Este mecanismo por si, tera que verificar se o estado da entidade no momento de atualização é o mesmo que no memomento de leitura. Esta estratégia é o que chamamos de Bloqueio Otimista.
+A solução para esta problematica pode ser feita através de um mecanismo de detecção de conflitos. Este mecanismo é responsavel por verificar se o estado da entidade no momento de atualização é o mesmo que no momento de leitura. Esta estratégia é o que chamamos de Bloqueio Otimista.
 
 ## Bloqueio Otimista com JPA
 
