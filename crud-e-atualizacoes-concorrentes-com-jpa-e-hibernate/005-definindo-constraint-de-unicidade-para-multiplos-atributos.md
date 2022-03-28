@@ -88,7 +88,7 @@ ALTER TABLE usuario
   ADD CONSTRAINT Unique_usuario_cpf_email UNIQUE (cpf, email);
 ```
 
-Mas e se **também** quisermos que o email de um usuário seja único para todo o sistema e não somente para uma pessoa (CPF)?
+Mas e se **também** quisermos que o email de um usuário seja único para todo o sistema e não somente para uma pessoa (CPF)? Certamente precisaríamos de outra constraint `UNIQUE` simples, afinal trata-se de apenas uma coluna.
 
 ## Definindo múltiplas constraints de unicidade para uma entidade
 
