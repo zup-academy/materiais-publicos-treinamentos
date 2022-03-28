@@ -54,7 +54,7 @@ ALTER TABLE usuario
   ADD CONSTRAINT UK_jjlcnk33jkljfwkhby23fj2ck UNIQUE (email);
 ```
 
-Ou seja, teríamos 2 constraints de unicidade: uma para a coluna `CPF` e outra para coluna `EMAIL`; o que quer dizer que o banco não permitiria dois usuários com o mesmo CPF **ou** mesmo email na tabela. E não é isso que o requisito de negócio deseja! Mas como mapear uma única constraint para essas 2 colunas?
+Ou seja, teríamos 2 constraints de unicidade: uma para a coluna `CPF` e outra para coluna `EMAIL`; o que quer dizer que o banco não permitiria dois usuários com o mesmo CPF **ou** com o mesmo email na tabela. E não é isso que o requisito de negócio deseja! Mas como mapear uma única constraint para essas 2 colunas?
 
 ## Definindo uma constraint composta para entidade `Usuario`
 
