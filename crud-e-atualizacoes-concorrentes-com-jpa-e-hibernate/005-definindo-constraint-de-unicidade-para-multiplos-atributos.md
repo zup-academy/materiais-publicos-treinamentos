@@ -118,9 +118,15 @@ ALTER TABLE usuario
 
 Simples, não é?
 
-Nós também poderíamos declarar essa mesma constraint de unicidade simples através da anotação `@Column`, mas dado que já estamos declarando uma constraint de unicidade a nivel de entidade (`@Table`), faz todo sentido favorecer a declaração das demais constraints no mesmo local, facilitando a leitura e manutenção futura do código para outros desenvolvedores(as).
+Graças ao atributo `uniqueConstraints` anotação `@Table` nós conseguimos declarar múltilplas constraints na entidade (tabela), seja elas simples ou compostas.
 
 ## Dicas do especialista
+
+### Evite mesclar `@UniqueConstraint` e `@Column(unique=true)` nas entidades
+
+Nós também poderíamos mesclar as declarações de constraints de unicidade via as duas anotações: `@UniqueConstraint` e `@Column`. A verdade é que há grandes chances de você encontrar código dessa forma, e está tudo bem, contudo entendemos que essa abordagem pode dificultar a vida dos desenvolvedores(as).
+
+Embora pareça tentador mesclar as duas abordagens, nós acreditamos que para o caso de múltiplas constraints, faz mais sentido favorecer o uso da anotação `@UniqueConstraint` mantendo todas as constraints no mesmo local, facilitando a leitura e manutenção futura do código para outros desenvolvedores(as).
 
 ### Artigos que valem a pena a leitura
 
