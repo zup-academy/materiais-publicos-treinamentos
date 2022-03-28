@@ -92,7 +92,9 @@ Mas e se **também** quisermos que o email de um usuário seja único para todo 
 
 ## Definindo múltiplas constraints de unicidade para uma entidade
 
-Embora não exista um requisito de negócio para que o email de um usuário seja único para todo o sistema, nós poderíamos declarar esta nova constraint simples ainda via o uso da anotação `@UniqueConstraint`, como abaixo:
+Embora não exista um requisito de negócio para que o email de um usuário seja único para todo o sistema, não é incomum que esse tipo de requisito exista no mundo real.
+
+Portanto, nós poderíamos declarar esta nova constraint simples ainda via o uso da anotação `@UniqueConstraint`, como abaixo:
 
 ```java
 @Table(uniqueConstraints = { 
