@@ -118,7 +118,7 @@ ALTER TABLE usuario
 
 Simples, não é?
 
-Graças ao atributo `uniqueConstraints` anotação `@Table` nós conseguimos declarar múltilplas constraints na entidade (tabela), seja elas simples ou compostas.
+Graças ao atributo `uniqueConstraints` na anotação `@Table` nós conseguimos declarar múltilplas constraints de unicidade na entidade, sejam elas simples ou compostas.
 
 ## Dicas do especialista
 
