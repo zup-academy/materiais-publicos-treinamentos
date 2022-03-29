@@ -44,7 +44,7 @@ class Usuario {
 }
 ```
 
-Este mapeamento até faria sentido se não houve uma relação de unicidade dos atributos, mas de acordo com o requisito de negócio eles tem uma relação: lembre-se, uma pessoa física pode ter múltiplos usuários desde que o email seja único. Tanto é, que se olharmos para o que o Hibernate gera no banco, veremos dois comandos DDL semelhantes a estes aqui:
+Este mapeamento até faria sentido se não houve uma relação de unicidade entre os atributos, mas de acordo com o requisito de negócio eles tem uma relação: lembre-se, uma pessoa física pode ter múltiplos usuários desde que o email seja único. Tanto é, que se olharmos para o que o Hibernate gera no banco, veremos dois comandos DDL semelhantes a estes aqui:
 
 ```sql
 ALTER TABLE usuario
@@ -54,11 +54,11 @@ ALTER TABLE usuario
   ADD CONSTRAINT UK_jjlcnk33jkljfwkhby23fj2ck UNIQUE (email);
 ```
 
-O que isso quer dizer? Quer dizer que temos 2 constraints de unicidade: uma para a coluna `CPF` e outra para coluna `EMAIL`; ou seja, o banco não permitirá dois usuários com o mesmo CPF **ou** com o mesmo email na tabela. E não é isso o que requisito de negócio deseja!! Problema entendido, mas como mapear uma única constraint para essas 2 colunas?
+O que isso quer dizer? Quer dizer que temos 2 constraints de unicidade independentes: uma para a coluna `CPF` e outra para coluna `EMAIL`; ou seja, o banco não permitirá dois usuários com o mesmo CPF **ou** com o mesmo email na tabela. E não é bem isso o que o requisito de negócio deseja! Problema entendido, mas como mapear uma única constraint para essas 2 colunas?
 
 ## Definindo uma constraint composta para entidade `Usuario`
 
-Como vimos, a regra de negócio esperada é que uma pessoa física possa ter múltiplos usuários (registros na tabela), ou seja, seu único CPF vai se repetir, porém seu email precisa ser único por CPF. Para isso, precisamos definir uma constraint de unicidade composta (ou **Composite Unique Key**), e com a JPA fazemos isso através da anotação `@UniqueConstraint`. E, diferentemente da anotação `@Column`, essa anotação não é utilizada no atributo da entidade, mas sim na classe (a nível de tabela), via anotação `@Table`, como abaixo::
+Como vimos, a regra de negócio esperada é que uma pessoa física possa ter múltiplos usuários (registros na tabela), ou seja, seu CPF pode se repetir, porém seu email precisa ser único para aquele CPF. Para isso, precisamos definir uma constraint de unicidade composta (ou **Composite Unique Key**), e com a JPA fazemos isso através da anotação `@UniqueConstraint`. Mas, diferentemente da anotação `@Column`, essa anotação não é utilizada no atributo da entidade, mas sim na classe (a nível de tabela), via anotação `@Table`, como abaixo::
 
 ```java
 @Table(uniqueConstraints = { 
@@ -79,9 +79,9 @@ class Usuario {
 }
 ```
 
-Repare no uso da anotação `@UniqueConstraint`: não só declaramos quais colunas participam da constraint composta via atributo `columnNames`, como também definimos o nome da constraint, `Unique_usuario_cpf_email`, que o Hibernate vai gerar no banco por causa do atributo `name` da anotação - o que pode ser bem útil para ter controle sobre os objetos criados no schema do banco de dados.
+Repare no uso da anotação `@UniqueConstraint`: não só declaramos quais colunas participam da constraint composta via atributo `columnNames`, como também definimos o nome da constraint que o Hibernate vai gerar no banco por causa do atributo `name` da anotação: `Unique_usuario_cpf_email`; o que pode ser bem útil para ter controle sobre os objetos criados no schema do banco de dados.
 
-Pronto! Após declararmos nossa constraint de unicidade composta, o Hibernate vai gerar o seguinte comando DDL:
+Pronto! Após declararmos nossa constraint de unicidade composta, o Hibernate vai gerar um único comando DDL para representar essa restrição:
 
 ```sql
 ALTER TABLE usuario
@@ -92,7 +92,7 @@ Mas e se **também** quisermos que o email de um usuário seja único para todo 
 
 ## Definindo múltiplas constraints de unicidade para uma entidade
 
-Embora não exista um requisito de negócio para que o email de um usuário seja único para todo o sistema, não é incomum que esse tipo de requisito exista no mundo real.
+Embora não exista um requisito de negócio para que o email de um usuário seja único para todo o sistema, não é incomum que esse tipo de requisito exista no mundo real. Isto é, uma tabela pode ter múltiplas constraints de unicidade para satisfazer o negócio.
 
 Portanto, nós poderíamos declarar esta nova constraint ainda via o uso da anotação `@UniqueConstraint`:
 
