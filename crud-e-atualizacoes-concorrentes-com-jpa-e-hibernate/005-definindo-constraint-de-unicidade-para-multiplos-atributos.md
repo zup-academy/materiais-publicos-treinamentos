@@ -79,7 +79,7 @@ class Usuario {
 }
 ```
 
-Repare no uso da anotação `@UniqueConstraint`: não só declaramos quais colunas participam da constraint composta via atributo `columnNames`, como também definimos o nome da constraint, `Unique_usuario_cpf_email`, que o Hibernate vai gerar no banco por causa do atributo `name` da anotação - o que pode ser bem útil para ter controle os objetos criados no schema do banco de dados.
+Repare no uso da anotação `@UniqueConstraint`: não só declaramos quais colunas participam da constraint composta via atributo `columnNames`, como também definimos o nome da constraint, `Unique_usuario_cpf_email`, que o Hibernate vai gerar no banco por causa do atributo `name` da anotação - o que pode ser bem útil para ter controle sobre os objetos criados no schema do banco de dados.
 
 Pronto! Após declararmos nossa constraint de unicidade composta, o Hibernate vai gerar o seguinte comando DDL:
 
