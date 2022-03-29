@@ -44,7 +44,7 @@ class Usuario {
 }
 ```
 
-Este mapeamento até faria sentido se não houve uma relação de unicidade dos atributos, mas de acordo com o requisito de negócio eles tem uma relação: lembre-se, uma pessoa física pode ter múltiplos usuários desde que o email seja único. Se olharmos para o que o Hibernate vai gerar no banco, você veria dois comandos DDL semelhantes a estes aqui:
+Este mapeamento até faria sentido se não houve uma relação de unicidade dos atributos, mas de acordo com o requisito de negócio eles tem uma relação: lembre-se, uma pessoa física pode ter múltiplos usuários desde que o email seja único. Tanto é, que se olharmos para o que o Hibernate gera no banco, veremos dois comandos DDL semelhantes a estes aqui:
 
 ```sql
 ALTER TABLE usuario
@@ -54,7 +54,7 @@ ALTER TABLE usuario
   ADD CONSTRAINT UK_jjlcnk33jkljfwkhby23fj2ck UNIQUE (email);
 ```
 
-Ou seja, teríamos 2 constraints de unicidade: uma para a coluna `CPF` e outra para coluna `EMAIL`; o que quer dizer que o banco não permitiria dois usuários com o mesmo CPF **ou** com o mesmo email na tabela. E não é isso que o requisito de negócio deseja! Mas como mapear uma única constraint para essas 2 colunas?
+O que isso quer dizer? Quer dizer que temos 2 constraints de unicidade: uma para a coluna `CPF` e outra para coluna `EMAIL`; ou seja, o banco não permitirá dois usuários com o mesmo CPF **ou** com o mesmo email na tabela. E não é isso o que requisito de negócio deseja!! Problema entendido, mas como mapear uma única constraint para essas 2 colunas?
 
 ## Definindo uma constraint composta para entidade `Usuario`
 
