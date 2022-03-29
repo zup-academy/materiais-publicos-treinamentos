@@ -128,7 +128,7 @@ Graças ao atributo `uniqueConstraints` na anotação `@Table` nós conseguimos 
 
 Nós também poderíamos mesclar as declarações de constraints de unicidade via as duas anotações: `@UniqueConstraint` e `@Column`. A verdade é que há grandes chances de você encontrar código dessa forma, e está tudo bem, contudo entendemos que essa abordagem pode dificultar a vida dos desenvolvedores(as).
 
-Embora pareça tentador mesclar as duas abordagens, nós acreditamos que para o caso de múltiplas constraints, faz mais sentido favorecer o uso da anotação `@UniqueConstraint` mantendo todas as constraints no mesmo local, facilitando a leitura e manutenção futura do código para outros desenvolvedores(as).
+Embora pareça tentador mesclar as duas abordagens, nós acreditamos que para o caso de múltiplas constraints, faz mais sentido favorecer o uso da anotação `@UniqueConstraint` mantendo todas as constraints no mesmo local (no topo da classe), facilitando a leitura e manutenção futura do código para outros desenvolvedores(as).
 
 ### Artigos que valem a pena a leitura
 
