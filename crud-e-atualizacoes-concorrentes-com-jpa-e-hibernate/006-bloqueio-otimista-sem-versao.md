@@ -48,7 +48,7 @@ public class Pessoa{
  Dado que será atualizado apenas o nome da pessoa, observe como o mecânismo de bloqueio otimista verificara o estado.
 
  ```java
- @Transacional
+ @Transactional
  public void  atualizarNome(Long id, String novoNome){
      Pessoa pessoa = entityManager.find(Pesoa.class, id);
      pessoa.setNome(novoNome);
@@ -111,7 +111,7 @@ Para entender seu funcionamento iremos imaginar a seguinte dinâmica. Existe uma
 
  ```java
 
- @Transaction
+ @Transactional
  public class AtualizarPreçoProduto(Long id, BigDecimal preco){
     Produto produto = entityManager.find(Produto.class, id);
 
@@ -139,7 +139,7 @@ verificamos que o atributo preco que foi utilizado para verificar o estado da en
 
 
  ```java
- @Transaction
+ @Transactional
  public class AtualizarTituloProduto(Long id, String titulo){
     Produto produto = entityManager.find(Produto.class, id);
 
