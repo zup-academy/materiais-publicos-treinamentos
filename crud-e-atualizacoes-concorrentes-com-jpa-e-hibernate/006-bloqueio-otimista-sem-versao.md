@@ -1,0 +1,1 @@
+# Bloqueio Otimista Para Sistemas Legados
