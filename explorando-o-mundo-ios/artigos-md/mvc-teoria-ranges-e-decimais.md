@@ -310,7 +310,7 @@ O problema se dá pela natureza da implementação de base para o número de pon
 <img alt="Imagem com representação numérica binária" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-imagem-ponto-flutuante.jpeg?raw=true" width="75%" />
 </p>
 
-A utilização de `Decimal` nesse caso vem para evitar que detalhes de implementação como o citado acima interfiram no resultado esperado. Como citado acima um `Decimal` é uma _struct_ já projetada para representar um número denária (de base 10).
+A utilização de `Decimal` nesse caso vem para evitar que detalhes de implementação como o citado acima interfiram no resultado esperado. Como citado acima um `Decimal` é uma _struct_ já projetada para representar um número denário (de representação na base 10).
 
 ``` swift
 import Foundation
