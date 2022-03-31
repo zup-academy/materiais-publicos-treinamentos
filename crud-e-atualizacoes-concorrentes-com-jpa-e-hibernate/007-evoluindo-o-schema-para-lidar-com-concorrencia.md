@@ -144,7 +144,7 @@ public class Postagem{
 
     @OneToOne(mappedBy="postagem")
     private CurtidaEmPostagem curtidas;
-    
+
     @OneToOne(mappedBy="postagem")
     private VisualizacoesEmPostagem visualizacoes;
     
@@ -153,4 +153,32 @@ public class Postagem{
     //construtores, getters e setters omitidos
 }
 ```
+Agora as entidades referentes a Curtidas e Visualizacoes possuem seus proprios identificadores de versão, então quando os atributo titulo ou corpo forem atualizados, as versões dos atributos de curtidas e visualizações não são incrementados. 
+
+Veja como funcionaria a dinâmica agora.
+
+1. Atualizando as curtidas
+    ```java
+        @Transactional
+        public void atualizarCurtida(Long idPostagem){
+            Postagem post = entityManager.find(Postagem.class, idPostagem);
+
+            post.incrementarCurtida();// aqui é somado mais um a quantidade de curtidas
+        }
+    ```
+    observe o SQL gerado pelo Hibernate:
+
+    ```sql
+        SELECT p.*, cp.*
+          FROM postagem p 
+    INNER JOIN curtida_em_postagem cp
+            ON p.curtida_em_postagem_id = cp.id    
+     WHERE p.id = 1
+
+     UPDATE curtida_em_postagem 
+        SET curtidas = ?,  versao = ?
+      WHERE id = ? 
+        AND versao = ?   
+    ```
+    observamos que apenas o atributo de versão da entidade CurtidaEmPostagem é incrementado, desta forma não existirá conflito na atualização de versão da entidade Postagem e VisualizacoesEmPostagem.
 
