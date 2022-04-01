@@ -78,7 +78,11 @@ Sabemos que precisamos anonimizar o CPF do destinatário, e para isso podemos es
 691.915.220-72 -> 691.***.***-72
 ```
 
-Esse simples "replacement" no CPF impossibilita a identificação do cliente ou o uso indevido do CPF para fraudes em caso do sistema vir a ser invadido ou ter os dados vazados na internet. Apesar de existirem bibliotecas Java que ajudam nesse tipo de tarefa, podemos implementar este algoritimo utilizando somente a linguagem Java. Por exemplo, podemos criar uma classe `CpfUtils` com um método estático chamado de `anonymize`, semelhante a este:
+Esse simples "replacement" no CPF impossibilita a identificação do cliente ou o uso indevido do CPF para fraudes em caso do sistema vir a ser invadido ou ter os dados vazados na internet.
+
+### Anonimizando o CPF do destinatário
+
+Apesar de existirem bibliotecas Java que ajudam nesse tipo de tarefa, podemos implementar este algoritimo utilizando somente a linguagem Java. Por exemplo, podemos criar uma classe `CpfUtils` com um método estático chamado de `anonymize`, semelhante a este:
 
 ```java
 public class CpfUtils {
@@ -130,14 +134,14 @@ Yuri   , 540.602.880-47
 Alberto, 540.301.164-47
 ```
 
-Repare que ambos os CPFs possuem o prefixo e sufixo iguais, e isso que dizer que ao anonimiza-los eles acabaram com o mesmo valor:
+Repare que ambos os CPFs possuem o prefixo e sufixo iguais, e isso que dizer que ao anonimiza-los eles acabarão com o mesmo valor:
 
 ```
 Yuri   , 540.***.***-47
 Alberto, 540.***.***-47
 ```
 
-E, como já sabemos, por haver uma chave de unicidade na tabela o banco de dados não permitirá gravar o segundo destinatário, lançando um erro de violação de constraint semelhante a este:
+Para inofensivo, certo? Mas não é! Como já sabemos, por haver uma chave de unicidade na tabela o banco de dados não permitirá gravar o segundo destinatário, lançando um erro de violação de constraint semelhante a este:
 
 ```log
 org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "uk_zztn7wgfxo0xytrfby23f72up"
@@ -146,6 +150,104 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 
  A verdade, é que no momento que anonimizamos o CPF por se tratar de um dado sensível, nós abrimos mão de sua caracteristica mais importante para nós nesse momento: sua unicidade. O que estou querendo dizer, é que a partir de agora o indice de conflitos entre CPFs de destinatários distintos aumentou substancialmente, o que inviabiliza seu uso no sistema. 
 
- Mas como anonimizar o CPF e ao mesmo tempo manter como chave de unicidade no nosso sistema?
+ Mas como anonimizar o CPF e ao mesmo tempo mantê-lo como chave de unicidade no nosso sistema?
 
- ## 
+## Encriptando dados sensíveis com Hash Functions
+
+Uma Função Hash (ou Hash Function) é um algoritmmo de criptografia que recebe como entrada um texto qualquer ou um conjunto de bytes e produz como saída um número de tamanho fixado. Esse número de tamanho fixado (fixed-length value) gerado pelo algoritimo nós comumente chamamos de "hash".
+
+Uma das principais características de uma função Hash é que ela é uma operação unidirecional (one-way function), ou seja, depois que um texto é encriptado num hash não há mais como revertê-lo para seu valor original. Não à toa, essa característica é muito útil por questões de segurança, por exemplo para encriptar senhas de usuários em sistemas web.
+
+Outra característica importante deste algoritimo, é que um hash gerado é sempre único, ou seja, dois valores quaisquer nunca gerarão o mesmo hash. Se por acaso isso acontecer, nós chamamos de colisão. Embora seja possível acontecer, é extramente improvável, por esse motivo quanto melhor o algoritimo de Hash mais remota são as chances de colisão.
+
+Falando em algoritimos, existem diversos algoritimos de Hash, e, sem dúvida, os mais conhecidos são MD5 e SHA-256. Embora o MD5 ainda seja bastante utilizado por sistemas a fora, seu uso é desencorajado no âmbito de proteção de dados há alguns bons anos por questões de vulnerabilidades de segurança. Por esse motivo, recomenda-se favorecer o uso de algortimos da familia SHA (Secure Hash Algorithm), que geram hashes mais fortes e com menores chances de conflito.
+
+No mundo Java, podemos usar o algoritimo SHA3-256, na qual foi adicionado a plataforma em sua versão 9. Diferentemente do MD5, que gera hashes de 128 bits (16 bytes), esse algoritimo gera hashes de 256 bits (32 bytes). Para entender melhor o que estou tentando dizer, vamos gerar o hash do texto `"Zup Edu"` com ambos os algoritimos:
+
+```
+MD5     : c78f3f089f812efe2f94b133ff552b63
+SHA3-256: ce6e066cff213bb0b9528dece4a3eeb7c3c7c357d9699a670c322822738a1ee6
+```
+
+Você pode experimentar a geração de hashes com MD5, SHA3-256 e diversos outros algoritimos de encriptação nesse site: [Online Tools](https://emn178.github.io/online-tools/index.html).
+
+### Encriptando o CPF com SHA3-256
+
+Agora que você já entende como algoritimos Hash funcionam, vamos implementar nossa função hash para encriptar o CPF de um destinatário. Para isso, podemos implementar um método estático na classe `CpfUtils` que recebe uma `String` como entrada e devolve nosso hash gerado em formato textual (no caso, Hexadecimal):
+
+```java
+public class CpfUtils {
+
+    // outros métodos
+
+    public static String hash(String cpf) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+            byte[] hash = digest.digest(cpf.getBytes(StandardCharsets.UTF_8));
+            return toHex(hash);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Erro ao gerar hash de um CPF: " + cpf);
+        }
+    }
+
+    private static String toHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte aByte : bytes) {
+            result.append(String.format("%02X", aByte));
+        }
+        return result.toString();
+    }
+}
+```
+
+O próximo passo é alterar nossa entidade `Destinatario` com um novo atributo para armazenar o hash do CPF, que chamaremos de `hashDoCpf`; além disso, precisamos mover a constraint de unicidade do atributo `cpf` para este novo atributo. Por fim, não podemos esquecer de alterar o construtor da entidade para encriptar o CPF informado e atribui-lo ao atributo:
+
+```java
+@Entity
+class Destinatario {
+
+    // outros atributos
+    
+    @Column(nullable = false)
+    private String cpf
+
+    @Column(nullable = false, unique = true) // unico
+    private String hashDoCpf;
+
+    public Destinatario(String nome, String telefone, String cpf) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.cpf = CpfUtils.anonymize(cpf); 
+        this.hashDoCpf = CpfUtils.hash(cpf); // gera hash do cpf
+    }
+
+}
+```
+
+Não menos importante, precisamos alterar a validação de unicidade no controller: no inicio do método devemos validar o novo atributo `hashDoCpf` em vez do atributo `cpf`:
+
+```java
+@Transactional
+@PostMapping("/api/destinatarios")
+public ResponseEntity<?> cadastra(@RequestBody ...) {
+
+    String hashDoCpf = CpfUtils.hash(request.getCpf()); // encripta cpf informado
+    if (repository.existsByHashDoCpf(hashDoCpf)) {
+        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "destinatário existente no sistema");
+    }
+
+    // restante do código
+}
+```
+
+
+ ## Dicas do especialista
+
+ ### Artigos que valem a pena a leitura
+
+- [Regular expressions in Java - Tutorial](https://www.vogella.com/tutorials/JavaRegularExpressions/article.html)
+- [Wiki: Data masking](https://en.wikipedia.org/wiki/Data_masking)
+- [Creating Hashes in Java](https://reflectoring.io/creating-hashes-in-java/)
+- [SHA-256 and SHA3-256 Hashing in Java](https://www.baeldung.com/sha-256-hashing-java)
+
