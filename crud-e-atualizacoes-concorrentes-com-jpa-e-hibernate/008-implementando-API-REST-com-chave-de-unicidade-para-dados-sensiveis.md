@@ -241,8 +241,39 @@ public ResponseEntity<?> cadastra(@RequestBody ...) {
 }
 ```
 
+Consequentemente, temos que alterar o Repository para adicionar o novo método `existsByHashDoCpf`:
+
+```java
+@Repository
+public interface DestinatarioRepository extends JpaRepository<Destinatario, Long> {
+
+    public boolean existsByHashDoCpf(String hashDoCpf);
+}
+```
+
+Pronto! Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes do CPF gerados:
+
+```sql
+SELECT d.*
+  FROM destinatario d
+;
+
+id|nome        |telefone      |cpf           |hash_do_cpf                                                     |
+--+------------+--------------+--------------+----------------------------------------------------------------+
+ 1|Rafael Ponte|+5585988887777|691.***.***-72|21d7eda96d6d2ef88d80b390fc3b32079da0406481f89188727fdb61e48a1793|
+ 2|Jordi       |+5511966665555|413.***.***-91|4be3202f41835f914061636c7bd06006ccfda7177ff95411c04335dd5a9c21c2|
+```
+
 
  ## Dicas do especialista
+
+ ### Ajuste o tamanho da coluna de hash na tabela
+
+ xxx
+
+ ### Favoreça orientação a objetos em vez de CpfUtils
+
+ xxx
 
  ### Artigos que valem a pena a leitura
 
