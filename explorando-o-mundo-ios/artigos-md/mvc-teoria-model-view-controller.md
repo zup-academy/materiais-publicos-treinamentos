@@ -90,7 +90,7 @@ A versão do MVC como padrão composto segundo a visão da plataforma iOS tem al
 Na maioria dos aplicativos iOS, as notificações de mudanças de estado em objetos de modelo são comunicadas aos objetos de _view_ por meio do controlador. A figura abaixo mostra essa configuração diferente, que parece mais limpa apesar do envolvimento de mais dois padrões de projeto básicos.
 
 <p align="center">
-<img alt="Imagem com diagrama contendo os componentes do padrão mvc e suas relações segundo a implementação tradicional" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-mvc-mediador.jpg?raw=true" width="75%"/>
+<img alt="Imagem com diagrama contendo os componentes do padrão mvc e suas relações segundo a implementação da estratégia mediador da plataforma iOS" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-mvc-mediador.jpg?raw=true" width="75%"/>
 </p>
 
 
@@ -121,3 +121,98 @@ As diretrizes a seguir se aplicam às considerações do padrão Model-View-Cont
     * Um controlador não deve depender de uma classe de modelo (embora, como as visualizações, isso possa ser necessário se for uma classe de controlador personalizada). OBS: Depender de abstrações definidas em termos de coisas *apresentáveis ao usuário* poderia ser um caminho imaginável, embora não seja muito usual.
 
 * Se o UIKit framework oferece uma arquitetura que resolve um problema de programação e essa arquitetura atribui papéis MVC a objetos de tipos específicos, use essa arquitetura. Será muito mais fácil construir seu projeto dessa maneira. Em outras palavras, não brigue com seu framework. (A menos que em determinadas situações essa briga seja por uma boa causa 🫢)
+
+## Uma aplicação prática da separação de papéis
+
+Considere uma aplicação simples como a apresentada pela figura abaixo. Ela sugere uma simulação de um jogar de dados, que entre suas especificações de negócio, requer: (I) que a aplicação ofereça um controle ao usuário para que seja acionado o jogar de um dado virtual; (II) que ao acionar o controle a aplicação sorteie um valor numérico randômico entre `1` e `6`; e (III) que o aplicativo informe o número corrente sorteado, mas que além disso mantenha o valor anterior apresentado ao usuário à título de comparação com o novo valor.
+
+<p align="center">
+<img alt="Imagem com modelo da tela para o app exemplo de jogo de dados" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-imagem-mvc-aplicacao-pratica-1.jpg?raw=true" width="75%"/>
+</p>
+
+Para tal aplicação temos as seguintes implementações de _view_ e controle, camadas com as quais já temos certa intimidade, como ponto de partida.
+
+* Implementação para a _view_
+
+    <p align="center">
+    <img alt="Imagem com implementação da view para o exemplo no storyboard" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-imagem-mvc-aplicacao-pratica-2.png?raw=true" width="75%"/>
+    </p>
+
+* Implementação para o _controller_
+
+    <p align="center">
+    <img alt="Imagem com implementação do controller Swift para o exemplo" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-imagem-mvc-aplicacao-pratica-3.png?raw=true" width="75%"/>
+    </p>
+
+O estado atual do projeto com as devidas ligações entre os elementos da camada de visualização e da camada de controle já satisfaz o objetivo proposto pela aplicação. Entretanto, é possível fazer uma série de considerações sobre a separação de código do ponto de vista da aplicação de padrão arquitetural sugerido pela plataforma.
+
+Considerando que as condições para o jogo de dados e comparação dos valores sorteados são definidos em termos do domínio do problema que a aplicação tende a resolver, é razoável pensar que os detalhes de implementação do jogo de dados como nas instruções em `valorDoTurnoAnterior = valorDoTurnoAtual` e `valorDoTurnoAtual = Int.random(in: 1...6)` (e a própria existência das propriedades armazenadas no controlador) poderiam ser destacadas da camada atual e isoladas na camada do modelo. A aplicação da técnica poderia trazer ganhos ao expressar de forma mais compreensível o domínio, privilegiar separação de responsabilidades e favorecer reuso e testabilidade.
+
+O caso pode ainda ficar mais visível à medida que imaginemos outros casos de uso para o aplicativo, como no caso de haver a representação de turnos para o jogo em partidas e aferição de um ganhador, trazendo a ideia de dois ou mais _players_ para o domínio. Toda a implementação dessa lógica na camada de controle poderia representar sérios riscos para o entendimento e manutenção do código.
+
+> Nota: Vale destacar que `valorDoTurnoAnterior` e `valorDoTurnoAtual` (e sua gestão) já representam os dados que dão sentido à existência do aplicativo, ou em outras palavras, já configuram seu modelo, mesmo que trabalhados através de tipos simples providos pelo Swift e sem uma separação visível desta camada. Se o domínio do problema contemplado for tão simples e fechado como o exemplo, é perfeitamente aceitável que a implementação permaneça da forma como está atualmente, desde que isso seja acompanhado por completo conhecimento dos trade-offs que ela possa oferecer. É importante ter em mente que a adoção de qualquer padrão de design ou arquitetura para um projeto deve ser feita de modo a resolver um problema, e para tanto, deve ser verificado como um problema real alguma situação da implementação. Aplicar padrões de design sem a mínima reflexão sobre ganhos e perdas, pode tornar mais difícil o processo de desenvolvimento e aumentar a complexidade do código produzido, com pouco resultado do outro lado.
+>
+> Isso posto, para a maior parte das aplicações simples ainda é aconselhável uma separação mínima de responsabilidades, e como objetivo do material teórico, faremos isso pela perspectiva do padrão arquitetural MVC.
+
+Podemos construir um tipo customizado para representar o jogo de dados, atingindo uma separação mais clara para a camada de modelo.
+
+``` swift
+
+// JogoDeDados.swift
+
+import Foundation
+
+fileprivate class Dado {
+    static func joga() -> Int {
+        return Int.random(in: 1...6)
+    }
+}
+
+struct JogoDeDados {
+    private(set) var valorDoTurnoAnterior: Int = 0
+    private(set) var valorDoTurnoAtual: Int = 0
+    
+    mutating func executa() {
+        valorDoTurnoAnterior = valorDoTurnoAtual
+        valorDoTurnoAtual = Dado.joga()
+    }
+}
+```
+
+Com a classe de modelo acima, o código para o controlador pode ser atualizado para o que segue abaixo.
+
+``` swift
+
+import UIKit
+
+class JogoDeDadosViewController: UIViewController {
+
+    @IBOutlet weak var valorAnteriorLabel: UILabel!
+    @IBOutlet weak var valorAtualLabel: UILabel!
+    
+    var jogo: JogoDeDados = .init() {
+        didSet {
+            atualizaView()
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        atualizaView()
+    }
+
+    @IBAction func botaoPlayPressionado(_ sender: UIButton) {
+        jogo.executa()
+    }
+    
+    func atualizaView() {
+        valorAnteriorLabel.text = String(describing: jogo.valorDoTurnoAnterior)
+        valorAtualLabel.text = String(describing: jogo.valorDoTurnoAtual)
+    }
+}
+
+```
+
+A implementação atual demonstra com clareza a distinção dos papéis do padrão arquitetural MVC e o posição do controlador como um agente mediador entre as atualizações necessárias nas camadas de _view_ e modelo. Os objetos de _view_ (UILabel, no exemplo) são por natureza totalmente reutilizáveis, assim como a representação de modelo construída.
+
+> Nota: A implementação para o controlador acima pode sugerir uma dependência do controlador para com o modelo. Por mais necessária e inevitável que ela seja, em certas situações se faz necessário suavizar a forma como a dependência é resolvida. Veremos no material teórico Injeção de Dependências via Contrutores e Propriedades desta seção, formas de gerir esse acoplamento entre módulos.
