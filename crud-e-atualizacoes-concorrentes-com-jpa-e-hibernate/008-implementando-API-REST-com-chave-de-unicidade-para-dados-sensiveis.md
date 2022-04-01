@@ -251,7 +251,7 @@ public interface DestinatarioRepository extends JpaRepository<Destinatario, Long
 }
 ```
 
-Pronto! Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes do CPF gerados:
+Pronto! Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes dos CPFs gerados:
 
 ```sql
 SELECT d.*
@@ -264,6 +264,11 @@ id|nome        |telefone      |cpf           |hash_do_cpf                       
  2|Jordi       |+5511966665555|413.***.***-91|4be3202f41835f914061636c7bd06006ccfda7177ff95411c04335dd5a9c21c2|
 ```
 
+Se tentarmos cadastrar um novo destinatário com um CPF já existente a aplicação recusará a operação devido a validação de unicidade no controller ou, em caso de alta concorrência, via validação de contratint `UNIQUE` no banco de dados.
+
+Se você reparou, após implementarmos encriptação via hash o atributo CPF anonimizado parece não ter mais utilidade para nós. Contudo, mantê-lo anonimizado na tabela pode ajudar em determinados fluxos de negócio, em relatórios internos, ou confirmação de autenticidade por parte do usuário etc. De qualquer forma, lembre-se de consultar o especialista de negócio do seu time sobre a necessidade de manter a informação dentro do sistema.
+
+Como vimos, graças a encriptação do CPF não só garantimos a unicidade de um destinatário de acordo com os requisitos de negócio como também evitamos armazenar dados sensíveis de forma aberta no banco de dados.
 
  ## Dicas do especialista
 
