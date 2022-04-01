@@ -201,7 +201,7 @@ public class CpfUtils {
 }
 ```
 
-O próximo passo é alterar nossa entidade `Destinatario` com um novo atributo para armazenar o hash do CPF, que chamaremos de `hashDoCpf`; além disso, precisamos mover a constraint de unicidade do atributo `cpf` para este novo atributo. Por fim, não podemos esquecer de alterar o construtor da entidade para encriptar o CPF informado e atribui-lo ao atributo:
+O próximo passo é alterar nossa entidade `Destinatario` com um novo atributo para armazenar o hash do CPF, que chamaremos de `hashDoCpf`; além disso, precisamos mover a constraint de unicidade do atributo `cpf` para este novo atributo. Por fim, não podemos esquecer de alterar o construtor da entidade para encriptar o CPF informado e atribui-lo ao novo atributo:
 
 ```java
 @Entity
