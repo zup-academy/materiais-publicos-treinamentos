@@ -268,7 +268,7 @@ Se tentarmos cadastrar um novo destinatário com um CPF já existente a aplicaç
 
 Se você reparou, após implementarmos encriptação via hash o atributo CPF anonimizado parece não ter mais utilidade para nós. Contudo, mantê-lo anonimizado na tabela pode ajudar em determinados fluxos de negócio, em relatórios internos, ou confirmação de autenticidade por parte do usuário etc. De qualquer forma, lembre-se de consultar o especialista de negócio do seu time sobre a necessidade de manter a informação dentro do sistema.
 
-Como vimos, graças a encriptação do CPF não só garantimos a unicidade de um destinatário de acordo com os requisitos de negócio como também evitamos armazenar dados sensíveis de forma aberta no banco de dados.
+Como vimos, graças a encriptação do CPF não só garantimos a unicidade dos destinatários de acordo com os requisitos de negócio como também evitamos armazenar dados sensíveis de forma aberta no banco de dados.
 
  ## Dicas do especialista
 
