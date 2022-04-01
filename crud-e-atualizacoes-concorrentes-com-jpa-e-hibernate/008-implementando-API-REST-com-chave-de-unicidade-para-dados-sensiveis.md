@@ -2,7 +2,7 @@
 
 Nesse conteúdo veremos como podemos implementar uma API REST responsável por cadastrar um registro único no sistema, onde sua chave de unicidade será uma informação sensível que não pode ser armazenada abertamente no banco de dados. Vamos partir da construção da API desde a escrita do controller via módulo Spring Web até a persistência com Spring Data, JPA e Hibernate.
 
-## Cadastrando endereço de entrega do cliente
+## Cadastrando destinatários para entregas de pedidos
 
 Imagine que tenhamos um sistema que faz entregas de refeições de restaurantes na cidade, e para efetuar uma entrega ela precisa das informações do destinátario, como nome, telefone, endereço, além de manter histórico de entregas etc. Desse modo, o desenvolvedor(a) do time criou uma classe `Destinatario` para representar um destinatário dentro do sistema, onde essa classe é mapeada via anotações da JPA, como abaixo:
 
