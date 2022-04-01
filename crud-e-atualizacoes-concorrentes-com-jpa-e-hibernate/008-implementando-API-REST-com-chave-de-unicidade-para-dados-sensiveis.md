@@ -127,7 +127,7 @@ id|nome        |telefone      |cpf           |
  2|Jordi       |+5511966665555|413.***.***-91|
 ```
 
-Nossa solução de fato funcionou como esperado, mas o que acontece se tentarmos cadastrar 2 destinatários com os CPFs abaixo?
+Nossa solução de fato funcionou como esperado, mas o que acontece se tentarmos cadastrar 2 destinatários com os CPFs ligeiramente parecidos, como abaiaxo:
 
 ```
 Yuri   , 540.602.880-47
