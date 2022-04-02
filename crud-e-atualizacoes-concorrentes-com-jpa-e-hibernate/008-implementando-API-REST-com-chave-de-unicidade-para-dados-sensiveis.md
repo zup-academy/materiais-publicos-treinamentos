@@ -160,9 +160,9 @@ Uma das principais características de uma função Hash é que ela é uma opera
 
 Outra característica importante deste algoritimo, é que um hash gerado é sempre único, ou seja, dois valores quaisquer nunca gerarão o mesmo hash. Se por acaso isso acontecer, nós chamamos de colisão. Embora seja possível acontecer, é extramente improvável, por esse motivo quanto melhor o algoritimo de Hash mais remota são as chances de colisão.
 
-Falando em algoritimos, existem diversos algoritimos de Hash, e, sem dúvida, os mais conhecidos são MD5 e SHA-256. Embora o MD5 ainda seja bastante utilizado por sistemas a fora, seu uso é desencorajado no âmbito de proteção de dados há alguns bons anos por questões de vulnerabilidades de segurança. Por esse motivo, recomenda-se favorecer o uso de algortimos da familia SHA (Secure Hash Algorithm), que geram hashes mais fortes e com menores chances de conflito.
+Falando em algoritimos, existem diversos algoritimos de Hash, e, sem dúvida, os mais conhecidos são MD5 e SHA-256. Embora o MD5 ainda seja bastante utilizado por sistemas a fora, seu uso é desencorajado no âmbito de proteção de dados (como senhas e PINs) há alguns bons anos por questões de vulnerabilidades de segurança. Por esse motivo, recomenda-se favorecer o uso de algortimos da familia SHA (Secure Hash Algorithm), que geram hashes mais fortes e com menores chances de conflito.
 
-No mundo Java, podemos usar o algoritimo SHA3-256, na qual foi adicionado a plataforma em sua versão 9. Diferentemente do MD5, que gera hashes de 128 bits (16 bytes), esse algoritimo gera hashes de 256 bits (32 bytes). Para entender melhor o que estou tentando dizer, vamos gerar o hash do texto `"Zup Edu"` com ambos os algoritimos:
+No mundo Java, podemos usar o algoritimo SHA3-256, na qual foi adicionado a plataforma em sua versão 9. Diferentemente do MD5, que gera hashes de 128 bits (16 bytes), esse algoritimo gera hashes de 256 bits (32 bytes). Para entender melhor o que estou tentando dizer, vamos gerar o hash do texto `"Zup Edu"` com ambos os algoritimos e imprimir suas representações em hexadecimal:
 
 ```
 MD5     : c78f3f089f812efe2f94b133ff552b63
@@ -173,7 +173,7 @@ Você pode experimentar a geração de hashes com MD5, SHA3-256 e diversos outro
 
 ### Encriptando o CPF com SHA3-256
 
-Agora que você já entende como algoritimos Hash funcionam, vamos implementar nossa função hash para encriptar o CPF de um destinatário. Para isso, podemos implementar um método estático na classe `CpfUtils` que recebe uma `String` como entrada e devolve nosso hash gerado em formato textual (no caso, Hexadecimal):
+Agora que você já entende como algoritimos Hash funcionam, vamos implementar nossa função hash para encriptar o CPF de um destinatário. Para isso, vamos aproveitar a classe `CpfUtils` criada anteriormente e implementar um método estático que recebe uma `String` como entrada e devolve nosso hash gerado em formato textual (no caso, hexadecimal):
 
 ```java
 public class CpfUtils {
@@ -201,7 +201,7 @@ public class CpfUtils {
 }
 ```
 
-O próximo passo é alterar nossa entidade `Destinatario` com um novo atributo para armazenar o hash do CPF, que chamaremos de `hashDoCpf`; além disso, precisamos mover a constraint de unicidade do atributo `cpf` para este novo atributo. Por fim, não podemos esquecer de alterar o construtor da entidade para encriptar o CPF informado e atribui-lo ao novo atributo:
+De maneira similar a anonimização do CPF, temos que gerar o hash do CPF antes de gravar a entidade no banco de dados, para isso vamos alterar nossa classe `Destinatario` com um novo atributo para armazenar o hash do CPF, na qual chamaremos de `hashDoCpf`; além disso, precisamos mover a constraint de unicidade do atributo `cpf` para este novo atributo. Por fim, não podemos esquecer de alterar o construtor da entidade para encriptar o CPF informado e atribui-lo ao novo atributo:
 
 ```java
 @Entity
@@ -209,7 +209,7 @@ class Destinatario {
 
     // outros atributos
     
-    @Column(nullable = false)
+    @Column(nullable = false) // nao pode ser unico
     private String cpf
 
     @Column(nullable = false, unique = true) // unico
@@ -241,7 +241,7 @@ public ResponseEntity<?> cadastra(@RequestBody ...) {
 }
 ```
 
-Consequentemente, temos que alterar o Repository para adicionar o novo método `existsByHashDoCpf`:
+Consequentemente, temos que alterar a classe Repository para adicionar o novo método de consulta:
 
 ```java
 @Repository
@@ -251,7 +251,7 @@ public interface DestinatarioRepository extends JpaRepository<Destinatario, Long
 }
 ```
 
-Pronto! Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes dos CPFs gerados:
+Pronto, não muito complicado, não é mesmo? Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes dos CPFs gerados:
 
 ```sql
 SELECT d.*
@@ -266,7 +266,7 @@ id|nome        |telefone      |cpf           |hash_do_cpf                       
 
 Se tentarmos cadastrar um novo destinatário com um CPF já existente a aplicação recusará a operação devido a validação de unicidade no controller ou, em caso de alta concorrência, via validação de contratint `UNIQUE` no banco de dados.
 
-Se você reparou, após implementarmos encriptação via hash o atributo CPF anonimizado parece não ter mais utilidade para nós. Contudo, mantê-lo anonimizado na tabela pode ajudar em determinados fluxos de negócio, em relatórios internos, ou confirmação de autenticidade por parte do usuário etc. De qualquer forma, lembre-se de consultar o especialista de negócio do seu time sobre a necessidade de manter a informação dentro do sistema.
+Se você reparou, após implementarmos encriptação via hash o atributo CPF anonimizado parece não ter mais utilidade para nós. Contudo, mantê-lo anonimizado na tabela pode ajudar em determinados fluxos de negócio, em relatórios internos, ou fluxos de confirmação de autenticidade por parte do usuário etc. De qualquer forma, lembre-se de consultar o especialista de negócio do seu time sobre a necessidade de manter a informação dentro do sistema.
 
 Como vimos, graças a encriptação do CPF não só garantimos a unicidade dos destinatários de acordo com os requisitos de negócio como também evitamos armazenar dados sensíveis de forma aberta no banco de dados.
 
@@ -274,16 +274,33 @@ Como vimos, graças a encriptação do CPF não só garantimos a unicidade dos d
 
  ### Ajuste o tamanho da coluna de hash na tabela
 
- xxx
+Estamos armazenando o hash do CPF em uma coluna do tipo `Varchar(255)`, que é o default do Hibernate. Como temos certeza que um hash SHA3-256 terá sempre 32 bytes, podemos alterar o tamanho da coluna para `Varchar(64)`: defininos o tamanho como `64 chars` pois o hash não será armazenado em formato binário, mas sim textual, neste caso hexadecimal.
 
- ### Favoreça orientação a objetos em vez de CpfUtils
+Para configurar o tamanho da coluna, basta definir o atributo `length` da anotação `@Column`:
 
- xxx
+```java
+@Entity
+class Destinatario {
 
- ### Artigos que valem a pena a leitura
+    // outros atributos
+    
+    @Column(nullable = false, unique = true, length = 64)
+    private String hashDoCpf;
+
+}
+```
+
+Definir corretamente o tipo e tamanho da coluna ajuda o banco de dados: armazenamento em disco, caching em memória, indexação etc. Embora armazená-lo em formato texto não seja o ideal do ponto de vista de otimização, é suficiente para maioria das aplicações e contextos, principalmente quando não há um grande volume de dados. Em caso de dúvidas, sempre consulte o DBA ou especialista de negócio sobre seu contexto, volumes de dados etc.
+
+### Favoreça orientação a objetos em vez de CpfUtils
+
+xxx
+
+### Artigos que valem a pena a leitura
 
 - [Regular expressions in Java - Tutorial](https://www.vogella.com/tutorials/JavaRegularExpressions/article.html)
 - [Wiki: Data masking](https://en.wikipedia.org/wiki/Data_masking)
+- [Data Masking: 8 Techniques and How to Implement Them Successfully](https://satoricyber.com/data-masking/data-masking-8-techniques-and-how-to-implement-them-successfully/)
 - [Creating Hashes in Java](https://reflectoring.io/creating-hashes-in-java/)
 - [SHA-256 and SHA3-256 Hashing in Java](https://www.baeldung.com/sha-256-hashing-java)
 
