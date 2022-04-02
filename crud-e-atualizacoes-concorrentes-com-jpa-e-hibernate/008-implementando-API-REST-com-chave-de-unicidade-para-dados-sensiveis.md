@@ -72,7 +72,7 @@ De forma simplista, a idéia de Data Masking é mascarar ou anonimizar dados sen
 
 Essa é uma prática comum em sistemas financeiros de grandes bancos e fintechs, serviços e operações que envolvem o uso ou armazenamento de dados de cartão de crédito, contas digitais etc. Esse tipo de preocupação com os dados alheios se tornou ainda mais importante após a chegada da LGPD (Lei Geral de Proteção de Dados Pessoais), sancionada em agosto de 2018.
 
-Sabemos que precisamos anonimizar o CPF do destinatário, e para isso podemos escrever um algoritimo bastante simples que substitua alguns números do CPF por um caractere de coringa, como `'*'` ou `'x'`, ou seja, algo como:
+Sabemos que precisamos anonimizar o CPF do destinatário, e para isso podemos escrever um algoritimo simples que substitua alguns números do CPF por um caractere coringa, como `'*'` ou `'x'`, ou seja, algo como:
 
 ```
 691.915.220-72 -> 691.***.***-72
@@ -274,7 +274,7 @@ Como vimos, graças a encriptação do CPF não só garantimos a unicidade dos d
 
  ### Ajuste o tamanho da coluna de hash na tabela
 
-Estamos armazenando o hash do CPF em uma coluna do tipo `Varchar(255)`, que é o default do Hibernate. Como temos certeza que um hash SHA3-256 terá sempre 32 bytes, podemos alterar o tamanho da coluna para `Varchar(64)`: defininos o tamanho como `64 chars` pois o hash não será armazenado em formato binário, mas sim textual, neste caso hexadecimal.
+Estamos armazenando o hash do CPF em uma coluna do tipo `Varchar(255)`, que é o default do Hibernate. Como temos certeza que um hash SHA3-256 terá sempre 32 bytes, podemos alterar o tamanho da coluna para `Varchar(64)`: defininos o tamanho como 64 caracteres pois o hash não será armazenado em formato binário, mas sim textual, neste caso hexadecimal.
 
 Para configurar o tamanho da coluna, basta definir o atributo `length` da anotação `@Column`:
 
