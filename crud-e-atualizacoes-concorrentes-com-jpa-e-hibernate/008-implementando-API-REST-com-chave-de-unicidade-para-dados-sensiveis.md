@@ -320,7 +320,7 @@ class final CPF {
 }
 ```
 
-A idéia de tiny objects é que eles sejam criados para encapsular lógicas de negócios, garantir integridade dos dados, aplicar validações, conversões, formatações etc. Nem sempre eles são necessários, principalmente quando não há comportamentos para determinado dado, mas eles podem ser úteis outros cenários. O que estou querendo dizer é que seu uso em domínios triviais pode aumentar a complexidade do código sem trazer ganhos.
+A idéia de tiny objects é que eles sejam criados para encapsular lógicas de negócios, garantir integridade dos dados, aplicar validações, conversões, formatações etc. Eles podem ser bem úteis, mas nem sempre eles são necessários, principalmente quando não há comportamentos para determinado dado. O que estou querendo dizer, é que abusar deles em domínios triviais pode aumentar a complexidade do código sem trazer vantagens.
 
 ### Artigos que valem a pena a leitura
 
