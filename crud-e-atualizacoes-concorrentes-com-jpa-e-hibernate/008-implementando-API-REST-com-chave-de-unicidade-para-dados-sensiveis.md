@@ -292,9 +292,35 @@ class Destinatario {
 
 Definir corretamente o tipo e tamanho da coluna ajuda o banco de dados: armazenamento em disco, caching em memória, indexação etc. Embora armazená-lo em formato texto não seja o ideal do ponto de vista de otimização, é suficiente para maioria das aplicações e contextos, principalmente quando não há um grande volume de dados. Em caso de dúvidas, sempre consulte o DBA ou especialista de negócio sobre seu contexto, volumes de dados etc.
 
-### Favoreça orientação a objetos em vez de CpfUtils
+### Pensando de forma mais orientada a objetos
 
-xxx
+Criamos uma classe `CpfUtils` na aplicação para fazer a anonimização e hashing do número do CPF, contudo essa solução se trata de uma implementação producedural: separamos os dados de seus comportamentos. Idealmente poderíamos tirar proveito da orientação a objetos criando uma representação para CPF, como uma classe `CPF`, que não só armazenaria o número de um CPF como também encapsularia seus comportamentos.
+
+Esse tipo de classe para representar tipos pequenos e simples do domínio chamamos de **Tiny Objects**. Uma possível implementação para esta classe `CPF` **dentro do nosso contexto** poderia ser vista abaixo:
+
+```java
+@Embeddable
+class final CPF {
+
+    @Column(nullable = false)
+    private String numero;
+
+    @Column(nullable = false, unique = true, length = 64)
+    private String hash;
+
+    public CPF(String numero) {
+        this.numero = anonymize(numero);
+        this.hash   = hash(numero);
+    }
+
+    @Override
+    public String toString() {
+        return this.numero;
+    }
+}
+```
+
+A idéia de tiny objects é que eles sejam criados para encapsular lógicas de negócios, garantir integridade dos dados, aplicar validações, conversões, formatações etc. Nem sempre eles são necessários, principalmente quando não há comportamentos para determinado dado, mas eles podem ser úteis outros cenários. O que estou querendo dizer é que seu uso em domínios triviais pode aumentar a complexidade do código sem trazer ganhos.
 
 ### Artigos que valem a pena a leitura
 
