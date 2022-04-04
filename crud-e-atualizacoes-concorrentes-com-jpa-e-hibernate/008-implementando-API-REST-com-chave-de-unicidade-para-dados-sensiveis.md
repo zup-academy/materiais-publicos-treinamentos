@@ -294,13 +294,13 @@ Definir corretamente o tipo e tamanho da coluna ajuda o banco de dados: armazena
 
 ### Pensando de forma mais orientada a objetos
 
-Criamos uma classe `CpfUtils` na aplicação para fazer a anonimização e hashing do número do CPF, contudo essa solução se trata de uma implementação producedural: separamos os dados de seus comportamentos. Idealmente poderíamos tirar proveito da orientação a objetos criando uma representação para CPF, como uma classe `CPF`, que não só armazenaria o número de um CPF como também encapsularia seus comportamentos.
+Criamos uma classe `CpfUtils` na aplicação para fazer a anonimização e hashing do número de um CPF, contudo essa solução se trata de uma implementação producedural: separamos os dados de seus comportamentos. Não é que código procedural seja ruim, pois não é, contudo, idealmente poderíamos tirar proveito da orientação a objetos criando uma representação para CPF, como uma classe `CPF`, que não só armazenaria o número de um CPF como também encapsularia seus comportamentos.
 
 Esse tipo de classe para representar tipos pequenos e simples do domínio chamamos de **Tiny Objects**. Uma possível implementação para esta classe `CPF` **dentro do nosso contexto** pode ser vista abaixo:
 
 ```java
 @Embeddable
-class final CPF {
+public class CPF {
 
     @Column(nullable = false)
     private String numero;
@@ -317,6 +317,8 @@ class final CPF {
     public String toString() {
         return this.numero;
     }
+
+    // getters, equals e hashCode
 }
 ```
 
