@@ -251,7 +251,7 @@ public interface DestinatarioRepository extends JpaRepository<Destinatario, Long
 }
 ```
 
-Pronto, não muito complicado, não é mesmo? Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes dos CPFs gerados:
+Pronto, não foi muito complicado, não é mesmo? Agora, ao exercitarmos o endpoint de cadastro novamente a aplicação irá inserir os novos destinatários no banco, mas desta vez com seus respectivos hashes dos CPFs gerados:
 
 ```sql
 SELECT d.*
@@ -290,7 +290,7 @@ class Destinatario {
 }
 ```
 
-Definir corretamente o tipo e tamanho da coluna ajuda o banco de dados: armazenamento em disco, caching em memória, indexação etc. Embora armazená-lo em formato texto não seja o ideal do ponto de vista de otimização, é suficiente para maioria das aplicações e contextos, principalmente quando não há um grande volume de dados. Em caso de dúvidas, sempre consulte o DBA ou especialista de negócio sobre seu contexto, volumes de dados etc.
+Definir corretamente o tipo e tamanho da coluna ajuda o banco de dados: armazenamento em disco, caching em memória, indexação etc. Embora armazená-lo em formato texto não seja o ideal do ponto de vista de otimização, é suficiente para maioria das aplicações e contextos, principalmente quando não há um grande volume de dados. Em caso de dúvidas, sempre consulte o DBA ou especialista de negócio sobre seu contexto, volume de dados etc.
 
 ### Pensando de forma mais orientada a objetos
 
@@ -317,7 +317,7 @@ public class CPF {
     public String toString() {
         return this.numero;
     }
-
+    
     // getters, equals e hashCode
 }
 ```
