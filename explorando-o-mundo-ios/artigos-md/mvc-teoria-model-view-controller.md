@@ -216,3 +216,28 @@ class JogoDeDadosViewController: UIViewController {
 A implementação atual demonstra com clareza a distinção dos papéis do padrão arquitetural MVC e o posição do controlador como um agente mediador entre as atualizações necessárias nas camadas de _view_ e modelo. Os objetos de _view_ (UILabel, no exemplo) são por natureza totalmente reutilizáveis, assim como a representação de modelo construída.
 
 > Nota: A implementação para o controlador acima pode sugerir uma dependência do controlador para com o modelo. Por mais necessária e inevitável que ela seja, em certas situações se faz necessário suavizar a forma como a dependência é resolvida. Veremos no material teórico Injeção de Dependências via Contrutores e Propriedades desta seção, formas de gerir esse acoplamento entre módulos.
+
+### Separação de grupos e pastas
+
+A medida que começamos a estruturar nossas aplicações de acordo com um padrão arquitetural é comum que tenhamos alguns grupos de objetos separados por papéis, nos quais podemos ainda supor subdivisões quando necessário. Para favorecer então que estes objetos/arquivos sejam mais facilmente encontrados e que exista alguma semântica na organização de arquivos indicando as ideias de design, é importante a criação de pastas para cada grupo no projeto.
+
+Embora não exista uma regra específica de como dividir seus grupos e pastas, geralmente são encontradas algumas convenções para organização, e aqui vamos nos inspirar em uma delas.
+
+* Para que tenhamos uma separação clara dos objetos da camada de visualização seus arquivos devem ser dispostos em um grupo chamado `View/`
+* Assim como o item acima, os controladores mediadores para as cenas da aplicação devem também viver em um grupo específico. Para indicar a ideia de controlar o que ocorre no contexto de um cena (tela) da aplicação é comum manter os _View Controllers_ no grupo chamado `Scenes/`. Aqui podemos ainda, em aplicações de múltiplas telas, criar subgrupos para facilitar a separação de contexto, por exemplo, uma aplicação de contatos poderia ter um grupo `Scenes/ListaDeContatos/` assim como `Scenes/NovoContato/`, com os _View Controllers_ e outros arquivos de apoio contextualizados dentro dos diretórios.
+* Por último, os objetos que constituem a camada de modelo devem ser dispostos no grupo de nome `Models/`. Aqui um ponto importante comumente observado é que por se tratar de uma camada onde vivem uma série de grupos de objetos com responsabilidades adjacentes é possível definir subgrupos para cada um deles, ou mesmo, fazer com que no grupo `Models/` vivam apenas os modelos (ou entidades do domínio da aplicação) e que outros grupos sejam criados em um nível equivalente à `Models/` na raiz do grupo de base para o projeto. Por exemplo, `Models/`, `Network/`, `Commons/` e outros grupos. Seguiremos nos exemplos deste treino essa última ideia como convenção.
+
+> Nota: É possível que diferentes projetos na comunidade utilizem outras inspirações de design e/ou mesmo de separação de grupos e pastas, sendo muito importante que você adira ao padrão acordado junto às equipes dos projetos com os quais vá contribuir.
+
+Após a criação para os grupos e separação dos arquivos chegamos à seguinte organização:
+
+<p align="center">
+<img alt="Imagem com exemplo de organização de grupos e pastas" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-model-view-controller-grupos.png?raw=true" width="30%"/>
+</p>
+
+>Nota: É possível ainda ainda a criação de grupos lógicos, não apoiados por diretórios no sistema de arquivos. Isso pode ser especialmente útil para situações onde se deseja favorecer organização ao visualizar o projeto no _Project navigator_ do Xcode mas não se deseja que os arquivos sejam movidos para pastas específicas, por exemplo, por limitações do próprio projeto. Assim como _New Group_ com um clique com o botão direito no grupo base do projeto, é possível selecionar a opção _New Group without Folder_. Você pode, por exemplo, manter os arquivos como `AppDelegate.swift`, `SceneDelegate.swift`, `LaunchScreen.storyboard` e `Info.plist` - que precisam viver no diretório base do projeto por questões estruturais e de configuração - dentro de um grupo lógico _(New Group without Folder)_ chamado `Supportive Files/`.
+>
+>    <p align="center">
+>    <img alt="Imagem com exemplo de utilização de grupos lógicos no Xcode project" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-teoria-model-view-controller-grupos-logicos.jpg?raw=true" width="50%"/>
+>    </p>
+
