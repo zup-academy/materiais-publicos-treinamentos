@@ -192,20 +192,20 @@ class JogoDeDadosViewController: UIViewController {
     
     var jogo: JogoDeDados = .init() {
         didSet {
-            atualizaView()
+            atualizaView(para: jogo)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        atualizaView()
+        atualizaView(para: jogo)
     }
 
     @IBAction func botaoPlayPressionado(_ sender: UIButton) {
         jogo.executa()
     }
     
-    func atualizaView() {
+    func atualizaView(para jogo: JogoDeDados) {
         valorAnteriorLabel.text = String(describing: jogo.valorDoTurnoAnterior)
         valorAtualLabel.text = String(describing: jogo.valorDoTurnoAtual)
     }
