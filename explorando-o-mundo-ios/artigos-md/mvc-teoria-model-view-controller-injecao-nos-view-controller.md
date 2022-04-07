@@ -75,7 +75,7 @@ O erro informa que ao indicar um inicializador específico para o controlador - 
 
 Ao recorrer à documentação não temos muita informação adicional sobre a forma de construção, mas a saber, algo importante para a implementação atual, este é o inicializador utilizado pelo framework para criar o controlador cuja representação é definida pelo `Main.storyboard`. Ou seja, o inicializador idealizado para indicar a injeção da dependência, por padrão, não será utilizado, a menos que alteramos a forma como a aplicação é carregada, rompendo com algumas decisões do projeto com a _view_ baseada em _storyboards_ e invocando o _init_ adequado à mão.
 
-Outro ponto é que a assinatura do inicializador, como você já deve imaginar, não suporte alterações, caso você esteja se questionando sobre alternativas. Tentar se adaptar ao seu uso tende a nos levar de volta ao problema anterior:
+Outro ponto é que a assinatura do inicializador, como você já deve imaginar, não suporta alterações, caso você esteja se questionando sobre alternativas. Tentar se adaptar ao seu uso tende a nos levar de volta ao problema anterior:
 
 ``` swift
     init(jogo: JogoDeDados) {
@@ -95,7 +95,7 @@ Como já sabemos, os projetos deste treino utilizam as decisões do framework de
 
 O primeiro passo nesse sentido é remover os inicializadores idealizados na seção anterior. Mas isso de antemão já nos traz outro problema. Com a declaração da propriedade armazenada sendo feita atraves do _statement_ `var jogo: JogoDeDados`, o compilador exerce seu controle sobre a segurança da implementação e nos impede de obter um build para o aplicativo. O motivo já é conhecido: é preciso garantir que a propriedade seja inicializada de alguma forma, evitando que o objeto inicie seu ciclo de vida com `nil` para esta referência.
 
-O problema já indica um caminho alternativo. É possível trabalhar com um _optional_ de `JogoDeDados` como propriedade armazenada é indicar a injeção da dependência a partir do _setter_ para a propriedade.
+O problema já indica um caminho alternativo. É possível trabalhar com um _optional_ de `JogoDeDados` como propriedade armazenada e indicar a injeção da dependência a partir do _setter_ para a propriedade.
 
 ``` swift
 class JogoDeDadosViewController: UIViewController {
