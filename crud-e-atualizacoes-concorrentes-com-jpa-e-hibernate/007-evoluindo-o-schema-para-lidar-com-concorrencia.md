@@ -172,7 +172,7 @@ Veja como funcionaria a dinâmica agora.
         SELECT p.*, cp.*
           FROM postagem p 
     INNER JOIN curtida_em_postagem cp
-            ON p.curtida_em_postagem_id = cp.id    
+            ON p.id = cp.postagem_id    
      WHERE p.id = 1
 
      UPDATE curtida_em_postagem 
