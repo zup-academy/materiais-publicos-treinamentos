@@ -31,7 +31,7 @@ Por mais necessária que se faça a dependência, e que portanto, a diretriz par
 Podemos destacar dois aspectos principais pelos quais a abordagem de resolução local da dependência deveria ser evitada:
 
 * Acopla o controlador aos detalhes sobre a inicialização de uma instância do modelo: Caso o modelo tenha sua interface de inicialização alterada o código do controlador quebra;
-* Torna o controlador menos flexível e testável: Não existe uma forma de substituir a instância de `JogoDeDados` utilizada durante o ciclo de vida da tela, seja para favorecer que por razões de fluxo de utilização se possa receber uma instância de um controlador anterior (por exemplo, que configuraria uma partida com número de turno e jogadores, numa evolução do domínio), seja para favorecer a utilização de mocks caso seja necessário testar o comportamento em isolamento.
+* Torna o controlador menos flexível e testável: Não existe uma forma de substituir a instância de `JogoDeDados` utilizada pelo controlador em seu ciclo de vida, seja para favorecer que por razões de fluxo de utilização se possa receber uma instância de um controlador anterior (por exemplo, que configuraria uma partida com número de turno e jogadores, numa evolução do domínio), seja para favorecer a utilização de mocks caso seja necessário testar o comportamento em isolamento.
 
 A aplicação do design pattern de injeção de dependências pode ajudar a implementação do controlador.
 
