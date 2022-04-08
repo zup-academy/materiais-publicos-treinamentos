@@ -23,7 +23,7 @@ Ou seja, utilizamos de métricas e monitoramento para identificar problemas, ent
 Podemos precisar saber se uma aplicação esta respondendo ou até entender o quanto de memória disponível um servidor possui.
 Podemos monitorar a quantidade de erros, entender o tempo que leva para uma resposta ser processada em determinado fluxo.
 
-Com isso no decorrer do tempo curgiram ferramentas especializadas e coletar e armazenar métricas, além de registrar alertas para cenários configurados.
+Com isso no decorrer do tempo surgiram ferramentas especializadas em coletar e armazenar métricas, além de registrar alertas para cenários configurados.
 
 Vamos analisar algumas delas no decorrer desse módulo.
 
