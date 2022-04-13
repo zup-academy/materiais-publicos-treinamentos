@@ -1,4 +1,12 @@
-Arquivo Original : https://www.zup.com.br/blog/spring-actuator 
+#### Cópia do artigo : https://www.zup.com.br/blog/spring-actuator 
+
+# Atenção
+
+O artigo abaixo é baseado em uma versão anterior a 2.6 do Spring Actuator, então é importante que você leia a documentação oficial e acompanhe as alteraçoes.
+
+Link da documentação da ultima versão : https://docs.spring.io/spring-boot/docs/current/actuator-api/htmlsingle/#overview
+
+Se quando você consumir esse conteúdo a versão estiver alterada por favor procure na documentação oficial quais ajustes foram realizados.
 
 ## Afinal, o que é Spring Actuator?
 Antes de começarmos a falar sobre o que é o Spring Actuator, vamos falar sobre o significado de Actuator.
