@@ -349,3 +349,8 @@ id capitulo: 1
 ```
 
 Podemos concluir que para casos onde precisamos que uma persistência seja feita antes do termino da transação é mais indicado que deixamos qua a JPA/Hibernate identifiquem qual operação seja propagada.
+
+## Referencias
+
+- [How do persist and merge work in JPA](https://vladmihalcea.com/jpa-persist-and-merge/)
+- [A beginner’s guide to entity state transitions with JPA and Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/)
