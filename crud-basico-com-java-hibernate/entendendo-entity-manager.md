@@ -340,7 +340,7 @@ Dessa forma, recebemos no console a seguinte mensagem:
 id capitulo: 1
 ```
 
-Podemos concluir que para casos onde precisamos que a persistência seja feita antes do termino da transação é mais indicado que deixarmos que a JPA decida qual a operação mais apropriada seja propagada. Não à toa, uma das maiores referências de JPA e Hibernate, Vlad Mihalcea, tem a mesma opinião:
+Podemos concluir que para casos onde precisamos que a persistência seja feita antes do termino da transação é mais indicado deixarmos que **a JPA decida qual a operação mais apropriada seja propagada**. Não à toa, uma das maiores referências de JPA e Hibernate, Vlad Mihalcea, tem a mesma opinião:
 
 > While a save method might be convenient in some situations, in practice, you should never call `merge` for entities that are either new or already managed. As a rule of thumb, you shouldn’t be using `save` with JPA. For new entities, you should always use `persist`, while for detached entities you need to call `merge`. **For managed entities, you don’t need any save method because Hibernate automatically synchronizes the entity state with the underlying database record.**
 
