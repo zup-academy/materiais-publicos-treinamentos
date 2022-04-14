@@ -10,7 +10,7 @@ A JPA disponibiliza o `EntityManager` que é uma abstração que nos permite rea
 
 - `Detached`: É quando o Contexto de Persistência é encerrado, e as determinadas entidades não estão mais em sincronia com banco, isso quer dizer que qualquer alteração feita posteriormente não será propagada para o banco;
 
-- `Removed`: Ao removermos uma entidade, ela não é de fato deletada do banco, mas apenas marcada como removida dentro do Contexto de Persistência, e, em um momento oportuno, o Hibernate se encarrega de sincronizar com o banco via operação de `DELETE`.
+- `Removed`: Ao removermos uma entidade, ela não é de fato deletada do banco, mas apenas marcada como removida dentro do Contexto de Persistência, e, em um momento oportuno, o Hibernate se encarrega de sincronizar com o banco via operação de `DELETE`;
 
 Para que a entidade transite entre os estados, devemos utilizar os metodos do `EntityManager`, veja o diagrama abaixo: 
 
