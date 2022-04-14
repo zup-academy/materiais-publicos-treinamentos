@@ -262,7 +262,7 @@ public void devePropagarOperacaoPersist(){
 Já quando aplicamos o metodo `persist` observamos que o objeto livro tem um id atributo a ele, e que sua instancia é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo `Contexto de Persistência`.
 
 ## Porém se desejamos que a JPA/Hibernate identifique qual operação usar para sincronizar com banco o que acontece?
-
+Quando estamos realizando mudanças em uma entidade dentro de um escopo Transacional e queremos que a JPA/Hibernate, identifique as mudanças e imediatamente propague as mudanças ao BD, podemos utilizar o metodo `flush()` do EntityManager. Este metodo disparará um mecanismo de checkagem de operações e por si decidirá se propagara o metodo `merge()` ou `persist()`.
 
 ```java
 @Test
@@ -285,5 +285,67 @@ public void deveSincronizarComBanco(){
 
 }
 ```
-A JPA/Hibernate identifica que a operação de `persist` deve ser propagada, e dado a isso, temos nossa referência atualizada. Isso quer dizer que o objeto capitulo agora é gerenciado, e que tem o id atribuito ao mesmo.
+No caso acima a JPA/Hibernate identifica que a operação de `persist` deve ser propagada, e dado a isso, temos nossa referência atualizada. Isso quer dizer que o objeto capitulo agora é gerenciado, e que tem o id atribuito.
 
+## E quando falamos de Spring Data JPA, como funciona os metodos `save()` e `saveAndFlush()`
+
+Entender o comportamento dos metodos `save` e `saveAndFlush` nos permite extrair o maximo deles em nosso dia a dia. Abaixo veremos como cada um funciona.
+
+  
+- `save()`: primeiro é feito uma verificação se a entidade esta no estado `Transient`, caso esteja é feito uma chamada do metodo `entityManager.persist()`. Caso contrario é feito uma chamada do metodo `entityManager.merge()`.
+
+- `saveAndFlush()`: primeiramente é chamado o metodo save, e após é feito a chamada do metodo `entityManager.flush()` que esta encapsulado no metodo `flush()` do repository.
+
+
+E se uma entidade filha em estado **`Transient`**  é adicionada a uma entidade pai que esta no estado **`Managed`**, onde tem-se uma propagação em cascata de **`PERSIST`** e/ou **`MERGE`**, e a entidade pai recebe a chamada do metodo `save()` ou `saveAndFlush()`, a JPA/Hibernate identifica que a operação merge deve ser propagada, e quando isso é feito a referência em memoria do objeto da entidade filha não é atualizado. veja o exemplo abaixo.
+
+```java
+@Transactional
+public void adicionarCapituloALivro(Long idLivro){
+    Livro livro = repository.findById(idLivro)
+                        .orElseThrow(() -> new LivroNaoExistenteException("Livro não cadastrado"));
+
+    Capitulo capitulo = new Capitulo("Segregação de Interface");
+
+    livro.adicionar(capitulo);
+
+    repository.saveAndFlush(livro);
+
+    system.out.println("id capitulo: "+ capitulo.getId());
+    
+} 
+```
+
+recebemos no console a seguinte mensagem.
+
+```
+id capitulo: null
+```
+
+E para que a gente consiga obter este id, devemos solicitar que o mecanismo de checagem da JPA/Hibernate decida qual operação propagar quando pedimos para que sincronize ao banco as mudanças. Então substituimos a chamada do metodo  `saveAndFlush()` pelo `flush()`.
+
+
+```java
+@Transactional
+public void adicionarCapituloALivro(Long idLivro){
+    Livro livro = repository.findById(idLivro)
+                        .orElseThrow(() -> new LivroNaoExistenteException("Livro não cadastrado"));
+
+    Capitulo capitulo = new Capitulo("Segregação de Interface");
+
+    livro.adicionar(capitulo);
+
+    repository.flush();
+
+    system.out.println("id capitulo: "+ capitulo.getId());
+    
+} 
+```
+
+recebemos no console a seguinte mensagem.
+
+```
+id capitulo: 1
+```
+
+Podemos concluir que para casos onde precisamos que uma persistência seja feita antes do termino da transação é mais indicado que deixamos qua a JPA/Hibernate identifiquem qual operação seja propagada.
