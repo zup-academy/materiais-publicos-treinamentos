@@ -238,13 +238,13 @@ public void devePropagarOperacaoPersist() {
 
 Já quando aplicamos o metodo `persist` observamos que o objeto `capitulo` tem um ID atribuido a ele, e que sua instância é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo Contexto de Persistência. 
 
-Embora a entidade `livro` seja managed, a JPA ignora o comando `persist` para ela, porém propaga a operação em cascata `PERSIST` para suas entidades filhas. Mas disparar `persist` para adicionar uma entidade filha não faz muito sentido, não é mesmo?
+Como a entidade `livro` é managed a JPA ignora o comando `persist` para ela, porém propaga a operação em cascata `PERSIST` para suas entidades filhas. Mas disparar `persist` para adicionar uma entidade filha não faz muito sentido, não é mesmo?
 
 ## Deixando a JPA decidir como propagar as operações em cascata
 
 Como sabemos, toda entidade em estado `Managed` é gerenaciada pela JPA, ou seja, qualquer alteração feita na entidade é detectada pelo contexto de persistência e sincronizada com o banco de dados. Esse mecanismo de detecção e sincronização é chamado de **Dirty Checking**, ou do português, Checagem de Sujeira. O dirty checking pode ocorrer em alguns momentos no ciclo de vida de uma entidade, mas geralmente ele vai ocorrer no último momento: no commit da transação.
 
-A verdade é que no commit da transação a JPA gera os comandos SQL de acordo com as mudanças nas entidades enfileiras em memoria e envia para o banco de dados, e, só então, finaliza com o comando `COMMIT`. Essa geração de comandos SQL que são enviadas para o banco é chamada de **Flushing**, e podemos dispara-la manualmente através do método `flush` da `EntityManager` quando necessário:
+A verdade é que no commit da transação a JPA gera os comandos SQL de acordo com as mudanças nas entidades em memoria e envia para o banco de dados, e, só então, finaliza com o comando `COMMIT`. Essa geração de comandos SQL que são enviadas para o banco é chamada de **Flushing**, e podemos dispara-la manualmente através do método `flush` da `EntityManager` quando necessário:
 
 ```java
 manager.getTransaction().begin(); // inicia a transação
@@ -259,7 +259,7 @@ livro.setTitulo("outro novo titulo");
 manager.getTransaction().commit(); // gera outro UPDATE, envia para o banco e comita a transação
 ```
 
-Agora, para entender melhor como a JPA decide qual operação em cascata propagar ao fazer flushing explicito ou comitar a transação, basta olhar o código de teste a seguir:
+Agora, para entender melhor como a JPA decide qual operação em cascata propagar ao fazer flushing explicito antes do fim da transação, basta olhar o código de teste a seguir:
 
 ```java
 @Test
@@ -283,7 +283,7 @@ public void deveSincronizarComBanco() {
 }
 ```
 
-No caso acima a JPA/Hibernate detecta que a entidade `livro` foi alterada, identifica que um novo `capitulo` foi adicionado a coleção e por fim decide propagar a operação `PERSIST` em vez de `MERGE`. Por esse motivo, isso quer dizer que o objeto `capitulo` agora é gerenciado (`Managed`). E, geralmente, este é o comportamento que esperamos.
+No caso acima a JPA/Hibernate detecta que a entidade `livro` foi alterada, identifica que um novo `capitulo` transient foi adicionado a coleção e por fim decide propagar a operação `PERSIST` em vez de `MERGE`. Por esse motivo, isso quer dizer que o objeto `capitulo` agora é gerenciado (`Managed`). E, geralmente, este é o comportamento que esperamos.
 
 ## E quando falamos de Spring Data JPA, como funciona os metodos `save()` e `saveAndFlush()`
 
@@ -312,7 +312,7 @@ public <S extends T> S save(S entity) {
 
 Para entidades simples talvez não faça tanta diferença, pois geralmente todos os atributos do objeto estão preenchidos no momento da invocação do Repository, mas pode se tornar um problema quando temos entidades com coleçoões filhas e operações em cascata.
 
-Nesse cenário, mesmo utilizando os métodos `save` e `saveAndFlush` do Repository podemos cair no problema, como abaixo: 
+Imagine por exemplo que precisamos adicionar uma nova entidade filha em uma entidade pai já existente, mas antes de comitar a transação gostaríamos de ter o ID gerado da entidade filha em mãos para gerar uma URL, notificar outro sistema externo, logar em arquivo etc. Nesse cenário, mesmo utilizando os métodos `save` e `saveAndFlush` do Repository podemos cair no problema, como abaixo: 
 
 ```java
 @Transactional
@@ -362,7 +362,7 @@ Dessa forma, recebemos no console a seguinte mensagem:
 id capitulo: 1
 ```
 
-Agora, mesmo sem invocar qualquer método do Repository, o mecanismo de Dirty Checking da JPA detectou as mudanças na entidade managed e disparou suas respectivas atualizações corretamente, propagando as operações em cascada de acordo com o estado individual das entidades filhas existentes na coleção.
+Agora, mesmo sem invocar os métodos `save` ou `saveAndFlush` do Repository, o mecanismo de Dirty Checking da JPA detectou as mudanças na entidade managed e disparou suas respectivas atualizações corretamente, propagando as operações em cascada de acordo com o estado individual das entidades filhas existentes na coleção.
 
 Podemos concluir que para casos onde precisamos que a persistência seja feita antes do termino da transação é mais indicado deixarmos que **a JPA decida qual a operação mais apropriada seja propagada**. Não à toa, uma das maiores referências de JPA e Hibernate, Vlad Mihalcea, tem a mesma opinião:
 
@@ -370,10 +370,10 @@ Podemos concluir que para casos onde precisamos que a persistência seja feita a
 
 ## Concluindo
 
-Embora tenhamos dado uma volta para que você entenda alguns aspectos importantes da JPA e Hibernate, é importante que você termine essa leitura com estes pontos de atenção:
+Sabemos é que este foi um conteúdo denso, e embora tenhamos dado uma volta para que você entenda alguns aspectos importantes da JPA e Hibernate, é importante que você termine essa leitura com estes pontos de atenção:
 
 1. Sempre use `persist` para inserir novas entidades (`Transient`);
-2. Utilize `merge` somente para entidades `Detached`;
+2. Utilize `merge` somente em entidades `Detached`;
 3. Em entidades `Managed`, favoreça o mecanismo de Dirty Checking;
 4. Utilize `persist` ou `merge` em entidades `Managed` somente no caso de você saber exatamente o que está fazendo: propagar operações em cascata para entidades filhas;
 
