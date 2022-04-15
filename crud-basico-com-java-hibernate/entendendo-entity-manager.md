@@ -380,7 +380,7 @@ Sabemos é que este foi um conteúdo denso, e embora tenhamos dado uma volta par
 1. Sempre use `persist` para inserir novas entidades (`Transient`);
 2. Utilize `merge` somente em entidades `Detached`;
 3. Em entidades `Managed`, favoreça o mecanismo de Dirty Checking;
-4. Utilize `persist` ou `merge` em entidades `Managed` somente no caso de você saber exatamente o que está fazendo: propagar operações em cascata específica para entidades filhas;
+4. Utilize `persist` ou `merge` em entidades `Managed` somente quando você sabe exatamente o que está fazendo: propagar operação em cascata específica para entidades filhas;
 
 
 ## Referências
