@@ -130,13 +130,12 @@ Se ambos os métodos `persist` e `merge` inserem entidades no banco de dados, po
 
 A verdade é que podemos sim utilizar o `merge` para inserir, contudo isso **não é recomendado**. Idealmente devemos usar o método `persist` para inserir novos objetos no banco de dados, e usar o método `merge` para reanexar objetos ao contexto de persistência. Repare que, como desenvolvedor(a), **seu papel é transitar todas os objetos para `Managed`** ao trabalhar com JPA e Hibernate.
 
-Um dos problemas de usar `merge` para inserir objetos no banco tem a ver com operações em cascata e impactos de performance. Quando uma entidade possui relacionamentos com operações em cascata habilitado, pode ocorrer comportamentos inesperados ao propagar a operação `MERGE`. Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge`. 
+Um dos problemas de usar `merge` para inserir objetos no banco tem a ver performance: maior overhead para persistir entidades, especialmente em cascata. Além disso, quando uma entidade possui relacionamentos com operações em cascata habilitado, ao propagar a operação `MERGE` pode ocorrer comportamentos que são confusos para o desenvolvedor(a). Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge` em operações em cascata e ver alguns detalhes. 
 
-## Como funciona a propagação em Cascasta dos metodos `persist` e `merge`
+## Como funciona a propagação em cascasta dos metodos `persist` e `merge`
 
 A JPA/Hibernate oferece atráves de mapeamento a possibilidade de propagar em cascata as operações do `EntityManager` para os relacionamentos de uma entidade.
 Para tirar proveito deste recurso em um determinado relacionamento devemos junto a anotação de cardinalidade, definir as operações no atributo `cascade`. Veja um exemplo abaixo:
-
 
 ```java
 @Entity
@@ -208,11 +207,13 @@ public void devePropagarOperacaoMerge() {
 }
 ```
 
-Observe que o objeto `capitulo` não tem sua referência atualizada, porém se percorremos a coleção de capitulos de um `livro` encontramos a referência atualizada, afinal o objeto `livro` está `Managed`. Isso acontece pois o comando `merge` da `EntityManager` não altera o objeto passado como referência, seja este objeto passado diretamente para o método `merge` ou via operações em cascata.
+Observe que o objeto `capitulo` não tem sua referência atualizada, porém se percorremos a coleção de capitulos do `livro` encontramos a referência atualizada, afinal o objeto `livro` está `Managed`. Isso acontece pois o comando `merge` da `EntityManager` não altera o objeto passado como referência, seja este objeto passado diretamente para o método `merge` ou via operações em cascata.
 
 Também observamos que as instâncias dos capitulos **não** são iguais, e o objeto `capitulo` passado como referência não está presente no Contexto de Persistência.
 
 ### Propagando operações em relacionamentos utilizando o `EntityManager.persist()`
+
+Apesar de não fazer muito sentido, vamos executar mesmo código acima porém usando `persist` em vez de `merge` e tentar entender como as operações em cascata são propagadas:
 
 ```java
 @Test
@@ -236,9 +237,9 @@ public void devePropagarOperacaoPersist() {
 }
 ```
 
-Já quando aplicamos o metodo `persist` observamos que o objeto `capitulo` tem um ID atribuido a ele, e que sua instância é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo Contexto de Persistência. 
+Desta vez, ao invocar o metodo `persist` observamos que o objeto `capitulo` tem um ID atribuido, e que sua instância é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo Contexto de Persistência. 
 
-Como a entidade `livro` é managed a JPA ignora o comando `persist` para ela, porém propaga a operação em cascata `PERSIST` para suas entidades filhas. Mas disparar `persist` para adicionar uma entidade filha não faz muito sentido, não é mesmo?
+Se a entidade `livro` é managed, invocar `persist` não deveria disparar um erro? Na verdade não, pois como a entidade `livro` é managed a JPA ignora o comando `persist` para ela, porém propaga a operação em cascata `PERSIST` para suas entidades filhas. Mas disparar `persist` em uma entidade pai para adicionar uma entidade filha não faz muito sentido, não é mesmo?
 
 ## Deixando a JPA decidir como propagar as operações em cascata
 
@@ -254,7 +255,7 @@ livro.setTitulo("novo titulo");
 
 manager.flush(); // gera UPDATE e envia para o banco
 
-livro.setTitulo("outro novo titulo");
+livro.setDescricao("uma descrição elaborada do livro...");
 
 manager.getTransaction().commit(); // gera outro UPDATE, envia para o banco e comita a transação
 ```
@@ -283,7 +284,9 @@ public void deveSincronizarComBanco() {
 }
 ```
 
-No caso acima a JPA/Hibernate detecta que a entidade `livro` foi alterada, identifica que um novo `capitulo` transient foi adicionado a coleção e por fim decide propagar a operação `PERSIST` em vez de `MERGE`. Por esse motivo, isso quer dizer que o objeto `capitulo` agora é gerenciado (`Managed`). E, geralmente, este é o comportamento que esperamos.
+No caso acima a JPA/Hibernate detecta que a entidade `livro` foi alterada, identifica que um novo `capitulo` foi adicionado a coleção e por fim decide propagar a operação `PERSIST` em vez de `MERGE`: afinal, o entidade filha é `Transient`. A partir de agora, o objeto `capitulo` recem-inserido é anexado ao contexto de persitência e gerenciado (`Managed`) pela JPA. E, geralmente, este é o comportamento que esperamos.
+
+Percaba que a JPA é esperta o suficiente para disparar as operações em cascata de acordo com o estado individual de cada entidade filha. Deveríamos confiar nela na maioria gritante das vezes.
 
 ## E quando falamos de Spring Data JPA, como funciona os metodos `save()` e `saveAndFlush()`
 
@@ -375,7 +378,7 @@ Sabemos é que este foi um conteúdo denso, e embora tenhamos dado uma volta par
 1. Sempre use `persist` para inserir novas entidades (`Transient`);
 2. Utilize `merge` somente em entidades `Detached`;
 3. Em entidades `Managed`, favoreça o mecanismo de Dirty Checking;
-4. Utilize `persist` ou `merge` em entidades `Managed` somente no caso de você saber exatamente o que está fazendo: propagar operações em cascata para entidades filhas;
+4. Utilize `persist` ou `merge` em entidades `Managed` somente no caso de você saber exatamente o que está fazendo: propagar operações em cascata específica para entidades filhas;
 
 
 ## Referências
