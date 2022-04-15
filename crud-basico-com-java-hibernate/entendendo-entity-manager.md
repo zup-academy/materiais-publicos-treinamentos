@@ -18,7 +18,7 @@ Para que a entidade transite entre os estados, devemos utilizar os metodos do `E
 
 ## Entendendo as Operações do `EntityManager`
 
-No decorrer da nossa experiência com JPA/Hibernate aprendemos a utilizar o metodo `persist()` quando desejamos inserir as informações de um objeto em uma linha na tabela do banco. Já o metodo  `merge()` associamos a realizar alterações a determinada entidade, e por fim o metodo `remove()` quando desejamos deletar um registro de nossa tabela. Este conhecimento por si não esta errado, porém existe alguns detalhes sobre os metodos `persist` e `merge` que passam despercebidos e vamos explorar os mesmos agora.
+No decorrer da nossa experiência com JPA/Hibernate aprendemos a utilizar o metodo `persist()` quando desejamos inserir um objeto em uma linha na tabela do banco. Já o metodo  `merge()` associamos a realizar alterações a determinada entidade, e por fim o metodo `remove()` quando desejamos deletar um registro da nossa tabela. Este conhecimento por si não esta errado, porém existem alguns detalhes sobre os metodos `persist` e `merge` que passam despercebidos e vamos tentar explorar os mesmos agora.
 
 ## Como funciona o `EntityManager.persist()` 
 
@@ -36,7 +36,7 @@ public class Livro {
     @GeneratedValue
     private Long id;
     
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String titulo;
     
     // construtores e getters
@@ -55,10 +55,10 @@ public void cadastrar(Livro livro) {
 Neste momento é disparado a seguinte operação SQL:
 
 ```sql
-    INSERT INTO livro (id, titulo) VALUES (?, ?) 
+INSERT INTO livro (id, titulo) VALUES (?, ?) 
 ```
 
-Repare que é  dado um ID a esta entidade, e por referência de memoria, o atributo `id` recebe o valor gerado no banco (via sequence ou auto-incremento). Para verificar podemos utilizar o metodo `getId()`, que obteremos o valor.
+Repare que é dado um ID a esta entidade, e por referência de memoria, o atributo `id` recebe o valor gerado no banco (via sequence ou auto-incremento). Para verificar podemos utilizar o metodo `getId()`, que obteremos o valor.
 
 Podemos utilizar o metodo `EntityManager.contains()` para verificar se uma determinada entidade esta presente no Contexto de Persistência. Para isso, criamos o seguinte teste para validar:
 
@@ -80,12 +80,11 @@ public class TestandoEntityManagerMetodos {
         assertTrue("entidade MANAGED está dentro do contexto de persistência", manager.contains(livro));
     }
 }
-
 ```
 
 ## Como funciona o `EntityManager.merge()` 
 
-O comportamento do método `merge()` é **reanexar** uma entidade `Detached` ou  `Transient` ao Contexto de Persistência, ou seja, transitá-la para o estado `Managed`. Dado que existe um objeto em memoria que é passado como parâmetro para o método `EntityManagaer.merge()`, é feito uma verificação se este existe no Contexto de Persistencia, caso não exista é feita uma operação SQL de `INSERT` no banco, caso exista, a JPA procura o objeto de destino no Contexto de Persistência e atualiza suas as informações com objeto em memoria e, por fim, retorna a instância `Managed`.
+O comportamento do método `merge()` é **reanexar** uma entidade `Detached` ao Contexto de Persistência, ou seja, transitá-la para o estado `Managed`. Dado que passamos um objeto detached como parâmetro para o método `merge()`, a JPA verifica se este objeto existe no Contexto de Persistência, caso não exista o mesmo é consultado no banco de dados e anexado ao Contexto de Persistência, e em seguida os dados do objeto detached são copiados para o objeto managed, que por fim é sincronizado com o banco via mecanismo Dirty Checking.
 
 Geralmente usamos o método `merge` para entidades `Detached`, como abaixo:
 
@@ -96,7 +95,9 @@ livro.setId(14582); // detached
 Livro livroManaged = entityManager.merge(livro); // retorna instância managed
 ```
 
-Mas podemos também utilizar o método `merge` em entidades `Transient`. Para entender melhor, observe o teste abaixo:
+Repare que o método `merge()` retorna a instância `Managed` existente no contexto de persistência. A instância `Detached` passada como parâmetro **não é alterada** pela JPA em momento algum.
+
+Embora **não seja recomendado**, podemos também utilizar o método `merge` em entidades `Transient`. Para entender melhor, observe o teste abaixo:
 
 ```java
 @SpringBootTest
@@ -127,9 +128,9 @@ Podemos observar que o objeto `livro` não esta presente no Contexto de Persist�
 
 Se ambos os métodos `persist` e `merge` inserem entidades no banco de dados, por que não podemos simplesmente utilizar o `merge` para inserir e atualizar entidades?
 
-A verdade é que podemos sim utilizar o `merge` para inserir, contudo isso **não é recomendado**. Idealmente devemos usar o método `persist` para inserir novos objetos no banco de dados.
+A verdade é que podemos sim utilizar o `merge` para inserir, contudo isso **não é recomendado**. Idealmente devemos usar o método `persist` para inserir novos objetos no banco de dados, e usar o método `merge` para reanexar objetos ao contexto de persistência. Repare que, como desenvolvedor(a), **seu papel é transitar todas os objetos para `Managed`** ao trabalhar com JPA e Hibernate.
 
-Um dos problemas de usar `merge` para inserir objetos no banco tem a ver com operações em cascata. Quando uma entidade possui relacionamentos com operações em cascata habilitado, pode ocorrer comportamentos inesperados ao propagar a operação `MERGE`. Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge`. 
+Um dos problemas de usar `merge` para inserir objetos no banco tem a ver com operações em cascata e impactos de performance. Quando uma entidade possui relacionamentos com operações em cascata habilitado, pode ocorrer comportamentos inesperados ao propagar a operação `MERGE`. Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge`. 
 
 ## Como funciona a propagação em Cascasta dos metodos `persist` e `merge`
 
@@ -235,13 +236,15 @@ public void devePropagarOperacaoPersist() {
 }
 ```
 
-Já quando aplicamos o metodo `persist` observamos que o objeto `livro` tem um ID atribuido a ele, e que sua instância é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo Contexto de Persistência.
+Já quando aplicamos o metodo `persist` observamos que o objeto `capitulo` tem um ID atribuido a ele, e que sua instância é a mesma que esta presente na coleção, e que agora ela é gerenciada pelo Contexto de Persistência. 
+
+Embora a entidade `livro` seja managed, a JPA ignora o comando `persist` para ela, porém propaga a operação em cascata `PERSIST` para suas entidades filhas. Mas disparar `persist` para adicionar uma entidade filha não faz muito sentido, não é mesmo?
 
 ## Deixando a JPA decidir como propagar as operações em cascata
 
 Como sabemos, toda entidade em estado `Managed` é gerenaciada pela JPA, ou seja, qualquer alteração feita na entidade é detectada pelo contexto de persistência e sincronizada com o banco de dados. Esse mecanismo de detecção e sincronização é chamado de **Dirty Checking**, ou do português, Checagem de Sujeira. O dirty checking pode ocorrer em alguns momentos no ciclo de vida de uma entidade, mas geralmente ele vai ocorrer no último momento: no commit da transação.
 
-A verdade é que no commit da transação a JPA gera os comandos SQL de acordo com as mudanças nas entidades enfileiras em memoria e envia para o banco de dados, e, só então, finaliza com o comando `COMMIT`. Essa geração de comandos SQL que são enviadas para o banco é chamada de `Flushing`, e podemos dispara-la manualmente através do método `flush` da `EntityManager` quando necessário:
+A verdade é que no commit da transação a JPA gera os comandos SQL de acordo com as mudanças nas entidades enfileiras em memoria e envia para o banco de dados, e, só então, finaliza com o comando `COMMIT`. Essa geração de comandos SQL que são enviadas para o banco é chamada de **Flushing**, e podemos dispara-la manualmente através do método `flush` da `EntityManager` quando necessário:
 
 ```java
 manager.getTransaction().begin(); // inicia a transação
@@ -290,9 +293,26 @@ Spring Data JPA facilita demais a vida dos desenvolvedores, pois ele abstrai mui
 
 - `saveAndFlush()`: primeiramente é chamado o metodo `save`, e em seguida a chamada ao metodo `entityManager.flush()` que esta encapsulado no metodo `flush()` do repository;
 
-Perceba que os métodos de persistência de um Repository são apenas "wrappers" para as operações da `EntityManager`, o que siginifica que o resultado final é dado pela JPA e Hibernate. Contudo, a "inteligência" do método `save()` pode gerar alguma confusão para o desenvolvedor(a) na hora de manipular as entidades, pois as chances são de que o desenvolvedor(a) espere entidades `Managed` mas na verdade elas estão `Transient` ou `Detached`.
+Perceba que os métodos de persistência de um Repository são apenas "wrappers" para as operações da `EntityManager`, o que siginifica que o resultado final é dado pela JPA e Hibernate. Contudo, a "inteligência" do método `save()` pode gerar alguma confusão para o desenvolvedor(a) na hora de manipular as entidades, pois as chances são de que o desenvolvedor(a) espere que a entidade passada como parâmetro esteja `Managed` mas na verdade ela continua `Detached`.
 
-Para evitar essa confusão, nós entendemos que a melhor alternativa é deixar a JPA decidir como sincronizar as entidades e propagar as operações em cascata, e como vimos, fazemos isso invocando o método `flush`, como abaixo: 
+Para entender essa "inteligência" do método `save` do [SimpleJpaRepository](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/support/SimpleJpaRepository.html#save-S-), eis a implementação do seu método:
+
+```java
+@Transactional
+public <S extends T> S save(S entity) {
+ 
+    if (entityInformation.isNew(entity)) {
+        em.persist(entity);
+        return entity;
+    } else {
+        return em.merge(entity);
+    }
+}
+```
+
+Para entidades simples talvez não faça tanta diferença, pois geralmente todos os atributos do objeto estão preenchidos no momento da invocação do Repository, mas pode se tornar um problema quando temos entidades com coleçoões filhas e operações em cascata.
+
+Nesse cenário, mesmo utilizando os métodos `save` e `saveAndFlush` do Repository podemos cair no problema, como abaixo: 
 
 ```java
 @Transactional
@@ -315,9 +335,11 @@ Ao rodar o código acima, reecebemos no console a seguinte mensagem:
 id capitulo: null
 ```
 
-Isso acontece pois o Repository disparou o comando `merge` da `EntityManager`, o que por sua vez propagou a operação `MERGE` nas entidades filhas.
+Isso acontece pois o Repository disparou o comando `merge` da `EntityManager`, o que por sua vez propagou a operação `MERGE` nas entidades filhas. E, como sabemos, um `merge` não altera as entidades de entrada (passadas como parâmetro).
 
-E, para que a gente consiga obter este `id` diretamente na instância de `capitulo`, recomendamos invocar o método `flush` para que o mecanismo de checagem da JPA decida qual operação propagar, que neste caso será a operação `PERSIST`. Para isso, vamos substituir a chamada do metodo `saveAndFlush()` por simplesmente `flush()`:
+Para que a gente consiga obter este `id` diretamente na instância de `capitulo`, a operação em cascata que deveria ter sido propagada era a `PERSIST`, mas o Repository do Spring Data não nos dá esse poder de decisão.
+
+Para evitar essa confusão, nós entendemos que a melhor alternativa é deixar a JPA decidir como sincronizar as entidades e propagar as operações em cascata, e como vimos, fazemos isso invocando o método `flush`. Para isso, vamos substituir a chamada do metodo `saveAndFlush()` por simplesmente `flush()`:
 
 ```java
 @Transactional
@@ -340,11 +362,24 @@ Dessa forma, recebemos no console a seguinte mensagem:
 id capitulo: 1
 ```
 
+Agora, mesmo sem invocar qualquer método do Repository, o mecanismo de Dirty Checking da JPA detectou as mudanças na entidade managed e disparou suas respectivas atualizações corretamente, propagando as operações em cascada de acordo com o estado individual das entidades filhas existentes na coleção.
+
 Podemos concluir que para casos onde precisamos que a persistência seja feita antes do termino da transação é mais indicado deixarmos que **a JPA decida qual a operação mais apropriada seja propagada**. Não à toa, uma das maiores referências de JPA e Hibernate, Vlad Mihalcea, tem a mesma opinião:
 
 > While a save method might be convenient in some situations, in practice, you should never call `merge` for entities that are either new or already managed. As a rule of thumb, you shouldn’t be using `save` with JPA. For new entities, you should always use `persist`, while for detached entities you need to call `merge`. **For managed entities, you don’t need any save method because Hibernate automatically synchronizes the entity state with the underlying database record.**
+
+## Concluindo
+
+Embora tenhamos dado uma volta para que você entenda alguns aspectos importantes da JPA e Hibernate, é importante que você termine essa leitura com estes pontos de atenção:
+
+1. Sempre use `persist` para inserir novas entidades (`Transient`);
+2. Utilize `merge` somente para entidades `Detached`;
+3. Em entidades `Managed`, favoreça o mecanismo de Dirty Checking;
+4. Utilize `persist` ou `merge` em entidades `Managed` somente no caso de você saber exatamente o que está fazendo: propagar operações em cascata para entidades filhas;
+
 
 ## Referências
 
 - [How do persist and merge work in JPA](https://vladmihalcea.com/jpa-persist-and-merge/)
 - [A beginner’s guide to entity state transitions with JPA and Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpa-hibernate-entity-state-transitions/)
+- [A beginner’s guide to flush strategies in JPA and Hibernate](https://vladmihalcea.com/a-beginners-guide-to-jpahibernate-flush-strategies/)
