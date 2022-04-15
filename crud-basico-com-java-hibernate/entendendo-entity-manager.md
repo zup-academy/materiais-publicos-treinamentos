@@ -130,7 +130,9 @@ Se ambos os métodos `persist` e `merge` inserem entidades no banco de dados, po
 
 A verdade é que podemos sim utilizar o `merge` para inserir, contudo isso **não é recomendado**. Idealmente devemos usar o método `persist` para inserir novos objetos no banco de dados, e usar o método `merge` para reanexar objetos ao contexto de persistência. Repare que, como desenvolvedor(a), **seu papel é transitar todas os objetos para `Managed`** ao trabalhar com JPA e Hibernate.
 
-Um dos problemas de usar `merge` para inserir objetos no banco tem a ver performance: maior overhead para persistir entidades, especialmente em cascata. Além disso, quando uma entidade possui relacionamentos com operações em cascata habilitado, ao propagar a operação `MERGE` pode ocorrer comportamentos que são confusos para o desenvolvedor(a). Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge` em operações em cascata e ver alguns detalhes. 
+Um dos problemas de usar `merge` para inserir objetos no banco tem a ver performance: maior overhead para persistir entidades, especialmente em cascata. Além disso, quando uma entidade possui relacionamentos com operações em cascata habilitado, ao propagar a operação `MERGE` pode ocorrer comportamentos que são confusos para o desenvolvedor(a). 
+
+Para entender melhor o que estou querendo dizer, vamos avaliar alguns cenários no uso dos métodos `persist` e `merge` em operações em cascata e ver alguns detalhes. 
 
 ## Como funciona a propagação em cascasta dos metodos `persist` e `merge`
 
