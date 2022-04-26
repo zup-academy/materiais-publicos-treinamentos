@@ -37,7 +37,7 @@ void deveCadastrarUmAlbum() {
 Se observamos o resultado deste testes no **console**
 
 <pre>
-<mark><b>2022-04-26 15:28:39.959  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context  transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3f6a9ba0]; rollback [true]</b></mark>
+<mark>2022-04-26 15:28:39.959  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context  transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3f6a9ba0]; rollback [true]</mark>
 
 <span style="background-color: lightyellow; color:black"> HIBERNATE </span>
 Hibernate: 
