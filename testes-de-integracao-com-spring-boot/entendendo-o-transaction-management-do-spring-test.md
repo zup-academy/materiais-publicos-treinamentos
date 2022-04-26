@@ -8,7 +8,56 @@ Relembramos que a responsabilidade das `transações (Transactions)` é garantir
 
 Toda essa complexidade deve ser levada em consideração no momento da criação dos testes das funcionalidades que fazem acesso ao banco de dados. Então devemos delimitar o inicio da transação e o final, e para cada caso definir quando será feito o `commit` ou `rollback`.  Definir um componente para que gerencie o contexto transacional em testes pode ser contra produtivo, dado que a maior parte do tempo do desenvolvedor não estará em criar codigo que gerer valor ao cliente.
 
-O `Spring Test` disponibiliza o `TestContext` que oferece um gerenciamento padrão para transações em classes e metodos de testes. Ao definir uma classe de Teste implicitamente  cada método anotado com `@Test` é executado em uma transação que ao termino do metodo é **`revertida (rollback)`**, ou seja o desenvolvedor não tem que se preocupar de limpar o banco.  Metodos anotados com `@BeforeEach` ou ` @AfterEach`, também são executados em transações gereciadas pelo `TestContext`.
+O `Spring Test` disponibiliza o `TestContext` que oferece diversos recursos entre eles `Transaction Management`, que é responsavel por gerenciamento de transações em classes e metodos de testes.
+
+Quando criamos uma classe de Teste, as vezes desejamos que nossos testes participem da mesma transação que o nosso **``controller``**, para estes casos o `Spring Test` disponibiliza através de sua `API` maneiras para você inicie e encerre transações gerenciadas pelo scopo de testes. 
+
+## Habilitando e Desabilitando Transações.
+
+Por padrão o `Spring Test` não habilita o controle transacional para suas classes ou metodos de teste. Para que um metodo anotado com `@Test` seja executado  em uma transação, devemos anotar `@Transactional`.
+
+Uma forma de verificar se o metodo de teste, realmente possue uma transação ativa é propagar a persistência de um objeto, através do metodo `entityManager.persist()` que exige que uma transação esteja aberta. Veja o codigo abaixo.
+
+
+```java
+@Test
+@Transactional
+void deveCadastrarUmAlbum() {
+    Album album = new Album("Imagens Feriado Dia de Ação de Graças");
+
+    manager.persist(album);
+
+    List<Album> all = repository.findAll();
+    int size = all.size();
+
+    assertEquals(1, size);
+}
+```
+
+Se observamos o resultado deste testes no **console**
+
+<pre>
+<mark><b>2022-04-26 15:28:39.959  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context  transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3f6a9ba0]; rollback [true]</b></mark>
+
+<span style="background-color: lightyellow; color:black"> HIBERNATE </span>
+Hibernate: 
+    insert 
+    into
+        album
+        (id, nome) 
+    values
+        (default, ?)
+Hibernate: 
+    select
+        album0_.id as id1_0_,
+        album0_.nome as nome2_0_ 
+    from
+        album album0_
+
+<mark><b>2022-04-26 15:28:40.309  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Rolled back transaction for test: </b></mark>
+</pre>
+
+ que ao termino do metodo é **`revertida (rollback)`**, ou seja o desenvolvedor não tem que se preocupar de limpar o banco.  Metodos anotados com `@BeforeEach` ou ` @AfterEach`, também são executados em transações gereciadas pelo `TestContext`.
 
 OBS: caso deseje definir de maneira explicita uma transação a um metodo, basta anota-lo com `@Trasactional`. Quando uma classe é anotada com  `@Trasactional`, cada metodo é executado em uma transação gerenciada pelo `TextContext`.
 
