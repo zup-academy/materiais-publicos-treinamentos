@@ -27,19 +27,16 @@ void deveCadastrarUmAlbum() {
 
     manager.persist(album);
 
-    List<Album> all = repository.findAll();
-    int size = all.size();
+    
 
-    assertEquals(1, size);
+    assertNotNull(album.getId());
 }
 ```
 
-Se observamos o resultado deste testes no **console**
+Se observamos o resultado deste testes no **console**, concluimos que foi gerado o **SQL** referente a inserção no banco de dados, porém a mudança não foi propagada no banco de dados, porque a transação foi revertida. 
 
 <pre>
-<mark>2022-04-26 15:28:39.959  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context  transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3f6a9ba0]; rollback [true]</mark>
-
-<span style="background-color: lightyellow; color:black"> HIBERNATE </span>
+<mark><b>2022-04-26 15:28:39.959  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Began transaction (1) for test context  transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3f6a9ba0]; rollback [true]</b></mark>
 Hibernate: 
     insert 
     into
@@ -47,46 +44,53 @@ Hibernate:
         (id, nome) 
     values
         (default, ?)
-Hibernate: 
-    select
-        album0_.id as id1_0_,
-        album0_.nome as nome2_0_ 
-    from
-        album album0_
-
 <mark><b>2022-04-26 15:28:40.309  INFO 16248 --- [           main] o.s.t.c.transaction.TransactionContext   : Rolled back transaction for test: </b></mark>
 </pre>
 
- que ao termino do metodo é **`revertida (rollback)`**, ou seja o desenvolvedor não tem que se preocupar de limpar o banco.  Metodos anotados com `@BeforeEach` ou ` @AfterEach`, também são executados em transações gereciadas pelo `TestContext`.
+A persistencia do album não é confirmada, porque quando qualquer operação **SQL** é executada em uma transação gerenciada por testes, no termino do metodo a transação é **`revertida (rollback)`**. Este comportamento é dado para que  o desenvolvedor não tem que se preocupar em efetuar a limpeza dos dados no banco.
 
-OBS: caso deseje definir de maneira explicita uma transação a um metodo, basta anota-lo com `@Trasactional`. Quando uma classe é anotada com  `@Trasactional`, cada metodo é executado em uma transação gerenciada pelo `TextContext`.
+## Como desabilitamos uma transação a unico metodo ou para todos metodos da classe?
+
+Para definir de maneira explicita que um metodo ou todos os metodos de uma classe de testes, não perteceram a transações, utilizamos a anotação `@Trasactional(Transactional.TxType.NEVER)`. 
+
+de limpar o banco.  Metodos anotados com `@BeforeEach` ou ` @AfterEach`, também são executados em transações gereciadas pelo `TestContext`.
+
+OBS: Quando uma classe é anotada com  `@Trasactional(Transactional.TxType.NEVER)`, significa que todos os metodo não serão executados em transações gerenciada pelo `TextContext`.
 
 
-Para entender melhor, temos um teste de inserção de uma entidade com Repository da JPA, observe o codigo abaixo.
+Para entender melhor, observe o mesmo testes de inserção de um album, utilizando o `EntityManager`.
 
 
 ```java
-@SpringBootTest
-class CadastrarAlbumControllerTest { 
-    @Autowired
-    private AlbumRepository repository;
+@Test
+@Transactional(Transactional.TxType.NEVER)
+void deveCadastrarUmAlbum() {
+    Album album = new Album("Imagens Feriado Dia de Ação de Graças");
 
-    @Test
-    void deveCadastrarUmAlbum(){
-        Album novoAlbum = new Album("Imagens Feriado Dia de Ação de Graças");
-        
-        repository.save(novoAlbum);
+    manager.persist(album);
 
-        assertEquals(1,repository.findAll().size());
-    }
+    
+
+    assertNotNull(album.getId());
 }
 ```
 
-Ao final do metodo `deveCadastrarUmAlbum` todas as alterações são revertidas, ou seja, o comando de `insert` não é confirmado, por tanto o estado do banco é preservado.  Este comportamento é perigoso ao utilizar um framework de persistencia, como Hibernate, pois as exceções disparadas dado as erros de constraints, só acontece junto ao `commit`, que por padrão não é realizado, então podemos ficar reféns de falsos positivos.
+Observe o que é exibido no console ao executar este testes. 
 
-Para estes casos é possível definir a nivel de classe ou metodo quando uma transação sera confirmada ou revertida de maneira declarativa, através das anotações `@Commit`  e `@Rollback`. 
 
-Veja o exemplo abaixo: 
+```java
+javax.persistence.TransactionRequiredException: No EntityManager with actual transaction available for current thread - cannot reliably process 'persist' call
+```
+É dado uma exceção pois a operação  `entityManager.persist()` exige que uma transação seja aberta!
+
+
+## Confirmando ou Revertendo Transações de maneira explicita com Spring Test
+
+Quando anotamos nossa classe ou metodos com `@Transactional` sabemos que por padrão a transação é revertida, porém, existem casos e estratégias que se torna necessário que o **`commit`** seja feito, e para estes casos podemos utilizar as anotações `@Commit` e `@Rollback`, que definem de maneira explicita quando sera feito o ``commit`` ou ``rollback``. 
+
+OBS: As anotações `@Commit`  e `@Rollback` podem ser utilizadas a nivel de classe ou metodo.
+
+Veja o exemplo abaixo, de como utilizar as anotações em seus testes. 
 
 ```java
 @SpringBootTest
