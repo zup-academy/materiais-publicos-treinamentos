@@ -27,8 +27,6 @@ void deveCadastrarUmAlbum() {
 
     manager.persist(album);
 
-    
-
     assertNotNull(album.getId());
 }
 ```
@@ -68,8 +66,6 @@ void deveCadastrarUmAlbum() {
     Album album = new Album("Imagens Feriado Dia de Ação de Graças");
 
     manager.persist(album);
-
-    
 
     assertNotNull(album.getId());
 }
