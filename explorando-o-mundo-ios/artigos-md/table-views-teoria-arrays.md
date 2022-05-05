@@ -1,4 +1,4 @@
-# Mais sobre Swift: Arrays
+# Mais sobre Swift: Arrays e Operações com Coleções
 
 > Esse material teórico foi traduzido e adaptado da fonte original disponível em https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html
 
