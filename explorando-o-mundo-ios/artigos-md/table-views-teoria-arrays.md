@@ -455,7 +455,7 @@ print(nomes.reduce("", { result, nome in
 
 Se você se atentar ao retorno, vai perceber que existe um caractere de espaço adicional no início do valor produzido. Isso ocorre porque a implementação fornecida não leva em conta que na primeira iteração temos `"" + " " + "Rafael"`.
 
-É necessário adicionar uma verificação para considerar esse detalhe. Podemos acessar a referência para o índice da iteração através do uso da função `enumerated()` do `Array` que retorna um _wrapper_ contendo o valor inteiro para o índice (_offset_) além do valor de fator (`element`). Assim temos: 
+É necessário adicionar uma verificação para considerar esse detalhe. Podemos acessar a referência para o índice da iteração através do uso da função `enumerated()` do `Array`.
 
 ``` swift
 let nomes = ["Rafael", "Rollo"]
