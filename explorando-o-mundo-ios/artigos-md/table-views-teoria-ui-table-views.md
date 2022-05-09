@@ -15,13 +15,13 @@ A maior parte dos casos de uso de aplicativos do mercado prevê alguma forma de 
 Uma `UITableView` é essencialmente uma _view_ que apresenta dados usando linhas. As _table views_ no iOS exibem conteúdo através dessas linhas permitindo rolagem (_scroll_) vertical em única coluna. Cada linha na tabela contém uma parte do conteúdo do seu aplicativo. Por exemplo, o aplicativo Contatos exibe o nome de cada contato em uma linha separada e a página principal do aplicativo Configurações exibe os grupos de configurações disponíveis. 
 
 <p align="center">
-<img alt="Imagem contendo os exemplos de table view dos apps de contatos e configurações do iPhone" src="https://docs-assets.developer.apple.com/published/82818afa8d/3148900@2x.png" width="65%" />
+<img alt="Imagem contendo os exemplos de table view dos apps de contatos e configurações do iPhone" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-contacts-settings-apps.jpg?raw=true" width="100%" />
 </p>
 
 Você pode configurar uma tabela para exibir uma única longa lista de linhas ou pode agrupar linhas relacionadas em seções para facilitar a navegação pelo conteúdo.
 
 <p align="center">
-<img alt="Imagem contendo os exemplos de configurações de estilo de table views, sendo eles: uma table view com estilo de seção agrupada, uma table view simples somente com uma lista longa de linhas e um table view com célular customizadas divididas em seções." src="https://docs-assets.developer.apple.com/published/2253500436/3148899@2x.png" width="75%" />
+<img alt="Imagem contendo os exemplos de configurações de estilo de table views, sendo eles: uma table view com estilo de seção agrupada, uma table view simples somente com uma lista longa de linhas e um table view com célular customizadas divididas em seções." src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-three-tables-sample-apps.jpg?raw=true" width="100%" />
 </p>
 
 Tabelas são comuns em aplicativos com dados estruturados ou organizados hierarquicamente. Os aplicativos que contêm dados hierárquicos geralmente usam tabelas em conjunto com um _view controllers_ de navegação, o que facilita a navegação entre os diferentes níveis da hierarquia. Por exemplo, o aplicativo Configurações usa tabelas e um controlador de navegação para organizar as configurações do sistema.
@@ -51,7 +51,7 @@ As _table views_ são elementos da sua interface orientados por dados. Você for
 As _table views_ organizam seus dados em linhas e seções. As linhas exibem itens de dados individuais e as seções agrupam linhas relacionadas. As seções não são obrigatórias, mas são uma boa maneira de organizar dados que são hierárquicos. Por exemplo, o aplicativo Contatos exibe o nome de cada contato em uma linha e agrupa as linhas em seções com base na primeira letra do sobrenome da pessoa.
 
 <p align="center">
-<img alt="Imagem exemplificando separação visual do que é uma seção e o que é uma linha" src="https://docs-assets.developer.apple.com/published/0e083c5df8/tableview-basics@2x.png" width="35%" />
+<img alt="Imagem exemplificando separação visual do que é uma seção e o que é uma linha" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-contacts-sections-rows-sample.jpg?raw=true" width="100%" />
 </p>
 
 #### Fornecendo o número de Linhas e Seções
@@ -90,7 +90,7 @@ Quando você adiciona uma _table view_ à interface do seu aplicativo, ela inclu
 A ilustração a seguir mostra uma tabela com duas células protótipo, cada uma delas usando um dos estilos de célula padrão.
 
 <p align="center">
-<img alt="Imagem mostrando uma table view com dois protótipos de célula diferentes adicionados em seu conteúdo no storyboard" src="https://docs-assets.developer.apple.com/published/b2a42cb85b/3148901@2x.png" width="35%" />
+<img alt="Imagem mostrando uma table view com dois protótipos de célula diferentes adicionados em seu conteúdo no storyboard" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-two-cell-prototypes-sample.jpg?raw=true" width="35%" />
 </p>
 
 Em seu arquivo de storyboard, execute as seguintes ações para cada célula protótipo:
@@ -143,7 +143,7 @@ As células fornecem a representação visual das linhas da sua tabela. Para a m
 Você especifica a aparência das células em tempo de design em seu arquivo de storyboard. O Xcode fornece uma célula protótipo para cada tabela e você pode adicionar mais células protótipo conforme necessário. Uma célula protótipo funciona como um modelo para a aparência da sua célula. Inclui as _views_ que você deseja exibir e sua organização na área de conteúdo da célula. Em tempo de execução, o objeto de _data source_ da tabela cria células reais dos protótipos e as configura com os dados do seu aplicativo.
 
 <p align="center">
-<img alt="Imagem mostrando uma table view no storyboard com algumas células protótipo vazias" src="https://docs-assets.developer.apple.com/published/a5b5fd18a8/3148904@2x.png" width="35%" />
+<img alt="Imagem mostrando uma table view no storyboard com algumas células protótipo vazias" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-four-empty-cell-prototypes.jpg?raw=true" width="35%" />
 </p>
 
 #### Atribuindo um _reuse identifier_ a cada célula
@@ -163,7 +163,7 @@ A maneira mais simples de configurar uma célula é usar um dos estilos internos
 Para configurar um protótipo de célula com um dos estilos padrão, selecione a célula em seu storyboard e defina a propriedade `Style` da célula com um valor diferente de `Custom`.
 
 <p align="center">
-<img alt="Imagem mostrando uma table view no storyboard com células protótipo de todos os estilos, sendo eles: basic, right detail, left details, subtitle" src="https://docs-assets.developer.apple.com/published/17a7f11520/3148906@2x.png" width="35%" />
+<img alt="Imagem mostrando uma table view no storyboard com células protótipo de todos os estilos, sendo eles: basic, right detail, left details, subtitle" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-all-cell-styles-sample.jpg?raw=true" width="35%" />
 </p>
 
 Em seu método `tableView(_:cellForRowAt:)`, configure o conteúdo de sua célula usando as propriedades `textLabel`, `detailTextLabel` e `imageView` de `UITableViewCell`. Essas propriedades contêm _views_, mas o objeto de célula só atribui uma _view_ se o estilo oferecer suporte ao conteúdo correspondente. Por exemplo, o estilo de célula `Basic` não oferece suporte a uma string de detalhes, portanto, a propriedade `detailTextLabel` é nula para esse estilo. O código de exemplo a seguir mostra como configurar uma célula que usa o estilo de célula `Basic`.
@@ -193,7 +193,7 @@ Para aparências diferentes dos estilos padrão, use o estilo de célula `Custom
 Para configurar uma célula personalizada, arraste as _views_ para o protótipo de célula de sua tabela. A ilustração a seguir mostra uma célula com layout e formatação personalizados para suas _views_. Você usa _constraints_ para posicionar suas _views_ na área de conteúdo da célula (_cell content view_). Ao configurar _constraints_, prefira a opção _"Constrain to margins"_ para preservar o respiro entre as áreas de conteúdo de suas células.
 
 <p align="center">
-<img alt="Imagem mostrando uma table view no storyboard com célula customizada, contendo subviews para titulo, descrição e uma image view posicionada do lado direito através de constraints, gerenciadas de forma direta ou através de stack views" src="https://docs-assets.developer.apple.com/published/08c9b2469b/3148905@2x.png" width="35%" />
+<img alt="Imagem mostrando uma table view no storyboard com célula customizada, contendo subviews para titulo, descrição e uma image view posicionada do lado direito através de constraints, gerenciadas de forma direta ou através de stack views" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-custom-cell-design-prototype.jpg?raw=true" width="35%" />
 </p>
 
 Para células customizadas, você precisa definir uma subclasse de `UITableViewCell` para acessar as _views_ de sua célula. Adicione _outlets_ à sua subclasse e conecte esses _outlet_ às _views_ correspondentes em seu protótipo de célula.
@@ -270,7 +270,7 @@ Se você alterar a aparência das _views_ de sua célula personalizada, sobrescr
 Adicionar _views_ de _header_ e _footer_ às seções da _table view_ ajudam a diferenciar visualmente grupos de linhas. Use as _views_ de _header_ e _footer_ como marcadores visuais para o início e o fim das seções. As _views_ de _header_ e _footer_ são opcionais e você pode personalizá-las livremente.
 
 <p align="center">
-<img alt="Imagem exemplificando separação visual de seções através do uso de uma header view como marcador de início e footer view como marcador de final" src="https://docs-assets.developer.apple.com/published/22a5331c82/header-footer-sample@2x.png" width="35%" />
+<img alt="Imagem exemplificando separação visual de seções através do uso de uma header view como marcador de início e footer view como marcador de final" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-header-footer-views-sample.jpg?raw=true" width="100%" />
 </p>
 
 Para criar um _header_ ou _footer_ básico com um _label_ simples, sobrescreva o método `tableView(_:titleForHeaderInSection:)` ou `tableView(_:titleForFooterInSection:)` do objeto de _data source_ da sua tabela. A _table view_ cria então um _header_ ou _footer_ padrão para você e o insere na tabela no local especificado.
@@ -378,7 +378,7 @@ override func tableView(_ tableView: UITableView,
 A imagem a seguir mostra um possível resultado.
 
 <p align="center">
-<img alt="Imagem exemplificando o uso de uma header view customizada marcando visualmente o início de uma nova seção, apresentando uma imagem alinhada à esquerda e um label à direita da imagem" src="https://docs-assets.developer.apple.com/published/d45e547c35/3148907@2x.png" width="35%" />
+<img alt="Imagem exemplificando o uso de uma header view customizada marcando visualmente o início de uma nova seção, apresentando uma imagem alinhada à esquerda e um label à direita da imagem" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/table-views-teoria-ui-table-views-custom-header-view-sample.jpg?raw=true" width="100%" />
 </p>
 
 #### Alterando a altura dos _headers_ e _footers_
