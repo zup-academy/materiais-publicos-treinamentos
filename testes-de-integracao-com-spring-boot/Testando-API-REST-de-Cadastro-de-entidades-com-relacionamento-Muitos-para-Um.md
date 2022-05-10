@@ -1,6 +1,6 @@
 # Construindo Testes de Integração para API REST de Cadastro de entidades com relacionamento Muitos para Um
 
-Criar testes de integração para API REST  é uma forma de garantir que a corretude do comportamento de cada endpoint, e também auxilia a encontrar anomalias e bugs no sistema.
+Criar testes de integração para API REST  é uma forma de garantir a corretude do comportamento de cada endpoint, e também auxilia a encontrar anomalias e bugs no sistema.
 
 O Spring Test oferece suporte ao uso de toda complexidade do `ApplicationContext` do Spring para criação de testes, inclusive varias ferramentas para criação de **`asserts`**  e um cliente HTTP adaptado para lidar com as nuances de implementação do Spring.
 
