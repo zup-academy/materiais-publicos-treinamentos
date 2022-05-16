@@ -1,38 +1,62 @@
-# Testando API REST Remoção de Entidades
+# Testando API REST de Atualizacao de Dados
 
-Para alguns Sistemas executar uma logica de remoção pode ser altamente complexo, principalmente quando essa remoção depende de integração entre sistemas, seja uma mensagem em uma fila, uma linha em um arquivo de texto ou simplesmente um registro no banco de dados. Independente da integração que o sistema utiliza, um bom teste deverá verificar se o efeito colateral é executado de fato.
 
-Em APIs REST é comum que a integração seja feita através de uma chamada HTTP, que deve respeitar a semantica de um verbo e ter um Path bem definido. Também se espera que um efeito colateral seja lançado ao servidor ou não. Ao observar estes detalhes modelar testes de integração pode se tornar simples, pois, devemos direcionar nossa atenção a realizar uma chamada HTTP para verbo DELETE, para um determinado caminho, caso o recuso não exista garantiremos que o fluxo definido seja respeitado, caso contrario garantiremos que o fluxo de sucesso foi executado e que o efeito colateral corresponde ao esperado.
+Os testes de integração tem como objetivo validar se a junção das partes trabalham de maneira correta e harmoniosa, isto implica que validar se o comportamento de cada componente que se integra é executado conforme o esperado quando trabalham juntos. 
+ 
+APIs de atualização de dados tem um papel fundamental em um sistema, é através destas que conseguimos obter determinado recurso e alterar seu estado. O que é muito comum é que o estado dos recursos ficam armazenados em repositorios de dados, então a API REST recebe uma solicitação de alteração para determinado recurso pela web, faz a consulta do mesmo em Banco de Dados, processa a logica e armazena o novo estado do recurso.
 
-Um bom exemplo de Teste de Integração em API REST  é quando desejamos remover uma Pessoa. Para melhor compreensão, veja o controller abaixo e vamos escrever bons testes utilizando o **`Spring Test`**.
+Quando observamos o comportamento dito acima, podemos inferir o seguinte, dado a construção de um Teste de Integração em um fluxo de sucesso, é indispensavel a validação que garanta que o valor alterado corresponda ao esperado.
+
+Um bom exemplo de Teste de atualização é quando dado um Produto e queremos alterar o seu preco.Para melhor compreensão, veja o controller abaixo e vamos escrever bons testes utilizando o **`Spring Test`**.
 
 ```java
-@RestController
-@RequestMapping("/pessoas/{id}")
-public class RemoverPessoaController{
-    private final PessoaRepository repository;
+public class AlterarPrecoProdutoRequest{
+    @NotNull
+    @Postive
+    private BigDecimal preco;
 
-    public RemoverPessoaController(PessoaRepository repository){
+    public AlterarPrecoProdutoRequest(){}
+
+    public AlterarPrecoProdutoRequest(BigDecimal preco){
+      this.preco=preco;
+    }
+    
+    public BigDecimal getPreco(){
+        return this.preco;
+    }
+}
+
+@RestController
+@RequestMapping("/produtos/{id}")
+public class AlterarPrecoProdutoController{
+    private final ProdutoRepository repository;
+
+    public AlterarPrecoProdutoController(ProdutoRepository repository){
         this.repository=repository;
     }
 
 
     @PatchMapping
     @Transactional
-    public ResponseEntity<?> remover(@PathVariable Long id){
-        Pessoa pessoa = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não cadastrada"));
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid AlterarPrecoProdutoRequest request){
+        Produto produto = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto nao cadastrado"));
 
-        repository.delete(pessoa);
+        produto.setPreco(request.getPreco());
         
         return ResponseEntity.noContet().build();
     }
 }
 ```
-Para testar um sistemas simples como o acima, devemos nos atentar aos seguintes casos: não é possivel deletar um registro não existente e quando um registro é removido. Dado a estas condições trabalharemos com os seguintes cenarios:
 
-1. nao deve remover uma pessoa não cadastrada
-2. deve remover uma pessoa
+Esta aplicação é bastante simples, consiste em três casos, um para quando o preco do produto é atualizado, o proximo caso é para validar se caso os dados sejam invalidos uma mensagem de erro amigavel é retornada ao nosso cliente,  e por fim um caso para quando é solicitado a alteração de preço de um produto não cadastrado.
+
+Então trabalharemos com os seguintes cenarios:
+
+1. nao deve alterar o preco de um produto nao cadastrado
+2. nao deve alterar o preco de um produto com dados invalidos
+3. nao deve alterar o preco de um produto para o valor menor que zero
+4. deve alterar o preco de um produto 
 
 Agora que já temos o cenarios, vamos criar nossa classe de teste e configurar o ambiente para teste de integração.
 
@@ -41,11 +65,11 @@ Agora que já temos o cenarios, vamos criar nossa classe de teste e configurar o
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 @ActiveProfiles("test")
-class  RemoverPessoaControllerTest {
+class  AlterarPrecoProdutoControllerTest {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
-    private PessoaRepository repository;
+    private ProdutoRepository repository;
     @Autowired
     private MockMvc mockMvc;
     
@@ -60,41 +84,47 @@ class  RemoverPessoaControllerTest {
 
 Agora que temos o suporte a serialização e desserialização de Json com `ObjectMapper`, e cliente HTTP para fazer as chamadas a nossa API com MockMvc. Vamos para nosso primeiro cenario, que é onde vamos detalhar os dados de uma cidade. 
 
-## Test: **`deve remover uma pessoa`**
-
-A construção deste cenario é bastante simples, como pré requisito do nosso testes precisamos de uma pessoa cadastrada no banco de dados e o seu id. 
+## Test: **`deve alterar o preco de um produto`**
 
 
 ```java
 @Test
-@DisplayName("deve remover uma pessoa")
+@DisplayName("deve alterar o preco de um produto")
 void test() throws Exception{
+    
+    AlterarPrecoProdutoRequest precoRequest = new AlterarPrecoProdutoRequest(new BigDecimal(" 2722"));
 
-    Pessoa pessoa = new ("Jordi Henrique", "12312312345", "jordi.silva@email.com");
+    Produto produto = new ("ChromeBook", new BigDecimal("2515"));
 
-    repository.save(pessoa);
+    repository.save(produto);
 
+    String payload = mapper.writeValueAsString(precoRequest);
 
-    MockHttpServletRequestBuilder request = delete("/pessoas/{id}", pessoa.getId())
-                .contentType(MediaType.APPLICATION_JSON);
-            
+    MockHttpServletRequestBuilder request = patch("/produtos/{id}", produto.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload);
+    
      mockMvc.perform(request)
                 .andExpect(
                         status().isNoContent()
                 );
                 
 
-    
-    assertFalse(repository.existsById(id),"nao deve existir registro de pessoa pra esse id");
+    Optional<Produto> possivelProduto = repository.findById(produto.getId());
+    assertTrue(possivelProduto.isPresent());
+
+    Produto produtoAposAtualizacao = possivelProduto.get();
+
+    assertEquals(precoRequest.getPreco(),produtoAposAtualizacao.getPreco());
 }
 ```
 
-Após persistir a pessoa que sera removida, nos concentramos em montar a requisição `HTTP`, informado o path no metodo referente ao verbo **`DELETE`** utilizando a API  do MockMvc. Após invocar a requisição nosso objetivo é validar se o `Status HTTP` retornado corresponde ao `noContent (204)`.
+Primeiramente construimos o ambiente para teste, iniciando pelo json do corpo da requisição, e persistimos o produto a qual sera alterado. Em seguida é realizada a chamada através  do `MockMvc`, onde validamos se o Status da Resposta corresponde ao `noContent (204)`.
+
+Após a validação do status da resposta, devemos averiguar se o efeito colateral desta chamada HTTP é efetuado, ou seja, se o estado do produto comporta o novo preco. Então através do Junit validamos se o preco informado no corpo da request, corresponde ao preço do objeto que foi buscado no Banco de dados após a chamada HTTP.
 
 
-Após a validação do status da resposta, devemos averiguar se o efeito colateral desta chamada HTTP é efetuado, ou seja, se o registro da Pessoa é removido do Banco de Dados. Então através do Junit validamos se o não existe um registro na tabela de pessoa com id informado. 
-
-## Test: **`nao deve remover uma pessoa não cadastrada`**
+## Test: **`nao deve alterar o preco de um produto nao cadastrado`**
 
 Neste teste o objetivo é verificar se quando um id inexistente é informado, o retorno da nossa API corresponde a uma Resposta HTTP com Status Not Found (404). Neste teste encontraremos um pequeno desafio pois o MockMvc não executa de fato um Container Servelet, ele apenas simula a execução e dado este motivo, o ResolverException default do Spring não é executado, e a mensagem de erro definida nas execeptions, não são informadas ao corpo da Resposta HTTP, e sim no campo `erro mensage`, para saber mais leia este [artigo](https://github.com/spring-projects/spring-framework/issues/17290).
 
@@ -103,9 +133,9 @@ Dado a esta limitação do MockMvc, teremos que mudar a maneira que executamos a
 
 ```java
 @Test
-@DisplayName("nao deve remover uma pessoa não cadastrada")
+@DisplayName("nao deve alterar o preco de um produto nao cadastrado")
 void test2()  throws Exception {
-    MockHttpServletRequestBuilder request = delete("/pessoas/{id}", Integer.MAX_VALUE).
+    MockHttpServletRequestBuilder request = get("/cidades/{id}", Integer.MAX_VALUE).
                 contentType(MediaType.APPLICATION_JSON);
     
     Exception resolvedException = mockMvc.perform(request)
@@ -117,17 +147,96 @@ void test2()  throws Exception {
 
     assertNotNull(resolvedException);
     assertEquals(ResponseStatusException.class,resolvedException.getClass());
-    assertEquals("Pessoa não cadastrada",((ResponseStatusException) resolvedException).getReason());
+    assertEquals("Produto não cadastrado",((ResponseStatusException) resolvedException).getReason());
 }
 ```
 
 Para verificar se nosso fluxo foi executado, iremos trabalhar com o metodo `getResolvedException` do MockMvc, este metodo retorna em uma Exception generica, qual a exceção que foi tratada pelo `ExceptionHandler` do MockMvc.
 
-Dado que uma exceção  pode nunca ser lançada, é necessário verificar se a resolvedException não é nula. Após esta verificação podemos partir para uma validação de tipo, o `Controller` lança uma `ResponseStatusException`, com Reason: `Pessoa não cadastrada`, e Status 404, que foi verificado pelo MocvMvcResultMatchers anteriormente.
+Dado que uma exceção  pode nunca ser lançada, é necessário verificar se a resolvedException não é nula. Após esta verificação podemos partir para uma validação de tipo, o `Controller` lança uma `ResponseStatusException`, com Reason: `Produto não cadastrado`, e Status 404, que foi verificado pelo MocvMvcResultMatchers anteriormente.
 
 Através do assertEquals, validamos que nossa exceção foi lançada corretamente, agora é validar se a razão (Reason) corresponde ao esperado. O campo Reason não é acessivel pelo tipo Exception, então com  a garantia que a Exceção é do tipo `ResponseStatusException`, devemos realizar um casting (mudança de tipo)  para aplicar o assert.
 
+## Test: **`nao deve alterar o preco de um produto com dados invalidos`**
 
+O objetivo deste teste é a garantir que se caso o campo preco do corpo da requisição HTTP seja informado nulo, o software ira retornar um Status 400 e a mensagem amigavel para o cliente.
+
+```java
+@Test
+@DisplayName("nao deve alterar o preco de um produto com dados invalidos")
+void test3()  throws Exception {
+    
+    AlterarPrecoProdutoRequest precoRequest = new AlterarPrecoProdutoRequest(null);
+
+    Produto produto = new ("ChromeBook", new BigDecimal("2515"));
+
+    repository.save(produto);
+
+    String payload = mapper.writeValueAsString(precoRequest);
+
+    MockHttpServletRequestBuilder request = patch("/produtos/{id}", produto.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload);
+    
+    String payloadResponse mockMvc.perform(request)
+                .andExpect(
+                        status().isBadRequest()
+                )
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+    MensagemDeErro mensagemDeErro = mapper.readValue(payloadResponse, MensagemDeErro.class);
+
+     assertThat(mensagemDeErro)
+                .hasSize(1)
+                .contains("O campo Preco nao deve ser nulo");
+                
+}
+```
+
+Para atingir nosso objetivo, iniciamos o testes criando o cenario, criando um json com dados invalidos e persistindo no banco o produto. Em seguida disparamos a requisição para o verbo Patch e o endereço do serviço através do `MockMvc`, dando sequencia ao testes validamos se o status retornado é `Bad Request (400)`, e atribuimos o json que esta no corpo da Resposta HTTP a uma variavel chamda de payloadResponse. O proximo passo é desserializar o json no objeto que definimos o tratamento das exceções da Bean Validation, que por vez acumula as mensagens. Por fim verificamos se apenas uma mensagem existe na lista, e que ela corresponde a validação que foi violada.
+
+
+## Test: **`nao deve alterar o preco de um produto para um valor abaixo de zero`**
+
+O objetivo deste teste é a garantir que se caso o campo preco do corpo da requisição HTTP seja informado com valor abaixo de zero, o software ira retornar um Status 400 e a mensagem amigavel para o cliente.
+
+```java
+@Test
+@DisplayName("nao deve alterar o preco de um produto para um valor abaixo de zero")
+void test3()  throws Exception {
+    
+    AlterarPrecoProdutoRequest precoRequest = new AlterarPrecoProdutoRequest(new BigDecimal("-1"));
+
+    Produto produto = new ("ChromeBook", new BigDecimal("2515"));
+
+    repository.save(produto);
+
+    String payload = mapper.writeValueAsString(precoRequest);
+
+    MockHttpServletRequestBuilder request = patch("/produtos/{id}", produto.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload);
+    
+    String payloadResponse mockMvc.perform(request)
+                .andExpect(
+                        status().isBadRequest()
+                )
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+    MensagemDeErro mensagemDeErro = mapper.readValue(payloadResponse, MensagemDeErro.class);
+
+     assertThat(mensagemDeErro)
+                .hasSize(1)
+                .contains("O campo Preco deve conter um valor acima de zero");
+                
+}
+```
+
+Para atingir nosso objetivo, iniciamos o testes criando o cenario, criando um json com preco abaixo de zero, em seguida é persistino no banco o produto que sera atualizado pela requisição. O proximo passo é construir a requisição para o verbo Patch e o endereço do serviço através do `MockMvc`, e ao disparar a chamada, iremos validar se o status retornado é `Bad Request (400)`, e atribuimos o json que esta no corpo da Resposta HTTP a uma variavel chamda de payloadResponse. O proximo passo é desserializar o json no objeto que definimos o tratamento das exceções da Bean Validation, que por vez acumula as mensagens. Por fim verificamos se apenas uma mensagem existe na lista, e que ela corresponde a validação que foi violada.
 
 ### Soluções possiveis para Limitação do Container Servelet Simulado do MockMvc
 
