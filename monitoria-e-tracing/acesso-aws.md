@@ -2,7 +2,7 @@
 
 Para acessar a aws é preciso ter um usuário, a solicitação pode ser feita [aqui](https://zup.service-now.com/sp?id=sc_cat_item&sys_id=9e7950db1ba53810cd8bda8fe54bcbc4&sysparm_category=a62073831b653810cd8bda8fe54bcb5c)
 
-O projeto que handora reside é o zup-edu-sites-prod.
+O projeto que handora reside é o zup-sandbox-edu-ot.
 
 Em Plataforma Cloud, selecione aws.
 
