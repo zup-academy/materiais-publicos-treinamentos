@@ -79,11 +79,11 @@ feito isso podemos criar nossos teste utilizando JUnit, primeiro observaremos a 
 
         public void adapta(Long id){
             if(id == null){
-                throws new IdInvalidoException("o id nao deve ser nulo");
+                throw new IdInvalidoException("o id nao deve ser nulo");
             }
             
             if(id < 1L){
-                throws new IdInvalidoException("o id deve ser maior igual a um");
+                throw new IdInvalidoException("o id deve ser maior igual a um");
             }
 
             Funcionario funcionario = funcionario.get(id);
@@ -261,7 +261,7 @@ public class CalculadoraDeDesconto {
 
 Ao utilizar JUnit e [ParameterizedTest](#) podemos construir nossos testes de maneira que satisfaçam todos os casos, utilizando partições de equivalência.
 
-O primeiro passo é construtir nosso metodo de teste, que deve receber as informações de um produto, e o dia que sera executado o teste.
+O primeiro passo é construir nosso metodo de teste, que deve receber as informações de um produto, e o dia que sera executado o teste.
 
 teremos um metodo com a seguinte assinatura:
 
