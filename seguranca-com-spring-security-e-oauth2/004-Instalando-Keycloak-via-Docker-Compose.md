@@ -2,21 +2,21 @@
 
 Nesse conteúdo veremos como podemos instalar e rodar o Keyclock em nossas máquinas através do Docker-Compose, dessa forma poderemos configura-lo e usa-lo durante o desenvolvimento de aplicações localmente, sem a necessidade de um servidor externo ou internet.
 
-## Entendendo as diferentes versões
+## Keycloak: entendendo as diferentes versões
 
 Como sabemos, para trabalharmos com OAuth2 precisamos de um Authorization Server, e durante todo o treinamento usaremos o Keycloak para isso. Ao pensar em baixar o Keycloak, podemos baixo-lo, instala-lo e rodá-lo de 2 maneiras diferentes: stand-alone ou imagem de container. Durante o treinamento favoreceremos a o Keycloak via container Docker.
 
 Ao pensar em utilizar o Keycloak via Docker, é interessante sabermos que atualmente existem 2 versões:
 
-1. **Latest**: utiliza o framework de desenvolvimento Quarkus, que está mais aderente ao modelo de containers, traz melhor tempo de startup, menor consumo de memoria e maior throughput. Desde o Keycloak 17.x ela se tornou a versão default e oficial;
-    - Em imagens Docker, identificamos com `quay.io/keycloak/keycloak:`**`latest`** ou simplesmente `quay.io/keycloak/keycloak`;
+1. **Latest**: utiliza o framework Quarkus, que está mais aderente ao modelo de containers, traz melhor tempo de startup, menor consumo de memoria e maior throughput. Desde o Keycloak 17.x ela se tornou a versão default e oficial;
+    - Em imagens Docker, identificamos com `quay.io/keycloak/keycloak:latest` ou simplesmente `quay.io/keycloak/keycloak`;
     - Qualquer versão do Keycloak a partir da 17.x;
-2. **Legacy**: utiliza Wildfly como servidor de aplicação e plataforma de desenvolvimento. Esta versão será descontinuada em Junho de 2022, por esse motivo recomenda-se a migração para a versão Latest;
-    - Em imagens Docker, identificamos com `quay.io/keycloak/keycloak:`**`legacy`**;
+2. **Legacy**: utiliza Wildfly como servidor de aplicação e runtime. Esta versão será descontinuada em Junho de 2022 e parará de receber atualizações, por esse motivo recomenda-se a migração para a versão Latest;
+    - Em imagens Docker, identificamos com `quay.io/keycloak/keycloak:legacy`;
     - Se preferir, você pode usar a imagem mantida pela jBoss na [Docker Hub](https://hub.docker.com/r/jboss/keycloak): `jboss/keycloak`;
     - Qualquer versão do Keycloak **anterior** a 17.x;
 
-Ambas funcionam muito bem, e no geral não importa muito qual delas usamos em tempo de desenvolvimento, ou seja, rodando localmente. Talvez a decisão mais importante esteja em qual delas devemos manter em produção dado que a versão Legacy será mantida de fato somente até Junho de 2022, mas este tipo de decisão foge do escopo deste treinamento.
+Ambas funcionam muito bem, e no geral não importa muito qual delas usamos em tempo de desenvolvimento, ou seja, rodando localmente na nossa máquina. Talvez a decisão mais importante esteja em qual delas devemos manter em produção dado que a versão Legacy será mantida de fato somente até Junho de 2022, mas este tipo de decisão foge do escopo deste treinamento.
 
 Ambas as imagens rodam com diversos bancos de dados, como MySQL, PostgreSQL, Oracle, MSSQL Server, H2 etc.
 
