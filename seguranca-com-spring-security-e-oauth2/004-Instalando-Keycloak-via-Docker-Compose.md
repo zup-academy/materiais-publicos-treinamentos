@@ -1,6 +1,6 @@
 # Instalando e rodando Keycloak via Docker-Compose
 
-Nesse conteúdo veremos como podemos instalar e rodar o Keyclock em nossas máquinas através do Docker-Compose, dessa forma poderemos configura-lo e usa-lo durante o desenvolvimento de aplicações localmente, sem a necessidade de um servidor externo ou internet.
+Nesse conteúdo veremos como podemos instalar e rodar o Keyclock em nossas máquinas através do Docker e Docker-Compose, dessa forma poderemos configura-lo e usa-lo durante o desenvolvimento de aplicações e durante este treinamento, tudo isso sem a necessidade de um servidor externo.
 
 ## Keycloak: entendendo as diferentes versões
 
