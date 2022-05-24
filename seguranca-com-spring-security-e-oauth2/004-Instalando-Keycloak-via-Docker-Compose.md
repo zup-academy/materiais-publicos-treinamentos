@@ -37,7 +37,7 @@ A forma mais simples de rodar o Keycloak é via container Docker. Portanto, para
 2. No seu browser, acesse o Admin Console via endereço: http://localhost:18080/admin/;
 3. Por fim, faça o login com o usuário `admin` e senha `admin`;
 
-Pronto! Você já pode configurar seu Keycloak!! Caso queira entender outras alternativas como Docker-Compose, detalhes para evitar conflitos de portas, ou mesmo rodar a versão Legacy, basta continar lendo esse conteúdo.
+Pronto! Você já pode configurar seu Keycloak!! Caso queira entender outras alternativas como Docker-Compose, detalhes para evitar conflitos de portas, ou mesmo rodar a versão Legacy, basta continuar lendo esse conteúdo.
 
 ## Instalando e rodando o Keycloak (Latest/Quarkus)
 
@@ -97,7 +97,7 @@ De forma analoga ao comando Docker, nós estamos startando o Keycloak em **Dev M
 
 ### Admin Console
 
-Para acessar o **Admin Console** do Keycloak, basta acessar a URL http://localhost:18080/admin/ e em seguida entrar com usuário e senha que configuramos (no nosso caso, ambos sao `admin`):
+Para acessar o **Admin Console** do Keycloak, basta acessar a URL http://localhost:18080/admin/ e em seguida entrar com usuário e senha que configuramos (no nosso caso, ambos são `admin`):
 
 ![Keycloak Admin Console](imagens/keycloak-admin-console.png "Keycloak Admin Console")
 
@@ -110,7 +110,7 @@ Após logar com usuário `admin`, você deve entrar na tela inicial do Keycloak,
 
 ![Keycloak Admin Console Tela inicial](imagens/keycloak-admin-console-after-login.png "Keycloak Admin Console Tela inicial")
 
-A partir de agora seu Keycloak está no ar na porta `18080` pronto para ser configurado e consumido pelas suas aplicações e microsserviços.
+A partir de agora seu Keycloak está no ar no endereço http://localhost:18080/admin/ pronto para ser configurado e consumido pelas suas aplicações, clientes HTTP e microsserviços.
 
 ## Instalando e rodando o Keycloak (Legacy/Wildfly)
 
