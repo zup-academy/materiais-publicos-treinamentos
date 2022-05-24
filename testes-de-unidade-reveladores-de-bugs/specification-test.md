@@ -4,7 +4,6 @@ Construir software é uma tarefa extremamente complexa, isso não se deve soment
 
 Uma tarefa bastante desafiadora é identificar quais são os comportamentos que determinada funcionalidade terá com entradas diferentes, isso porque dado ao valor de uma entrada, um fluxo alternativo pode ser tomado e levar a outro resultado.  Isto implica que devemos ter diversos cenários que contemplem toda a complexidade de sistema.
 
-
 Uma estratégia que pode otimizar a escrita da `Suite de testes` (conjuto) é observar a especificação da funcionalidade e extrair as combinações de valor de entrada e regra de negocio da funcionalidade para poder identificar quais são as saidas, e se estas saidas  satisfaçam diversos cenários de execução da funcionalidade, esta estratégia é conhecida com Specification Test ou Testes de Especificação em português.
 
 A aplicação dessa estrategias pode ser definida em 4 etapas:
@@ -102,7 +101,6 @@ feito isso podemos criar nossos teste utilizando JUnit, primeiro observaremos a 
 ```
 
 Sabemos que a classe `AdptarSalario` precisa de um mapa de funcionario por id, então para execução do nosso teste, iremos fornecer essa depêndencias.
-
 
 ```JAVA
 public class AdptarSalarioTest{
@@ -322,8 +320,6 @@ Um `Arguments` recebe em cada indice um valor, no metodo  `descontoProvider` o p
 Para finalizar a construção do nosso teste, iremos informar as anotações sobre sua assinatura, resultando em: 
 
 
-
-
 ```java
     @ParameterizedTest(
             name = "{index} => nome={0}, categoria={1}, preco={2}, dia={3}, desconto={4}"
@@ -374,5 +370,4 @@ E para finalizar construiremos os testes parametrizados para a classe de testes 
                 Arguments.of("Pão Frances", Categoria.PADARIA, new BigDecimal("10"), MONDAY, new BigDecimal("0.94"))
         );
     }
-
 ```
