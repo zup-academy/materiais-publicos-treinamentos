@@ -12,7 +12,10 @@ Para configurar o Authorization Code Flow no Keycloack, basta seguir os passos d
 - [4. Crie um Client](#4-crie-um-client)
 - [5. Configure o fluxo do seu Client](#5-configure-o-fluxo-do-seu-client)
 - [6. Crie um ou mais Client Scopes](#6-crie-um-ou-mais-client-scopes)
-- [6. Associe os Scopes ao Client](#7-associe-os-scopes-ao-client)
+- [7. Associe os Scopes ao Client](#7-associe-os-scopes-ao-client)
+
+Temos também alguns links de artigos e referências que podem te ajudar nos estudos:
+
 - [Links e referências](#links-e-refer%C3%AAncias)
 
 ### 1. Faça o login no Admin Console
