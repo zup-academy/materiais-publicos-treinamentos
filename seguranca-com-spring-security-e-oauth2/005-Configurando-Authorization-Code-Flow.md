@@ -6,7 +6,7 @@ Nesse conteúdo veremos como podemos configurar um Client no Keycloak com o flux
 
 Para configurar o Authorization Code Flow no Keycloack, basta seguir os passos descritos nesse texto.
 
-1. [Faça o login no Admin Console](/#2-crie-um-novo-realm)
+1. [Faça o login no Admin Console](#2-crie-um-novo-realm)
 2. [Crie um novo Realm]()
 3. [Crie um User]()
 4. [Crie um Client]()
