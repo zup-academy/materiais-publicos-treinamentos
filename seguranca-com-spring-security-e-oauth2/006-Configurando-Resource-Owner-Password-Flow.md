@@ -99,6 +99,11 @@ Por simplicidade, vamos considerar que o POSTman ou Insomnina sejam nossas aplic
 
 Após criar o novo Client, o formulário foi expandido com novos campos novas e novas abas. A partir de agora podemos configurar em mais detalhes nosso Client, como por exemplo configurando seus fluxos OAuth2, tipo de acesso, URLs de redirecionamento permitidas, detalhes do OpenID Connect e muitas outras.
 
+> ⚠️ **Cuidado com este OAuth 2.0 Flow** <br/>
+> Este fluxo OAuth2 não é mais indicado para comunicação segura entre aplicações pois o mesmo requer que a aplicação (Client) colete as credenciais do usuário e envie para o Authorization Server para trocar por um Access Token.
+>
+> O mesmo só deveria ser utilizado se os demais fluxos não atenderem as necessidades e/ou que existe uma relação de MUITA confiança entre o Resource Owner e aplicação (Client). Para mais detalhes, leia o que a [especificação OAuth2 comenta sobre ela](https://oauth.net/2/grant-types/password/).
+
 Por este momento, vamos configurar somente o fluxo OAuth2 necessário para nosso Client (aplicação). Para configurar o fluxo **Resource Owner Password Credentials Flow**, basta seguir os passos abaixo:
 
 1. Ainda no formulário de Client, preencha o formulário com os seguints valores:
