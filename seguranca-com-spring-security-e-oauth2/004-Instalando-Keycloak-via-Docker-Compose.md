@@ -156,7 +156,9 @@ docker-compose -f keycloak-postgres.yml up
 > **Evite conflito de portas** <br/>
 > Lembre-se de alterar as portas públicas do script de template para não conflitar com suas aplicações Spring Boot, Tomcat ou mesmo banco de dados. Por exemplo, sugerimos alterar a porta do Keycloak para `18080` (coloar o `1` na frete). 
 
-## Links e Referências
+## Links e referências
+
+Alguns são alguns links de artigos e referências oficiais e não oficiais que podem te ajudar no aprendizado e aprofundamento:
 
 - [Get started with Keycloak on Docker](https://www.keycloak.org/getting-started/getting-started-docker)
 - [How to run Keycloak with Docker](http://www.mastertheboss.com/keycloak/keycloak-with-docker/)
