@@ -4,7 +4,9 @@ Nesse conteúdo veremos como podemos configurar um Client no Keycloak com o flux
 
 ## Configurando novo fluxo
 
-Para configurar o Authorization Code Flow no Keycloack, basta seguir os passos descritos nesse texto.
+Antes de começar, assumimos que você já tenha configurado e esteja rodando seu servidor Keycloak localmente via container Docker ou Docker-Compose.
+
+Para configurar o **Authorization Code Flow** no Keycloack, basta seguir os **7 passos** descritos abaixo:
 
 - [1. Faça o login no Admin Console](#1-fa%C3%A7a-o-login-no-admin-console)
 - [2. Crie um novo Realm](#2-crie-um-novo-realm)
@@ -14,13 +16,13 @@ Para configurar o Authorization Code Flow no Keycloack, basta seguir os passos d
 - [6. Crie um ou mais Client Scopes](#6-crie-um-ou-mais-client-scopes)
 - [7. Associe os Scopes ao Client](#7-associe-os-scopes-ao-client)
 
-Temos também alguns links de artigos e referências que podem te ajudar nos estudos:
-
-- [Links e referências](#links-e-refer%C3%AAncias)
+No final deste documento, temos também alguns links de artigos e referências que podem te ajudar nos estudos: [Links e referências](#links-e-refer%C3%AAncias)
 
 ### 1. Faça o login no Admin Console
 
-Acesse o [Admin Console do Keyclock](http://localhost:18080/admin/) e faça o login com usuário que definimos no nosso container Docker (provavelmente usuário `admin` e senha `admin`);
+Acesse o [Admin Console do Keyclock](http://localhost:18080/admin/) e faça o login com usuário que definimos no nosso container Docker (provavelmente usuário `admin` e senha `admin`).
+
+Esta é a URL de acesso ao Admin Console do Keycloak: http://localhost:18080/admin/ (rodando na porta `18080`).
 
 ### 2. Crie um novo Realm
 
@@ -135,14 +137,18 @@ No Keycloak, para criar novos Scopes, basta seguir os passos abaixo:
 
 ![Novo Client Scope](imagens/keycloak-new-client-scopes.png)
 
-Criar Client Scopes é bem simples!! O próximo passo agora é associar estes Scopes ao nosso Client.
+Criar Client Scopes é bem simples!! Se você desejar, você pode criar quantos Scopes você desejar. A idéia é que eles possam ser utilizados e reutilizados entre Clients distintos dentro do seu Realm.
 
 > **Cuidado com a granularidade dos seus Scopes** <br/>
 > É muito comum que o Scopes tenha granularidades mais grossas, como por exemplo `read` e `write`. Determinar a granularidade é importante e está intimamente ligado as regras de acesso que queremos fornecer aos nossos Clients. Ter uma granularidade muito grossa pode acabar dando muito poder ao um Client, enquanto uma granularidade muito fina pode restringir demais seu acesso e dificultar a configuração e manutenção do Resource Server.
 >
 > Por exemplo, se temos uma API REST de Contatos que permite listar todos os contatos cadastrados e criar novos contatos, poderiamos ter 2 Scopes simples: `contatos:read` para leitura e `contatos:write` para escrita. Mas isso depende de contexto para contexto.
 
+O próximo passo agora é associar este(s) Scope(s) ao nosso Client, vamos lá?
+
 ### 7. Associe os Scopes ao Client
+
+Os Scopes tem significado somente quando associamos eles a um ou mais Clients, e é neste passo que faremos isso.
 
 Por fim, precisamos associar os Scopes a um ou mais Clients, para isso siga os passos:
 
