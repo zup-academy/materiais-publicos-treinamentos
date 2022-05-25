@@ -6,6 +6,14 @@ Nesse conteúdo veremos como podemos configurar um Client no Keycloak com o flux
 
 Para configurar o Authorization Code Flow no Keycloack, basta seguir os passos descritos nesse texto.
 
+1. [Faça o login no Admin Console]()
+2. [Crie um novo Realm]()
+3. [Crie um User]()
+4. [Crie um Client]()
+5. [Configure o fluxo do seu Client]()
+6. [Associe os Scopes ao Client]()
+7. [Links e referências]()
+
 ### 1. Faça o login no Admin Console
 
 Acesse o [Admin Console do Keyclock](http://localhost:18080/admin/) e faça o login com usuário que definimos no nosso container Docker (provavelmente usuário `admin` e senha `admin`);
@@ -81,7 +89,7 @@ Por simplicidade, vamos considerar que o POSTman ou Insomnina sejam nossas aplic
 >
 > No fim, se você percebeu, a aplicação SPA do site do Keycloak se comportou como nosso Client.
 
-## 5. Configure seu Client 
+### 5. Configure o fluxo do seu Client 
 
 Após criar o novo Client, o formulário foi expandido com novos campos novas e novas abas. A partir de agora podemos configurar em mais detalhes nosso Client, como por exemplo configurando seus fluxos OAuth2, tipo de acesso, URLs de redirecionamento permitidas, detalhes do OpenID Connect e muitas outras.
 
@@ -106,7 +114,7 @@ Além disso, repare que configuramos o campo _Access Type_ como `confidential` p
 
 Embora opcional, nós também desabilitamos o _Direct Access Grants Enabled_, pois se trata de um outro fluxo OAuth2 que não precisamos neste momento.
 
-## 6. Crie um ou mais Client Scopes
+### 6. Crie um ou mais Client Scopes
 
 Scopes, ou escopos,  é um mecanismo no OAuth 2.0 para limitar o acesso de uma aplicação à conta de um usuário. Uma aplicação pode requisitar um ou mais escopos, esta informação é então apresentada ao usuário na tela de consentimento, e o Access Token gerado para aplicação será limitado de acordo com esses escopos. Lembre-se, a idéia de uma aplicação é ter acesso ou executar alguma ação em nome de um usuário especifico, e são justamente os Scopes que limitam o que uma aplicação (Client) pode ou não fazer.
 
@@ -123,14 +131,14 @@ No Keycloak, para criar novos Scopes, basta seguir os passos abaixo:
 
 ![Novo Client Scope](imagens/keycloak-new-client-scopes.png)
 
-Criar Client Scopes é bem simples. O próximo passo é associar estes Scopes aos nossos Clients.
+Criar Client Scopes é bem simples!! O próximo passo agora é associar estes Scopes ao nosso Client.
 
 > **Cuidado com a granularidade dos seus Scopes** <br/>
 > É muito comum que o Scopes tenha granularidades mais grossas, como por exemplo `read` e `write`. Determinar a granularidade é importante e está intimamente ligado as regras de acesso que queremos fornecer aos nossos Clients. Ter uma granularidade muito grossa pode acabar dando muito poder ao um Client, enquanto uma granularidade muito fina pode restringir demais seu acesso e dificultar a configuração e manutenção do Resource Server.
 >
 > Por exemplo, se temos uma API REST de Contatos que permite listar todos os contatos cadastrados e criar novos contatos, poderiamos ter 2 Scopes simples: `contatos:read` para leitura e `contatos:write` para escrita. Mas isso depende de contexto para contexto.
 
-## 7. Associe os Scopes ao Client
+### 7. Associe os Scopes ao Client
 
 Por fim, precisamos associar os Scopes a um ou mais Clients, para isso siga os passos:
 
@@ -149,6 +157,13 @@ Pronto! Agora nosso Client possui Scopes associados que precisam ser informados 
 > Default Client Scopes são escopos consedidos sempre que uma aplicação solicita um Access Token. Enquanto Optional Client Scopes são escopos consedidos somente se explicitamente informados no momento de solicitar um Access Token.
 >
 > É comum utilizarmos Optional Client Scopes para limitar o que determinados Clients podem ou não fazer em nome de um usuário do sistema.
+
+### Pronto! Client Configurado!
+
+Prontinho! 🥳🥳 
+Não foi tão dificil assim, não é mesmo? Com o tempo criar e configurar Realms, Users, Client e Scopes se tornará fácil e comum para você. 
+
+Agora, nosso Client com Authorization Code Flow está configurado e pronto para uso! Para testa-lo, você pode usar algum HTTP client como POSTman ou Insomnia. Se tiver dúvida de como fazer isso, basta consultar nosso material teorico!
 
 ## Links e referências
 
