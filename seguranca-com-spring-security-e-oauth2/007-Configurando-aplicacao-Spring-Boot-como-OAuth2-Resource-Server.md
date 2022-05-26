@@ -2,11 +2,7 @@
 
 Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring Boot com OAuth2 Resource Server. Para isso precisaremos adicionar e configurar a dependência do Spring Security no nosso projeto.
 
-## Criando uma nova aplicação com Spring Initialzer
-
-xxx
-
-## Configurando uma aplicação
+## Configurando uma aplicação Spring Boot
 
 ### 1. Adicione a dependência do Maven no projeto
 
@@ -19,7 +15,10 @@ A primeira coisa que temos que fazer é configurar nosso projeto Spring Boot com
 </dependency>
 ```
 
-O artefato `spring-boot-starter-oauth2-resource-server` inclui a dependência `spring-security-oauth2-resource-server`, que por sua vez contem o suporte a Resource Server. Esta dependência também inclui as bibliotecas core do Spring Security. Por esse motivo, podemos remover a dependencia `spring-boot-starter-security` do nosso `pom.xml`. 
+O artefato `spring-boot-starter-oauth2-resource-server` inclui a dependência `spring-security-oauth2-resource-server`, que por sua vez contem é a biblioteca responsável por nos dar suporte ao modo Resource Server. Esta dependência também inclui as bibliotecas core do Spring Security, por esse motivo, podemos remover a dependencia `spring-boot-starter-security` do nosso `pom.xml` sem qualquer problema. 
+
+> **Tire proveito do Spring Initializr** <br/>
+> Nós adicionamos a dependência no `pom.xml` explicitamente pois estamos partindo de um projeto existente, porém se você está criando um novo projeto Spring Boot através do [Spring Initializr](https://start.spring.io/) e, de antemão sabe que precisará configurar a aplicação como OAuth2 Resource Server, aproveite para adicionar a dependência **OAuth2 Resource Server** no momento do setup da sua aplicação Spring Boot.
 
 Se estiver numa IDE, lembre-se de recarregar as dependências do Maven.
 
@@ -54,6 +53,20 @@ spring:
 
 A partir de agora a propriedade `issuer-uri` se torna opcional, contudo **entendemos como boa prática manter ambas as propriedades** pois assim o Spring Security pode utiliza-la como opçõa extra de segurança em alguns cenários.
 
+> **Configurando chaves públicas locais** <br/>
+> Em vez de indicar o endpoint das chaves públicas do Keycloak nós podemos armazena-la localmente em um arquivo e configurar seu caminho no disco, ou mesmo passar declará-la estaticamente via texto.
+> ```
+> spring:
+>   security:
+>     oauth2:
+>       resourceserver:
+>         jwt:
+>           public-key-location: classpath:my-key.pub
+> ```
+> Apesar de ser uma abordagem incomum e fraca no ponto de vista de segurança, este método pode ser útil em algumas situações na sua empresa e contexto. Para mais informações, leia a [documentação do Spring Security](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#oauth2resourceserver-jwt-decoder-public-key-boot).
+
+E lembre-se, para maior flexibilidade e dinamismo todas estas configurações no arquivo `application.yml` podem ser feitas diretamente em código Java.
+
 
 ### 3. Configure as regras de acesso (access rules)
 
@@ -85,7 +98,7 @@ Como não estamos explicitamente passando a configuração que usaremos para val
 
 A configuração acima é suficiente para proteger a API REST da nossa aplicação, ou seja, ela está indicando que qualquer endpoint da nossa API REST está protegida e somente poderá ser acessada por uma request que possua um Access Token válido. Porém, é importante que especificar quais os Scopes necessários para consumir cada um dos endpoints da nossa API REST.
 
-Dado que temos os seguintes endpoints na nossa API REST:
+Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
 
 ```
 Listagem: GET  /contatos
@@ -93,7 +106,7 @@ Detalhes: GET  /contatos/{id}
 Cadastro: POST /contatos
 ```
 
-Poderíamos configurar as regras de acesso para os endpoints acima onde listar e detalhar um contato precisariam do Scope `contatos:read`, enquanto a cadastrar um novo contato precisaria do Scope `contatos:write`:
+Poderíamos configurar as regras de acesso para os endpoints acima onde para listar e detalhar um contato se faz necessário o Scope `contatos:read`, enquanto a cadastrar um novo contato precisa-se do Scope `contatos:write`:
 
 ```java
 @Configuration
@@ -117,7 +130,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 Repare que as authorities declaradas no método `hasAuthority` são os Scopes configurados no Keycloack. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
-#### Configure as regras de acesso por anotações
+#### Habilite as regras de acesso por anotações
 
 Por fim, vamos habilitar o controle de acesso via anotações. Também conhecido como **Expression-Based Access Control**, ele nos permite ter controle fino das regras de acesso a nível de métodos usando as anotações `@PreAuthorize`, `@PreFilter`, `@PostAuthorize` and `@PostFilter`. Este tipo de controle de acesso é útil para que possamos ter um controle mais fino das regras de acesso a nível de métodos de controllers, services etc.
 
@@ -128,14 +141,11 @@ Para isso, basta configurar nossa classe `ResourceServerConfig` com a anotação
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // ...
-    }
+    // ...
 }
 ```
 
-Dessa forma, agora podemos usar anotações para ter um controle ainda mais fino das regras de acesso a um endpoint. No código abaixo anotamos um método do controller com a anotação `@PreAuthorize` juntamente com a regra `hasAuthority` para verificar se o Access Token da requisição possui um determinado Scope:
+Dessa forma, agora podemos usar anotações para ter um controle ainda mais fino das regras de acesso a um endpoint. Por exemplo, no código abaixo anotamos um método do controller com a anotação `@PreAuthorize` juntamente com a regra `hasAuthority` para verificar se o Access Token da requisição possui um determinado Scope:
 
 ```java
 @DeleteMapping(value = "/contatos/{id}")
@@ -151,9 +161,9 @@ Pronto, agora basta iniciar a aplicação e exercitar os endpoints da nossa API 
 
 Aqui podemos usar qualquer ferramenta de cliente HTTP, como POSTman, Insomnia ou mesmo cURL para obter o Access Token e por fim consumir nossa API REST.
 
-Mas primeiramente assuma toda a configuração no Keycloak tenha sido devidamente feita, como Realm, Users, Client e Scopes. Portanto, existe um Client `meus-contatos-client` configurado no nosso Realm `meus-contatos` no Keycloak; existe também um usuário `rafael.ponte` com senha `123`. E, por simplificidade, assuma que este Client também esteja configurado para trabalhar com o fluxo **Resource Owner Password Flow**, pois é um fluxo mais simples e fácil de simular para um desenvolvedor(a) backend. 
+Mas primeiramente assuma que a toda a configuração no Keycloak tenha sido devidamente feita, como Realm, Users, Clients e Scopes. Portanto, existe um Client `meus-contatos-client` configurado no nosso Realm `meus-contatos` no Keycloak; existe também um usuário `rafael.ponte` com senha `123`. E, por simplificidade, este Client também está configurado para trabalhar com o fluxo **Resource Owner Password Flow** de maneira `confidential`, afinal, trata-se de um fluxo mais simples e fácil de simular para um desenvolvedor(a) backend. 
 
-Dessa forma, conseguimos obter o Access Token com apenas uma requisição HTTP via comando cURL:
+Deste modo, conseguimos obter o Access Token com apenas uma requisição HTTP para o Keycloak através do comando cURL:
 
 ```sh
 curl --location --request POST 'http://localhost:18080/realms/meus-contatos/protocol/openid-connect/token' \
@@ -181,7 +191,7 @@ Como resposta a solicitação de token, o Keycloak nos retorna um JSON com os to
 }
 ```
 
-Agora, para acessar qualquer endpoint da nossa API REST, basta submeter uma requisição com o header `Authorization` (Bearer) contendo o Access Token obtido do Keycloak na requisição anterior:
+Agora, para acessar qualquer endpoint da nossa API REST na aplicação Meus Contatos, basta submeter uma requisição com o header `Authorization` (Bearer) contendo o Access Token obtido do Keycloak na requisição anterior:
 
 ```sh
 curl --request GET \
@@ -209,4 +219,10 @@ Show de bola, como resposta temos um `200 (OK)` com o seguinte payload:
 
 Não foi tão dificil, não é mesmo?
 
+Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTTP da sua preferência.
+
 ## Links e referências
+
+- [OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
+- [OAuth 2.0 Resource Server JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
+- [Baeldung: OAuth 2.0 Resource Server With Spring Security 5](https://www.baeldung.com/spring-security-oauth-resource-server)
