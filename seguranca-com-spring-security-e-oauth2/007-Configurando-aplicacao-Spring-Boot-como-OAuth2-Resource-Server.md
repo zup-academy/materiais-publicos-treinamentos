@@ -106,7 +106,7 @@ Detalhes: GET  /contatos/{id}
 Cadastro: POST /contatos
 ```
 
-Poderíamos configurar as regras de acesso para os endpoints acima onde para listar e detalhar um contato se faz necessário o Scope `contatos:read`, enquanto a cadastrar um novo contato precisa-se do Scope `contatos:write`:
+Poderíamos configurar as regras de acesso para os endpoints acima onde para listar e detalhar um contato se faz necessário o Scope `contatos:read`, enquanto a cadastrar um novo contato precisa-se do Scope `contatos:write`, e qualquer outro endpoint precisa de um Access Token válido (autenticado):
 
 ```java
 @Configuration
