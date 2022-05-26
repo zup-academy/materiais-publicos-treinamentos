@@ -148,9 +148,9 @@ No Keycloak, para criar novos Scopes, basta seguir os passos abaixo:
 Criar Client Scopes é bem simples!! Se você desejar, você pode criar quantos Scopes você desejar. A idéia é que eles possam ser utilizados e reutilizados entre Clients distintos dentro do seu Realm.
 
 > **Cuidado com a granularidade dos seus Scopes** <br/>
-> É muito comum que o Scopes tenha granularidades mais grossas, como por exemplo `read` e `write`. Determinar a granularidade é importante e está intimamente ligado as regras de acesso que queremos fornecer aos nossos Clients. Ter uma granularidade muito grossa pode acabar dando muito poder ao um Client, enquanto uma granularidade muito fina pode restringir demais seu acesso e dificultar a configuração e manutenção do Resource Server.
+> É muito comum que os Scopes tenham granularidades mais grossas, como por exemplo `read` e `write`. Determinar a granularidade é importante e está intimamente ligada as regras de acesso que queremos fornecer aos nossos Clients. Ter uma granularidade muito grossa pode acabar dando muito poder ao um Client, enquanto uma granularidade muito fina pode restringir demais seu acesso e dificultar a configuração e manutenção do Resource Server.
 >
-> Por exemplo, se temos uma API REST de Contatos que permite listar todos os contatos cadastrados e criar novos contatos, poderiamos ter 2 Scopes simples: `contatos:read` para leitura e `contatos:write` para escrita. Mas isso depende de contexto para contexto.
+> Embora a definição de Scopes seja contextual, vale a pena um exemplo: imagine que temos uma API REST de Contatos que permite listar todos os contatos cadastrados e criar novos contatos, neste caso poderiamos ter 2 Scopes simples: `contatos:read` para leitura e `contatos:write` para escrita.
 
 O próximo passo agora é associar este(s) Scope(s) ao nosso Client, vamos lá?
 
