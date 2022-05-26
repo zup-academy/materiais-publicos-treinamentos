@@ -84,7 +84,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
             .and()
                 .oauth2ResourceServer()  
-                    .jwt(); // atencao: necessario pois estamos sobrescrevendo a conf do application.yml
+                    .jwt(); // atencao: necessario pois sobrescrevemos a conf default do Spring Security
                 ;
     }
 }
