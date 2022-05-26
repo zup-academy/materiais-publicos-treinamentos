@@ -166,7 +166,7 @@ public ProjectDto remove(@PathVariable Long id) {
 
 Para mais informações sobre os tipos de expressions que podemos utilizar, leia a [documentação oficial](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html).
 
-#### 3.3. Melhore a configuração da sua API REST
+#### 3.3. Adaptando o Spring Security para APIs REST
 
 Por padrão o Spring Security habilita diversos mecanismos de autenticação e proteção para nossa aplicação, como CSRF (Cross-Site Request Forgery), HTTP Basic Auth, Login e Logout Based Auth, uso de Session no lado servidor entre outras. Ele faz isso pois o framework foi criado e desenhado para uma realidade de aplicações Web, onde o uso de APIs REST ainda não era popular. Embora estes defaults ainda sejam interessantes para aplicações Web hoje em dia, elas não fazem muito sentido para uma aplicação que expõe uma API REST, como é o nosso caso.
 
