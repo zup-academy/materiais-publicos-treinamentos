@@ -128,7 +128,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-Repare que as authorities declaradas no método `hasAuthority` são os Scopes configurados no Keycloack. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
+Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes que configuramos no Keycloack para nosso Client. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
 #### Habilite as regras de acesso por anotações
 
