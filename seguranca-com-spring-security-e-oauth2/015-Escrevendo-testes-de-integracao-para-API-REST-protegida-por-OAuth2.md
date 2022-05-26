@@ -146,7 +146,7 @@ Embora o teste esteja correto, o mesmo quebrou pois nossa API REST está protegi
 
 Mas será que faz sentido rodar um Keycloak para rodar para nosso testes? Na nossa opinião, **com toda certeza não**.
 
-### 2. Gerando e enviando o Access Token na requisição
+### 2. Gere e envie o Token na requisição
 
 Apesar dos testes serem integrados, rodar um servidor Keycloak apenas para testar nossa API REST seria demais, poderia não só complicar nossas vidas com também ainda tornaria os testes mais lentos. O que precisamos é apenas de um Access Token válido durante a execução dos testes, sem se importar muito com quem de fato gera este token.
 
@@ -207,7 +207,13 @@ Expected :201
 Actual   :403
 ```
 
-Isso acontece pois o token enviado apesar de válido ele não possui os scopes necessários para consumir nosso endpoint. Para corrigir isso, precisamos adicionar o scope `contatos:write` no nosso token JWT, como no seguinte código:
+Mas por que isso acontece se estamos enviando o token na requisição?
+
+### 3. Configure o Scope no token
+
+Isso acontece pois o token enviado apesar de válido ele não possui os scopes necessários para consumir nosso endpoint.
+
+Para corrigir isso, precisamos adicionar o scope `contatos:write` no nosso token JWT, e a maneira mais simples de fazer isso é adicionando um ou mais `SimpleGrantedAuthority` diretamente no token, como no seguinte código:
 
 ```java
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -230,9 +236,9 @@ mockMvc.perform(
 
 Se rodarmos o teste novamente desta vez ele passa com sucesso! 🥳
 
-Poderíamos parar por agora e ir para o próximo endpoint, mas ainda falta informar o `username` do usuário Resource Owner no token JWT, lembra?
+Poderíamos parar por aqui e ir para o próximo endpoint, mas ainda falta informar o `username` do Resource Owner no token JWT, lembra?
 
-### 3. Adicionando o `username` no token JWT
+### 4. Configure claims no token
 
 xxx
 
