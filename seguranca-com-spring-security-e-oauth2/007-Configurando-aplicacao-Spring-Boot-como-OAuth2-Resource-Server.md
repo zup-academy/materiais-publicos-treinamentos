@@ -94,14 +94,16 @@ Como estamos sobrescrevendo a configuração default do Spring Security, nós **
 
 Como não estamos explicitamente passando a configuração que usaremos para validação do token JWT, o Spring Security continuará lendo estas informações do `application.yml`.
 
-#### Configure as regras de acesso por endpoints
+Além de habilitarmos o comportamento OAuth2 Resource Server na aplicação com suporte a JWT, nós também declaramos que qualquer requisição que chegar na aplicação precisa estar autenticada, ou seja, ela precisa ter um Access Token válido no cabeçalho.
+
+#### 3.1 Configure as regras de acesso por endpoints
 
 A configuração acima é suficiente para proteger a API REST da nossa aplicação, ou seja, ela está indicando que qualquer endpoint da nossa API REST está protegida e somente poderá ser acessada por uma request que possua um Access Token válido. Porém, é importante especificar quais os Scopes necessários para consumir cada um dos endpoints da nossa API REST.
 
 > ⚠️ **Favoreça o uso de Scopes** <br/>
-> É muito importante que você proteja os endpoitns da sua API REST via declaração de Scopes, afinal de contas o protocolo OAuth 2.0 é sobre Autorização. Simplesmente liberar o acesso a todos os endpoints da sua aplicação pelo simples fato de alguém possuir o Access Token é muito delicado e abre brechas graves de segurança.
+> É muito importante que você proteja os endpoitns da sua API REST via declaração de Scopes, afinal de contas o protocolo OAuth 2.0 é sobre Autorização. Simplesmente liberar o acesso a todos os endpoints da sua aplicação pelo simples fato de alguém estar autenticado (ou seja, possuir um Access Token) é muito delicado e abre brechas graves de segurança.
 
-Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
+Para entender melhor o que estou querendo dizer, vamos a um exemplo. Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
 
 ```
 Listagem: GET  /contatos
@@ -125,7 +127,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                     .authenticated()
             .and()
                 .oauth2ResourceServer()  
-                    .jwt(); // atencao: necessario pois estamos sobrescrevendo a conf do application.yml
+                    .jwt(); // atencao: necessario pois sobrescrevemos a conf default do Spring Security
                 ;
     }
 }
@@ -133,7 +135,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes que configuramos no Keycloack para nosso Client. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
-#### Habilite as regras de acesso por anotações
+#### 3.2. Habilite as regras de acesso por anotações
 
 Por fim, vamos habilitar o controle de acesso via anotações, também conhecido como **Expression-Based Access Control**. Ele nos permite ter controle fino das regras de acesso a nível de métodos através das anotações `@PreAuthorize`, `@PreFilter`, `@PostAuthorize` and `@PostFilter`. Este tipo de controle de acesso poder ser útil para que possamos ter um controle mais fino das regras de acesso a nível de métodos de controllers, services etc.
 
