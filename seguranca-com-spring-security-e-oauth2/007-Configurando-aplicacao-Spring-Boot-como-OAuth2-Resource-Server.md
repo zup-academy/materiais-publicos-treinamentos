@@ -166,6 +166,50 @@ public ProjectDto remove(@PathVariable Long id) {
 
 Para mais informações sobre os tipos de expressions que podemos utilizar, leia a [documentação oficial](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html).
 
+#### 3.3. Melhore a configuração da sua API REST
+
+Por padrão o Spring Security habilita diversos mecanimos de autenticação e proteção para nossa aplicação, como CSRF (Cross-Site Request Forgery), HTTP Basic Auth, Login e Logout Based Auth, uso de Session no lado servidor entre outras. Ele faz isso pois o mesmo foi criado e desenhado para uma realidade de aplicações Web onde o uso de APIs REST ainda não era popular. Mas a verdade é que estes defaults ainda são interessantes para aplicações Web, mas não para uma aplicação que expõe uma API REST, como é o nosso caso.
+
+Por esse motivo, entendemos que é uma boa prática ajustar a configuração do Spring Security da nossa aplicação para que a mesma fique aderente a natureza Stateless de uma API REST. Deste modo, melhore a configuração da sua `ResourceServerConfig` como abaixo:
+
+```java
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http.cors()
+            .and()
+                .csrf().disable()
+                .httpBasic().disable()
+                .rememberMe().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .requestCache().disable()
+                .headers().frameOptions().deny()
+            .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(STATELESS)
+            .and()
+                .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/api/contatos").hasAuthority("SCOPE_contatos:read")
+                    .antMatchers(HttpMethod.GET, "/api/contatos/**").hasAuthority("SCOPE_contatos:read")
+                    .antMatchers(HttpMethod.POST, "/api/contatos").hasAuthority("SCOPE_contatos:write")
+                .anyRequest()
+                    .authenticated()
+            .and()
+                .oauth2ResourceServer()
+                    .jwt()
+        ;
+        // @formatter:on
+    }
+}
+```
+
+Lembre-se, estas configurações são apenas recomendações para aplicações ou microsserviços que expõe APIs REST, mas elas podem mudar de acordo com a necessidade e restrições de segurança do seu contexto. Para entender cada uma destas configurações e muitas outras que não comentamos, vale a leitura na [documentação oficial do Spring Security](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html).
+
 ### 4. Inicie a aplicação e teste seus endpoints
 
 Pronto, agora basta iniciar a aplicação e exercitar os endpoints da nossa API REST!
