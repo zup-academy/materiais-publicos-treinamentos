@@ -168,7 +168,7 @@ Para mais informações sobre os tipos de expressions que podemos utilizar, leia
 
 #### 3.3. Melhore a configuração da sua API REST
 
-Por padrão o Spring Security habilita diversos mecanimos de autenticação e proteção para nossa aplicação, como CSRF (Cross-Site Request Forgery), HTTP Basic Auth, Login e Logout Based Auth, uso de Session no lado servidor entre outras. Ele faz isso pois o mesmo foi criado e desenhado para uma realidade de aplicações Web onde o uso de APIs REST ainda não era popular. Mas a verdade é que estes defaults ainda são interessantes para aplicações Web, mas não para uma aplicação que expõe uma API REST, como é o nosso caso.
+Por padrão o Spring Security habilita diversos mecanismos de autenticação e proteção para nossa aplicação, como CSRF (Cross-Site Request Forgery), HTTP Basic Auth, Login e Logout Based Auth, uso de Session no lado servidor entre outras. Ele faz isso pois o framework foi criado e desenhado para uma realidade de aplicações Web, onde o uso de APIs REST ainda não era popular. Embora estes defaults ainda sejam interessantes para aplicações Web hoje em dia, elas não fazem muito sentido para uma aplicação que expõe uma API REST, como é o nosso caso.
 
 Por esse motivo, entendemos que é uma boa prática ajustar a configuração do Spring Security da nossa aplicação para que a mesma fique aderente a natureza Stateless de uma API REST. Deste modo, melhore a configuração da sua `ResourceServerConfig` como abaixo:
 
@@ -282,3 +282,4 @@ Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTT
 - [OAuth 2.0 Resource Server JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
 - [Baeldung: OAuth 2.0 Resource Server With Spring Security 5](https://www.baeldung.com/spring-security-oauth-resource-server)
 - [Expression-Based Access Control](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html)
+- [Protection Against Exploits](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html)
