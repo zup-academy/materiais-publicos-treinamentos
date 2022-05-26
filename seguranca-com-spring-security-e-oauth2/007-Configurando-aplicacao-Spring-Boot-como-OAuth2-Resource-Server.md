@@ -254,7 +254,7 @@ curl --request GET \
   --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia....v2Bsx3auzw'
 ```
 
-Show de bola, como resposta temos um `200 (OK)` com o seguinte payload:
+Show de bola, como resposta temos um Status HTTP `200 (OK)` com o seguinte payload:
 
 ```json
 {
