@@ -4,7 +4,9 @@ Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring 
 
 ## Configurando uma aplicação Spring Boot
 
-Antes de mais nada, para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
+Antes de mais começar, você já está rodando seu Keycloak local? 
+
+Para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
 
 ### 1. Adicione a dependência do Maven no projeto
 
