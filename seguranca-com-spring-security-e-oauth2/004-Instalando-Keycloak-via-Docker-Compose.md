@@ -133,6 +133,9 @@ docker stop keycloak_legacy
 docker start keycloak_legacy
 ```
 
+> **Não esqueça do path `/auth` na versão Legacy** <br/>
+> Nesta versão Legacy do Keycloak todas as URLs possuem o prefixo `/auth` no path, algo como `http://localhost:18080/auth/**`. Portanto, se você estiver trabalhando com esta versão lembre-se que eeste prefixo vai em todas as URLs.  
+
 ### Docker-Compose
 
 Outra alternativa que pode ser mais conveniente é roda-lo via Docker-Compose. Para isso, podemos utilizar algum script de template de Docker-Compose disponível no Github oficial do Keycloak:
