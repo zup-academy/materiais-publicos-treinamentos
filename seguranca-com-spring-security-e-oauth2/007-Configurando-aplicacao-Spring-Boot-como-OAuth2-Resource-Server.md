@@ -4,7 +4,7 @@ Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring 
 
 ## Configurando uma aplicação Spring Boot
 
-Antes de mais nada, é preciso ter um Keycloak configurado e rodando localmente. Caso não tenha, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
+Antes de mais nada, para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
 
 ### 1. Adicione a dependência do Maven no projeto
 
@@ -19,7 +19,7 @@ A primeira coisa que temos que fazer é configurar nosso projeto Spring Boot com
 
 O artefato `spring-boot-starter-oauth2-resource-server` inclui a dependência `spring-security-oauth2-resource-server`, que por sua vez contem é a biblioteca responsável por nos dar suporte ao modo Resource Server. Esta dependência também inclui as bibliotecas core do Spring Security, por esse motivo, podemos remover a dependencia `spring-boot-starter-security` do nosso `pom.xml` sem qualquer problema. 
 
-> **Tire proveito do Spring Initializr** <br/>
+> **Aplicação nova? Vá de Spring Initializr!** <br/>
 > Nós adicionamos a dependência no `pom.xml` explicitamente pois estamos partindo de um projeto existente, porém se você está criando um novo projeto Spring Boot através do [Spring Initializr](https://start.spring.io/) e, de antemão sabe que precisará configurar a aplicação como OAuth2 Resource Server, aproveite para adicionar a dependência **OAuth2 Resource Server** no momento do setup da sua aplicação Spring Boot.
 
 Se estiver numa IDE, lembre-se de recarregar as dependências do Maven.
