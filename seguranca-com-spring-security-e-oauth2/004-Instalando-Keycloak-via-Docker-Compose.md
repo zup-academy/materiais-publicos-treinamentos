@@ -37,7 +37,7 @@ A forma mais simples de rodar o Keycloak é via container Docker. Portanto, para
 2. No seu browser, acesse o Admin Console via endereço: http://localhost:18080/admin/;
 3. Por fim, faça o login com o usuário `admin` e senha `admin`;
 
-Pronto! Você já pode configurar seu Keycloak!! Caso queira entender outras alternativas como Docker-Compose, detalhes para evitar conflitos de portas, ou mesmo rodar a versão Legacy, basta continar lendo esse conteúdo.
+Pronto! Você já pode configurar seu Keycloak!! Caso queira entender outras alternativas como Docker-Compose, detalhes para evitar conflitos de portas, ou mesmo rodar a versão Legacy, basta continuar lendo esse conteúdo.
 
 ## Instalando e rodando o Keycloak (Latest/Quarkus)
 
@@ -97,7 +97,7 @@ De forma analoga ao comando Docker, nós estamos startando o Keycloak em **Dev M
 
 ### Admin Console
 
-Para acessar o **Admin Console** do Keycloak, basta acessar a URL http://localhost:18080/admin/ e em seguida entrar com usuário e senha que configuramos (no nosso caso, ambos sao `admin`):
+Para acessar o **Admin Console** do Keycloak, basta acessar a URL http://localhost:18080/admin/ e em seguida entrar com usuário e senha que configuramos (no nosso caso, ambos são `admin`):
 
 ![Keycloak Admin Console](imagens/keycloak-admin-console.png "Keycloak Admin Console")
 
@@ -110,7 +110,7 @@ Após logar com usuário `admin`, você deve entrar na tela inicial do Keycloak,
 
 ![Keycloak Admin Console Tela inicial](imagens/keycloak-admin-console-after-login.png "Keycloak Admin Console Tela inicial")
 
-A partir de agora seu Keycloak está no ar na porta `18080` pronto para ser configurado e consumido pelas suas aplicações e microsserviços.
+A partir de agora seu Keycloak está no ar no endereço http://localhost:18080/admin/ pronto para ser configurado e consumido pelas suas aplicações, clientes HTTP e microsserviços.
 
 ## Instalando e rodando o Keycloak (Legacy/Wildfly)
 
@@ -132,6 +132,9 @@ Para parar e restartar o container, basta rodar os comandos abaixo:
 docker stop keycloak_legacy
 docker start keycloak_legacy
 ```
+
+> **Não esqueça do path `/auth` na versão Legacy** <br/>
+> Nesta versão Legacy do Keycloak todas as URLs possuem o prefixo `/auth` no path, algo como `http://localhost:18080/auth/**`. Portanto, se você estiver trabalhando com esta versão lembre-se que eeste prefixo vai em todas as URLs.  
 
 ### Docker-Compose
 
@@ -156,7 +159,9 @@ docker-compose -f keycloak-postgres.yml up
 > **Evite conflito de portas** <br/>
 > Lembre-se de alterar as portas públicas do script de template para não conflitar com suas aplicações Spring Boot, Tomcat ou mesmo banco de dados. Por exemplo, sugerimos alterar a porta do Keycloak para `18080` (coloar o `1` na frete). 
 
-## Links e Referências
+## Links e referências
+
+Alguns são alguns links de artigos e referências oficiais e não oficiais que podem te ajudar no aprendizado e aprofundamento:
 
 - [Get started with Keycloak on Docker](https://www.keycloak.org/getting-started/getting-started-docker)
 - [How to run Keycloak with Docker](http://www.mastertheboss.com/keycloak/keycloak-with-docker/)
