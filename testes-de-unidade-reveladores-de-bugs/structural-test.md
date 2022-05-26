@@ -66,12 +66,12 @@ Ao utilizar as técnicas de especificação, primeiro extraimos as classes de en
 Outro ponto importante é que ao deverivar testes utilizando qualquer criterio, nunca sabemos, quantos testes fazer, o que pode impactar em alto tempo criando testes, aumentando custo de tempo para entrega de uma feature.
 
 
-### **`Line Coverage`** (Cobertura por Linhas)
+## **`Line Coverage`** (Cobertura por Linhas)
 
 Nesta técnica o objetivo é cobrir as linhas de codigo de determinada unidade, ao executar um teste. O indice de cobertura de linhas é medido de maneira similar a cobertura por metodos, dado a quantidade de linhas de uma classe ou metodo, quantas destas são exercitadas por um teste. 
 
 ```
-cobertura = linhasExecutadasPorUmTeste/totalDeLinhas
+cobertura = (linhasExecutadasPorUmTeste/totalDeLinhas) * 100
 ```
 
 #### Vamos explorar esta técnica na pratica? 
@@ -146,3 +146,52 @@ void test1() {
 
 Por fim conseguimos atingir nosso criterio, 100% de cobertura de linhas, e suite de testes completa. Por mais que a cobertura por linhas seja simples e direta devemos nos atentar com esta estratégia, pois ela é totalmente dependente do estilo do codigo que foi escrito, caso alguma mudança seja feita, a cobertura podera diminuir ou aumentar.
 
+O proximo tipo criterio será a cobertura por bloco de codigo, ou Block converage.
+
+## **`Block Coverage`** (Cobertura por blocos)
+
+Nesta abordagem nosso objetivo é extrair testes visando a cobertura dos blocos de codigos do nosso programa. Estes blocos podem ser divididos em duas categorias: basicos e decisão.
+
+### Bloco Basico
+
+Os blocos basicos são aqueles onde existem diversas operacoes que são executadas de maneira continua. veja um exemplo no codigo abaixo: 
+
+```java
+public void somaDosQuadrados(int a, int b){ 
+1.    int quadradoDeA = a*a;
+2.    int quadradoDeB = b*b;
+3.    int soma = quadradoDeA + quadradoDeB;
+4.    System.out.println("Soma dos quadrados: "  + soma);
+}
+```
+
+O codigo das linhas 1 a 4, são executados de maneira continua e sem bifurcação, estas são as caractertisticas  de um bloco basico.
+
+### Bloco de Decisao
+
+Os blocos de decisão como o nome sugere, são aqueles que a partir de determinada condição são criados dois caminhos, um otimo exemplo para testes blocos são as estruturaas de decisao `if` e `else`, também as estruturas de repetição como `while` e `for`.
+
+Observe o bloco, na funcao de verificacao se um numero é primo, lembrando que um numero é primo caso ele seja divisivel apenas por 1 e ele mesmo.
+
+```java
+public boolean isPrimo(int numero){ 
+01.    int foiDividido = 0;
+02.
+03.    for (int i = 1; i <= numero; i++) {
+04.        if (numero % i == 0) {
+05.            foiDividido++;
+06.        }
+07.    }
+08.
+09.    if (foiDividido == 2) {
+10.        return true;
+11.    }
+12.    return false;
+}
+```
+
+Esta funão é minimamente complexa, pois existem diversos blocos, como por exemplo: da linha 03 a 07 existe um bloco formado pela condição `i<=numero`, caso seja verdadeiro o for sera executado, caso contrario o programa seguira para linha 08.
+
+na linha 09, existe outro bloco de decisão, formado pela condição `foiDividido == 2`, caso seja verdadeiro, sera executado a linha 10, caso contrario o programa ira seguir para linha 12;
+
+Existe também um bloco de decisão na linha 04, onde esta a condição `numero % i == 0`, onde se caso o resultado seja verdadeiro, a linha 05 é executada, caso contrario o fluxo podera ser retornado para linha 04 ou 08.
