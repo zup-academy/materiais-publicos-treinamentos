@@ -132,7 +132,7 @@ Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes 
 
 #### Habilite as regras de acesso por anotações
 
-Por fim, vamos habilitar o controle de acesso via anotações. Também conhecido como **Expression-Based Access Control**, ele nos permite ter controle fino das regras de acesso a nível de métodos usando as anotações `@PreAuthorize`, `@PreFilter`, `@PostAuthorize` and `@PostFilter`. Este tipo de controle de acesso é útil para que possamos ter um controle mais fino das regras de acesso a nível de métodos de controllers, services etc.
+Por fim, vamos habilitar o controle de acesso via anotações, também conhecido como **Expression-Based Access Control**. Ele nos permite ter controle fino das regras de acesso a nível de métodos através das anotações `@PreAuthorize`, `@PreFilter`, `@PostAuthorize` and `@PostFilter`. Este tipo de controle de acesso poder ser útil para que possamos ter um controle mais fino das regras de acesso a nível de métodos de controllers, services etc.
 
 Para isso, basta configurar nossa classe `ResourceServerConfig` com a anotação `@EnableGlobalMethodSecurity` e definir seu atributo `prePostEnabled` como `true`:
 
@@ -145,7 +145,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-Dessa forma, agora podemos usar anotações para ter um controle ainda mais fino das regras de acesso a um endpoint. Por exemplo, no código abaixo anotamos um método do controller com a anotação `@PreAuthorize` juntamente com a regra `hasAuthority` para verificar se o Access Token da requisição possui um determinado Scope:
+Dessa forma, agora podemos usar anotações para ter um controle ainda mais preciso e completo das regras de acesso a um determinado endpoint. Por exemplo, no código abaixo anotamos um método do controller com a anotação `@PreAuthorize` juntamente com a regra `hasAuthority` para verificar se o Access Token da requisição possui um determinado Scope:
 
 ```java
 @DeleteMapping(value = "/contatos/{id}")
@@ -154,6 +154,8 @@ public ProjectDto remove(@PathVariable Long id) {
     // ...
 }
 ```
+
+Para mais informações sobre os tipos de expressions que podemos utilizar, leia a [documentação oficial](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html).
 
 ### 4. Inicie a aplicação e teste seus endpoints
 
@@ -203,17 +205,17 @@ Show de bola, como resposta temos um `200 (OK)` com o seguinte payload:
 
 ```json
 {
-	"id": 3,
-	"nome": "Jordi Silva",
-	"empresa": "Zup",
-	"criadoPor": "rafael.ponte",
-	"telefones": [
-		{
-			"id": 7,
-			"tipo": "celular",
-			"numero": "+5511977777777"
-		},
-	]
+    "id": 3,
+    "nome": "Jordi Silva",
+    "empresa": "Zup",
+    "criadoPor": "rafael.ponte",
+    "telefones": [
+        {
+            "id": 7,
+            "tipo": "celular",
+            "numero": "+5511977777777"
+        },
+    ]
 }
 ```
 
@@ -226,3 +228,4 @@ Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTT
 - [OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
 - [OAuth 2.0 Resource Server JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
 - [Baeldung: OAuth 2.0 Resource Server With Spring Security 5](https://www.baeldung.com/spring-security-oauth-resource-server)
+- [Expression-Based Access Control](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html)
