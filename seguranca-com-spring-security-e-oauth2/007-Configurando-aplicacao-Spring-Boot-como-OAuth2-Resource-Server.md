@@ -98,6 +98,9 @@ Como não estamos explicitamente passando a configuração que usaremos para val
 
 A configuração acima é suficiente para proteger a API REST da nossa aplicação, ou seja, ela está indicando que qualquer endpoint da nossa API REST está protegida e somente poderá ser acessada por uma request que possua um Access Token válido. Porém, é importante especificar quais os Scopes necessários para consumir cada um dos endpoints da nossa API REST.
 
+> **Favoreça o uso de Scopes** <br/>
+> É muito importante que você proteja os endpoitns da sua API REST via Scopes, afinal de contas o protocolo OAuth 2.0 é sobre Autorização. Simplesmente liberar o   acesso a todos os endpoints da sua aplicação pelo simples fato de alguém possuir o Access Token é muito delicado e abre brechas graves de segurança.
+
 Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
 
 ```
