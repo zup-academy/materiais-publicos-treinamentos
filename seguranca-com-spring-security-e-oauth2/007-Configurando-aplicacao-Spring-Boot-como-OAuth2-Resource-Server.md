@@ -4,6 +4,10 @@ Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring 
 
 ## Configurando uma aplicação Spring Boot
 
+Antes de mais começar, você já está rodando seu Keycloak local? 
+
+Para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
+
 ### 1. Adicione a dependência do Maven no projeto
 
 A primeira coisa que temos que fazer é configurar nosso projeto Spring Boot com a dependência do Maven, neste caso estamos falando do **Spring Boot Starter OAuth2 Resource server**. Para isso, basta adicionar a dependência abaixo no seu `pom.xml`:
@@ -17,7 +21,7 @@ A primeira coisa que temos que fazer é configurar nosso projeto Spring Boot com
 
 O artefato `spring-boot-starter-oauth2-resource-server` inclui a dependência `spring-security-oauth2-resource-server`, que por sua vez contem é a biblioteca responsável por nos dar suporte ao modo Resource Server. Esta dependência também inclui as bibliotecas core do Spring Security, por esse motivo, podemos remover a dependencia `spring-boot-starter-security` do nosso `pom.xml` sem qualquer problema. 
 
-> **Tire proveito do Spring Initializr** <br/>
+> **Aplicação nova? Vá de Spring Initializr!** <br/>
 > Nós adicionamos a dependência no `pom.xml` explicitamente pois estamos partindo de um projeto existente, porém se você está criando um novo projeto Spring Boot através do [Spring Initializr](https://start.spring.io/) e, de antemão sabe que precisará configurar a aplicação como OAuth2 Resource Server, aproveite para adicionar a dependência **OAuth2 Resource Server** no momento do setup da sua aplicação Spring Boot.
 
 Se estiver numa IDE, lembre-se de recarregar as dependências do Maven.
@@ -84,7 +88,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
             .and()
                 .oauth2ResourceServer()  
-                    .jwt(); // atencao: necessario pois estamos sobrescrevendo a conf do application.yml
+                    .jwt(); // atencao: necessario pois sobrescrevemos a conf default do Spring Security
                 ;
     }
 }
@@ -94,14 +98,16 @@ Como estamos sobrescrevendo a configuração default do Spring Security, nós **
 
 Como não estamos explicitamente passando a configuração que usaremos para validação do token JWT, o Spring Security continuará lendo estas informações do `application.yml`.
 
-#### Configure as regras de acesso por endpoints
+Além de habilitarmos o comportamento OAuth2 Resource Server na aplicação com suporte a JWT, nós também declaramos que qualquer requisição que chegar na aplicação precisa estar autenticada, ou seja, ela precisa ter um Access Token válido no cabeçalho.
+
+#### 3.1 Configure as regras de acesso por endpoints
 
 A configuração acima é suficiente para proteger a API REST da nossa aplicação, ou seja, ela está indicando que qualquer endpoint da nossa API REST está protegida e somente poderá ser acessada por uma request que possua um Access Token válido. Porém, é importante especificar quais os Scopes necessários para consumir cada um dos endpoints da nossa API REST.
 
 > ⚠️ **Favoreça o uso de Scopes** <br/>
-> É muito importante que você proteja os endpoitns da sua API REST via declaração de Scopes, afinal de contas o protocolo OAuth 2.0 é sobre Autorização. Simplesmente liberar o acesso a todos os endpoints da sua aplicação pelo simples fato de alguém possuir o Access Token é muito delicado e abre brechas graves de segurança.
+> É muito importante que você proteja os endpoitns da sua API REST via declaração de Scopes, afinal de contas o protocolo OAuth 2.0 é sobre Autorização. Simplesmente liberar o acesso a todos os endpoints da sua aplicação pelo simples fato de alguém estar autenticado (ou seja, possuir um Access Token) é muito delicado e abre brechas graves de segurança.
 
-Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
+Para entender melhor o que estou querendo dizer, vamos a um exemplo. Dado que temos os seguintes endpoints na API REST da aplicação Meus Contatos:
 
 ```
 Listagem: GET  /contatos
@@ -125,7 +131,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                     .authenticated()
             .and()
                 .oauth2ResourceServer()  
-                    .jwt(); // atencao: necessario pois estamos sobrescrevendo a conf do application.yml
+                    .jwt(); // atencao: necessario pois sobrescrevemos a conf default do Spring Security
                 ;
     }
 }
@@ -133,7 +139,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
 Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes que configuramos no Keycloack para nosso Client. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
-#### Habilite as regras de acesso por anotações
+#### 3.2. Habilite as regras de acesso por anotações
 
 Por fim, vamos habilitar o controle de acesso via anotações, também conhecido como **Expression-Based Access Control**. Ele nos permite ter controle fino das regras de acesso a nível de métodos através das anotações `@PreAuthorize`, `@PreFilter`, `@PostAuthorize` and `@PostFilter`. Este tipo de controle de acesso poder ser útil para que possamos ter um controle mais fino das regras de acesso a nível de métodos de controllers, services etc.
 
@@ -159,6 +165,50 @@ public ProjectDto remove(@PathVariable Long id) {
 ```
 
 Para mais informações sobre os tipos de expressions que podemos utilizar, leia a [documentação oficial](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html).
+
+#### 3.3. Adaptando o Spring Security para APIs REST
+
+Por padrão o Spring Security habilita diversos mecanismos de autenticação e proteção para nossa aplicação, como CSRF (Cross-Site Request Forgery), HTTP Basic Auth, Login e Logout Based Auth, uso de Session no lado servidor entre outras. Ele faz isso pois o framework foi criado e desenhado para uma realidade de aplicações Web, onde o uso de APIs REST ainda não era popular. Embora estes defaults ainda sejam interessantes para aplicações Web hoje em dia, elas **não fazem muito sentido para uma aplicação que expõe uma API REST**, como é o nosso caso.
+
+Por esse motivo, entendemos que é uma boa prática ajustar a configuração do Spring Security da nossa aplicação desligando alguns mecanismos e habilitando outros para que a mesma fique **aderente a natureza Stateless de uma API REST**. Deste modo, podemos melhorar a configuração da nossa classe `ResourceServerConfig` como abaixo:
+
+```java
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http.cors()
+            .and()
+                .csrf().disable()
+                .httpBasic().disable()
+                .rememberMe().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .requestCache().disable()
+                .headers().frameOptions().deny()
+            .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(STATELESS)
+            .and()
+                .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/api/contatos").hasAuthority("SCOPE_contatos:read")
+                    .antMatchers(HttpMethod.GET, "/api/contatos/**").hasAuthority("SCOPE_contatos:read")
+                    .antMatchers(HttpMethod.POST, "/api/contatos").hasAuthority("SCOPE_contatos:write")
+                .anyRequest()
+                    .authenticated()
+            .and()
+                .oauth2ResourceServer()
+                    .jwt()
+        ;
+        // @formatter:on
+    }
+}
+```
+
+Lembre-se, estas configurações são apenas recomendações para aplicações ou microsserviços que expõe APIs REST, mas elas podem mudar de acordo com a necessidade e restrições de segurança do seu contexto. Para entender cada uma destas configurações e muitas outras que não comentamos, vale a leitura na [documentação oficial do Spring Security](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html).
 
 ### 4. Inicie a aplicação e teste seus endpoints
 
@@ -204,7 +254,7 @@ curl --request GET \
   --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia....v2Bsx3auzw'
 ```
 
-Show de bola, como resposta temos um `200 (OK)` com o seguinte payload:
+Show de bola, como resposta temos um Status HTTP `200 (OK)` com o seguinte payload:
 
 ```json
 {
@@ -232,3 +282,4 @@ Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTT
 - [OAuth 2.0 Resource Server JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html)
 - [Baeldung: OAuth 2.0 Resource Server With Spring Security 5](https://www.baeldung.com/spring-security-oauth-resource-server)
 - [Expression-Based Access Control](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html)
+- [Protection Against Exploits](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html)
