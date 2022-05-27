@@ -195,3 +195,38 @@ Esta funão é minimamente complexa, pois existem diversos blocos, como por exem
 na linha 09, existe outro bloco de decisão, formado pela condição `foiDividido == 2`, caso seja verdadeiro, sera executado a linha 10, caso contrario o programa ira seguir para linha 12;
 
 Existe também um bloco de decisão na linha 04, onde esta a condição `numero % i == 0`, onde se caso o resultado seja verdadeiro, a linha 05 é executada, caso contrario o fluxo podera ser retornado para linha 04 ou 08.
+
+A maneira de calcular a cobertura é parecido,  ao cobertura por linhas. Para obter o indice de blocos cobertos, dividimos a quantidade de blocos exercitados por testes, pela quantidade de blocos totais, e multiplicamos por 100.
+
+```
+cobertura por blocos = (quantidadeDeBlocosExecutadosPorTestes/quantidadeTotalDeBlocos) * 100
+```
+
+Para exercitar todos os blocos, devemos buscar atigir as condições que nos levam a cada bloco.
+Então a seguinte suite sera suficiente para cobrir 100% dos blocos.
+
+```java
+    @Test
+    @DisplayName("o numero zero não deve ser primo")
+    void test() {
+        NumeroPrimo numero = new NumeroPrimo();
+        assertFalse(numero.isPrimo(0));
+    }
+
+    @Test
+    @DisplayName("o numero 2 deve ser primo")
+    void test1() {
+        NumeroPrimo numero = new NumeroPrimo();
+        assertTrue(numero.isPrimo(2));
+    }
+
+    @Test
+    @DisplayName("o numero 15 nao deve ser primo")
+    void test2() {
+        NumeroPrimo numero = new NumeroPrimo();
+        assertFalse(numero.isPrimo(15));
+    }
+```
+
+
+## `Cobertura condicional`
