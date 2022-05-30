@@ -313,7 +313,7 @@ mockMvc.perform(
 
 // validação
 assertEquals(1, repository.count(), "total de contatos");
-assertEquals("rponte", repository.findAll().get(0).getCriadoPor(), "criado por");
+assertEquals("rponte", repository.findAll().get(0).getCriadoPor(), "criado por"); // verifica efeito colateral
 ```
 
 Repare também que adicionamos uma validação para ter certeza que o usuário do token (`preferred_username`) foi gravado como esperado no banco de dados. Em alguns cenários esse tipo de verificação pode ser muito importante.
