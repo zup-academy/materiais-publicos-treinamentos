@@ -152,7 +152,7 @@ Embora o teste esteja correto, o mesmo quebrou pois nossa API REST está protegi
 
 Mas será que faz sentido rodar um Keycloak para rodar para nosso testes? Na nossa opinião, **com toda certeza não**.
 
-### 2. Configure a dependência do `pom.xml`
+### 2. Configure a dependência no `pom.xml`
 
 Apesar dos testes serem integrados, rodar um servidor Keycloak apenas para testar nossa API REST seria demais, poderia não só complicar nossas vidas com também ainda tornaria os testes mais lentos. O que precisamos é apenas de um Access Token válido durante a execução dos testes, sem se importar muito com quem de fato gera este token.
 
@@ -168,8 +168,6 @@ Para isso, podemos usar o módulo **Spring Security Testing**, na qual resolve e
 Só o fato de adicionar essa biblioteca no projeto o Spring Boot Testing de imediato já detecta e configura ela em tempo de execução ao rodar nossa bateria de testes. Mesmo assim, ainda precisamos alterar nossos testes para enviar o token em cada requisição explicitamente.
 
 ### 3. Gere e envie o Token na requisição
-
-
 
 Com a dependência configurada, o próximo passo é fazermos o `import` da classe `SecurityMockMvcRequestPostProcessors` com seu método estático `jwt` na nossa nossa classe de testes:
 
