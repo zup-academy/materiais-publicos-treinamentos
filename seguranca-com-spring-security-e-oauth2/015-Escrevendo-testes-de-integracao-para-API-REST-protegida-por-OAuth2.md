@@ -152,7 +152,7 @@ Embora o teste esteja correto, o mesmo quebrou pois nossa API REST está protegi
 
 Mas será que faz sentido rodar um Keycloak para rodar para nosso testes? Na nossa opinião, **com toda certeza não**.
 
-### 2. Gere e envie o Token na requisição
+### 2. Configure a dependência do `pom.xml`
 
 Apesar dos testes serem integrados, rodar um servidor Keycloak apenas para testar nossa API REST seria demais, poderia não só complicar nossas vidas com também ainda tornaria os testes mais lentos. O que precisamos é apenas de um Access Token válido durante a execução dos testes, sem se importar muito com quem de fato gera este token.
 
@@ -166,6 +166,10 @@ Para isso, podemos usar o módulo **Spring Security Testing**, na qual resolve e
 ```
 
 Só o fato de adicionar essa biblioteca no projeto o Spring Boot Testing de imediato já detecta e configura ela em tempo de execução ao rodar nossa bateria de testes. Mesmo assim, ainda precisamos alterar nossos testes para enviar o token em cada requisição explicitamente.
+
+### 3. Gere e envie o Token na requisição
+
+
 
 Com a dependência configurada, o próximo passo é fazermos o `import` da classe `SecurityMockMvcRequestPostProcessors` com seu método estático `jwt` na nossa nossa classe de testes:
 
@@ -224,7 +228,7 @@ Actual   :403
 
 Mas por que isso acontece se estamos enviando o token na requisição?
 
-### 3. Configure os Scopes no token
+### 4. Configure os Scopes no token
 
 Isso acontece pois o token enviado apesar de válido ele não possui os scopes necessários para consumir nosso endpoint.
 
@@ -269,7 +273,7 @@ Se rodarmos o teste novamente desta vez ele passa com sucesso! 🥳
 
 Poderíamos parar por aqui e ir para o próximo endpoint, mas ainda falta informar o usuário (Resource Owner) no token JWT, lembra?
 
-### 4. Configure claims no token
+### 5. Configure claims no token
 
 Se você olhou com atenção a implementação do controller `NovoContatoController`, você percebeu que o "usuário logado" (neste caso, uma instância de `JWT`) está sendo injetada via parâmetro de método com o auxílio da anotação `@AuthenticationPrincipal`:
 
@@ -321,7 +325,7 @@ Repare também que adicionamos uma validação para ter certeza que o usuário d
 Ao fazer isso, o teste continuará passando, mas desta vez o usuário `rponte` existente no token foi extraído e gravado corretamente no banco de dados 🥳 
 
 
-### 5. Não esqueça os cenários para `401-Unauthorized` e `403-Forbidden`
+### 6. Não esqueça os cenários para `401-Unauthorized` e `403-Forbidden`
 
 O que aconteceria se tentassemos enviar uma requisição sem um token? Ou se enviarmos uma requisição com um token sem os scopes apropriados? Neste momento você sabe que o teste quebraria com os erros HTTP `401-Unauthorized` e `403-Forbidden`, afinal foi o que aconteceu ao rodar nosso teste.
 
@@ -332,7 +336,7 @@ Por esse motivo entendemos que precisamos ter uma bateria de testes que detecte 
 1. O que acontece quando a requisição não possui token?
 2. O que acontece quando a requisição possui um token mas não possui o Scope esperado?
 
-Enquanto o primeiro cenário trata do Status HTTP `401-Unauthorized`, o segundo cenário espera o Status `403-Forbidden`. Para implementa-los basta termos os 2 métodos de testes na nossa classe de testes que esperem esses Status de erro:
+Enquanto o primeiro cenário trata do Status HTTP `401-Unauthorized`, o segundo cenário espera o Status `403-Forbidden`. Para implementa-los basta termos os 2 métodos de testes na nossa classe de testes que esperem esses status HTTP de erro:
 
 ```java
 @Test
