@@ -282,6 +282,8 @@ Podemos extrair diretamente os atributos do Access Token na nossa aplicação Re
 
 Normalmente o Resource Server não se preocupa sobre quem é o usuário requisitando acesso a um recurso, em vez disso ele geralmente se importa mais com as permissões concedidas a este usuário. Apesar de não o principal interesse do Resource Server, não é incomum precisarmos acessar alguns dados básicos do usuário/cliente que está acessando nossa aplicação, como seu nome, email, username etc, por esse motivo é importante entendermos como podemos extrair essas informações do Access Token da requisição.
 
+### 1. Injetando o objeto `Authentication` no controller
+
 No nosso Resource Server, para acessar o Access Token no controller nós podemos injetar a instância de `Authentication` do Spring Security como parâmetro de um dos seus métodos:
 
 ```java
@@ -310,6 +312,8 @@ Perceba que tivemos que fazer o casting explicito do _Principal_ para o tipo `Jw
 >  No Spring Security, o objeto [Authentication](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authentication) representa a request de autenticação do usuário dentro do framework. Ele é composto de metadados da estratégia de autenticação, um objeto que representa o usuário (_Principal_), suas credenciais, coleção de permissões e um `boolean` indicando se o usuário está de fato autenticado ou não.
 >
 > Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` com o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende da estritamente da estratégia de autenticação utilizada.
+
+### 2. Injetando o Principal no controller via anotação `@AuthenticationPrincipal`
 
 Outra forma mais prática de accessar o _Principal_ diretamente é via uso da anotação `@AuthenticationPrincipal` como parâmetro de um método do controller, algo como a seguir:
 
@@ -387,8 +391,8 @@ Agora, com a instância de `Jwt` em mãos, podemos acessar qualquer claim deste 
 
 ```java
 ```java
-@GetMapping("/user/info")
-public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt principalUser) {
+@GetMapping("/user/info/username")
+public Map<String, Object> getUserName(@AuthenticationPrincipal Jwt principalUser) {
 
     String username = principalUser.getClaim("preferred_username");
 
@@ -402,6 +406,19 @@ Se acessarmos o endpoint novamente teremos o seguinte payload como resposta:
 ```json
 {
     "username": "rafael.ponte"
+}
+```
+
+### 3. Acessando atributos do Principal via SpEL
+
+Se desejar, você também pode injetar claims diretamente nos parâmetros do método através de SpEL expressions:
+
+```java
+@GetMapping("/user/info/username")
+public Map<String, Object> getUserName(@AuthenticationPrincipal(expression = "claims") Map<String, Object> claims) {
+
+    return Collections
+        .singletonMap("username", claims.get("preferred_username"));
 }
 ```
 
