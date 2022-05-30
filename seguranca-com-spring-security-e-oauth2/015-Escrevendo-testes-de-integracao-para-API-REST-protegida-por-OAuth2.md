@@ -383,6 +383,7 @@ Pronto! Mais uma vez ao rodarmos a classe de testes todos os 3 cenários de test
 
 - [Spring Security Testing OAuth 2.0](https://docs.spring.io/spring-security/reference/5.7.0/servlet/test/mockmvc/oauth2.html)
 - [Spring Security Testing](https://docs.spring.io/spring-security/reference/5.7.0/servlet/test/index.html)
+- [Spring Security Testing: SecurityMockMvcRequestPostProcessors](https://docs.spring.io/spring-security/reference/5.8/servlet/test/mockmvc/request-post-processors.html)
 - [Spring Security Testing: Testing JWT Authentication](https://docs.spring.io/spring-security/reference/5.7.0/servlet/test/mockmvc/oauth2.html#testing-jwt)
 - [OpenID Connect Scopes](https://auth0.com/docs/get-started/apis/scopes/openid-connect-scopes)
 - [OpenID Connect Standard Claims](https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims)
