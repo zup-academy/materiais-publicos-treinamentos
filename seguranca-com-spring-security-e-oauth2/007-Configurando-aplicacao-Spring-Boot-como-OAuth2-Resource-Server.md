@@ -276,6 +276,138 @@ Não foi tão dificil, não é mesmo?
 
 Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTTP da sua preferência.
 
+## Extraindo os atributos do Access Token (JWT)
+
+Podemos extrair diretamente os atributos do Access Token na nossa aplicação Resource Server para utilizar em lógicas de negócio, dados de auditoria ou qualquer regra de segurança nas nossas rotas ou métodos.
+
+Normalmente o Resource Server não se preocupa sobre quem é o usuário requisitando acesso a um recurso, em vez disso ele geralmente se importa mais com as permissões concedidas a este usuário. Apesar de não o principal interesse do Resource Server, não é incomum precisarmos acessar alguns dados básicos do usuário/cliente que está acessando nossa aplicação, como seu nome, email, username etc, por esse motivo é importante entendermos como podemos extrair essas informações do Access Token da requisição.
+
+No nosso Resource Server, para acessar o Access Token no controller nós podemos injetar a instância de `Authentication` do Spring Security como parâmetro de um dos seus métodos:
+
+```java
+@GetMapping("/user/info")
+public Map<String, Object> getUserInfo(Authentication authentication) {
+    // ...
+}
+```
+
+Isto somente é possível porque **depois que o Token é autorizado** uma instância de `Authentication` é definida no contexto do Spring Security (`SecurityContext`). E como o `Authentication` possui nosso OAuth2 Access Token como _Principal_, podemos acessá-lo deste modo:
+
+```java
+@GetMapping("/user/info")
+public Map<String, Object> getUserInfo(Authentication authentication) {
+
+    Jwt jwt = (Jwt) authentication.getPrincipal();
+
+    return Collections
+            .singletonMap("token", jwt);
+}
+```
+
+Perceba que tivemos que fazer o casting explicito do _Principal_ para o tipo `Jwt`. Estamos fazendo isto pois nosso Resource Server está **configurada para trabalhar com token em formato JWT**, e como resultado temos o _Principal_ como um objeto `Jwt` do Spring Security. Se estivessemos trabalhando com token no formato Opaque nós continuaríamos acessando o `Authentication` e seu token do mesmo jeito, porém ele seria de outro tipo.
+
+> **Qual a diferença entre Authentication e Principal?** <br/>
+>  No Spring Security, o objeto [Authentication](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authentication) representa a request de autenticação do usuário dentro do framework. Ele é composto de metadados da estratégia de autenticação, um objeto que representa o usuário (_Principal_), suas credenciais, coleção de permissões e um `boolean` indicando se o usuário está de fato autenticado ou não.
+>
+> Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` com o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende da estritamente da estratégia de autenticação utilizada.
+
+Outra forma mais prática de accessar o _Principal_ diretamente é via uso da anotação `@AuthenticationPrincipal` como parâmetro de um método do controller, algo como a seguir:
+
+```java
+@GetMapping("/user/info")
+public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt principalUser) {
+    return Collections
+            .singletonMap("jwt", principalUser);
+}
+```
+
+A anotação se encarrega de invocar o método `Authentication.getPrincipal()` e preencher o atributo `principalUser` anotado do método do controller. Deste modo eliminamos a necessidade do casting que havíamos feito anteriormente.
+
+Se acessarmos o endpoing `/user/info/` teremos como resposta o payload abaixo:
+
+```json
+{
+	"tokenValue": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrN05tUzlLaXJQRVZNMk9rdTdIakVIRElyZDNoOHQySTc5eERsM3hXalJrIn0.eyJleHAiOjE2NTE2MDczNjQsImlhdCI6MTY1MTYwNzA2NCwianRpIjoiNmNhNjU3MmMtOTg5NS00MDkzLWI3NjYtNDY1OTQ2OWQ2YzE1IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoxODA4MC9hdXRoL3JlYWxtcy9ib290Y2FtcC1zZW5pb3JzIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjUzYjljOWNkLTcyZjktNGNjNC05NzhhLTg5MzIwM2YxMzQ3ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im1ldS1pbnNvbW5pYSIsInNlc3Npb25fc3RhdGUiOiJmZWU4YjBkYS1kZTcxLTQ2NGYtODNlZi0yYWM1MDM0MWM5ZGYiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLWJvb3RjYW1wLXNlbmlvcnMiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImZ1bmNpb25hcmlvczpyZWFkIGZ1bmNpb25hcmlvczp3cml0ZSBlbWFpbCBwcm9maWxlIiwic2lkIjoiZmVlOGIwZGEtZGU3MS00NjRmLTgzZWYtMmFjNTAzNDFjOWRmIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJSYWZhZWwgUG9udGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJyYWZhZWwucG9udGUiLCJnaXZlbl9uYW1lIjoiUmFmYWVsIiwiZmFtaWx5X25hbWUiOiJQb250ZSIsImVtYWlsIjoicmFmYWVsLnBvbnRlQHp1cC5jb20uYnIifQ.icIxc_dNVO0Hj1fJJb0O7H9E3xneEReAYvaOSiVsNhPA5xfJ_OJrq8ZqbL736hJxllo4S4yOgkw_vD5cSQpUblh0PaYD3qOh_fFiTLLeRAyb0Xzhm3zKj3A8vAuLm0xOFr428M_QpjBjkVbGynPPIEzuKmBRFXM6ogTmqZqrbB8Zdhnpxc8GVS6c9Eh4f_p_rv9ehohYSfXHbkrBG4OgOwRJMsGsum0KMozgTZmGqfhVM1NiLYMThEhCXuc2Ip-4thqPsID4ZCTFxZDi4anHJ67OxEJTQegBhLepuOc0RmP83YywHuw6wSTMnk-V3SMqDc-dwEdR62ZQObrcTy9Msg",
+	"issuedAt": "2022-05-03T19:44:24Z",
+	"expiresAt": "2022-05-03T19:49:24Z",
+	"headers": {
+		"kid": "k7NmS9KirPEVM2Oku7HjEHDIrd3h8t2I79xDl3xWjRk",
+		"typ": "JWT",
+		"alg": "RS256"
+	},
+	"claims": {
+		"sub": "53b9c9cd-72f9-4cc4-978a-893203f1347f",
+		"resource_access": {
+			"account": {
+				"roles": [
+					"manage-account",
+					"manage-account-links",
+					"view-profile"
+				]
+			}
+		},
+		"email_verified": true,
+		"iss": "http://localhost:18080/auth/realms/meus-contatos",
+		"typ": "Bearer",
+		"preferred_username": "rafael.ponte",
+		"given_name": "Rafael",
+		"sid": "fee8b0da-de71-464f-83ef-2ac50341c9df",
+		"aud": [
+			"account"
+		],
+		"acr": "1",
+		"realm_access": {
+			"roles": [
+				"offline_access",
+				"uma_authorization",
+				"default-roles-meus-contatos"
+			]
+		},
+		"azp": "meu-insomnia",
+		"scope": "contatos:read contatos:write email profile",
+		"name": "Rafael Ponte",
+		"exp": "2022-05-03T19:49:24Z",
+		"session_state": "fee8b0da-de71-464f-83ef-2ac50341c9df",
+		"iat": "2022-05-03T19:44:24Z",
+		"family_name": "Ponte",
+		"jti": "6ca6572c-9895-4093-b766-4659469d6c15",
+		"email": "rafael.ponte@zup.com.br"
+	},
+	"id": "6ca6572c-9895-4093-b766-4659469d6c15",
+	"notBefore": null,
+	"issuer": "http://localhost:18080/auth/realms/meus-contatos",
+	"subject": "53b9c9cd-72f9-4cc4-978a-893203f1347f",
+	"audience": [
+		"account"
+	]
+}
+```
+
+Agora, com a instância de `Jwt` em mãos, podemos acessar qualquer claim deste token. Por exemplo, vamos acessar a claim `preferred_username` que indica o username do nosso usuário:
+
+```java
+```java
+@GetMapping("/user/info")
+public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt principalUser) {
+
+    String username = principalUser.getClaim("preferred_username");
+
+    return Collections
+            .singletonMap("username", principalUser);
+}
+```
+
+Se acessarmos o endpoint novamente teremos o seguinte payload como resposta:
+
+```json
+{
+    "username": "rafael.ponte"
+}
+```
+
+Para mais detalhes sobre uso da anotação `@AuthenticationPrincipal` ou como tirar melhor proveito dela no seu código, você pode consultar a [documentação oficial do Spring Security](https://docs.spring.io/spring-security/reference/servlet/integrations/mvc.html#mvc-authentication-principal).
+
+
 ## Links e referências
 
 - [OAuth 2.0 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html)
@@ -283,3 +415,5 @@ Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTT
 - [Baeldung: OAuth 2.0 Resource Server With Spring Security 5](https://www.baeldung.com/spring-security-oauth-resource-server)
 - [Expression-Based Access Control](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html)
 - [Protection Against Exploits](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html)
+- [Baeldung: Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
+- [Spring Security: @AuthenticationPrincipal](https://docs.spring.io/spring-security/reference/servlet/integrations/mvc.html#mvc-authentication-principal)
