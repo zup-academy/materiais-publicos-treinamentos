@@ -367,7 +367,7 @@ Se acessarmos o endpoing `/user/info/` teremos como resposta o payload abaixo:
 				"default-roles-meus-contatos"
 			]
 		},
-		"azp": "meu-insomnia",
+		"azp": "meus-contatos-client",
 		"scope": "contatos:read contatos:write email profile",
 		"name": "Rafael Ponte",
 		"exp": "2022-05-03T19:49:24Z",
