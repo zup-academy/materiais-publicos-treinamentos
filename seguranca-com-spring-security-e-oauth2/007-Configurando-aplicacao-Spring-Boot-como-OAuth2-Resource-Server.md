@@ -293,7 +293,7 @@ public Map<String, Object> getUserInfo(Authentication authentication) {
 }
 ```
 
-Isto somente é possível porque **depois que o Token é autorizado** uma instância de `Authentication` é definida no contexto do Spring Security (`SecurityContext`). E como o `Authentication` possui nosso OAuth2 Access Token como _Principal_, podemos acessá-lo deste modo:
+Isto somente é possível porque **depois que o Token é autorizado** uma instância de `Authentication` é definida no contexto do Spring Security (`SecurityContext`). E por estarmos trabalhando com a estratégia de autenticação OAuth2 com JWT, esta instância de `Authentication` acaba definindo o _Principal_ com o Access Token da requisição. Tanto é que podemos acessar o token deste modo:
 
 ```java
 @GetMapping("/user/info")
@@ -311,7 +311,7 @@ Perceba que tivemos que fazer o casting explicito do _Principal_ para o tipo `Jw
 > **Qual a diferença entre Authentication e Principal?** <br/>
 >  No Spring Security, o objeto [Authentication](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authentication) representa a request de autenticação do usuário dentro do framework. Ele é composto de metadados da estratégia de autenticação, um objeto que representa o usuário (_Principal_), suas credenciais, coleção de permissões e um `boolean` indicando se o usuário está de fato autenticado ou não.
 >
-> Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` com o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende da estritamente da estratégia de autenticação utilizada.
+> Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` com o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende estritamente da estratégia de autenticação utilizada.
 
 ### 2. Injetando o Principal no controller via anotação `@AuthenticationPrincipal`
 
@@ -389,7 +389,6 @@ Se acessarmos o endpoing `/user/info/` teremos como resposta o payload abaixo:
 
 Agora, com a instância de `Jwt` em mãos, podemos acessar qualquer claim deste token. Por exemplo, vamos acessar a claim `preferred_username` que indica o username do nosso usuário:
 
-```java
 ```java
 @GetMapping("/user/info/username")
 public Map<String, Object> getUserName(@AuthenticationPrincipal Jwt principalUser) {
