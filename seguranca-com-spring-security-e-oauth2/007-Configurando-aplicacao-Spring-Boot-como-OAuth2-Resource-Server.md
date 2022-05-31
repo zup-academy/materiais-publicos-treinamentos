@@ -4,7 +4,7 @@ Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring 
 
 ## Configurando uma aplicação Spring Boot
 
-Antes de mais começar, você já está rodando seu Keycloak local? 
+Antes de começar, você já está rodando seu Keycloak local? 
 
 Para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
 
@@ -400,13 +400,15 @@ public Map<String, Object> getUserName(@AuthenticationPrincipal Jwt principalUse
 }
 ```
 
-Se acessarmos o endpoint novamente teremos o seguinte payload como resposta:
+Se acessarmos o endpoint `/user/info/username` teremos o seguinte payload como resposta:
 
 ```json
 {
     "username": "rafael.ponte"
 }
 ```
+
+Com o token JWT você pode acessar qualquer uma de suas claims para implementar lógicas de negócio e segurança na aplicação.
 
 ### 3. Acessando atributos do Principal via SpEL
 
@@ -420,6 +422,8 @@ public Map<String, Object> getUserName(@AuthenticationPrincipal(expression = "cl
         .singletonMap("username", claims.get("preferred_username"));
 }
 ```
+
+Essa solução pode ser útil quando você não desejar lidar com o tipo `Jwt` explicitamente no seu controller.
 
 Para mais detalhes sobre uso da anotação `@AuthenticationPrincipal` ou como tirar melhor proveito dela no seu código, você pode consultar a [documentação oficial do Spring Security](https://docs.spring.io/spring-security/reference/servlet/integrations/mvc.html#mvc-authentication-principal).
 
