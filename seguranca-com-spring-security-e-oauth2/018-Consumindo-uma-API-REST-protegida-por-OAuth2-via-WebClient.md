@@ -183,6 +183,13 @@ public class ContatoResponse {
 
 Perceba que invocamos o método `block()` do `WebClient` justamente para que ele funcione de forma blocante e não reativo. Em uma aplicação que segue o paradigma reativo este passo não se faz necessário e certamente seria até desaconselhado.
 
+> **Por que não usar o `WebClient` diretamente num controller?** <br/>
+> Você percebeu que criamos uma nova classe (`MeusContatosClient`) para só então injetar e usar a instância de `WebClient`?
+> 
+> Apesar de podermos usar o `WebClient` diretamente em qualquer bean do Spring, como um controller ou service por exemplo, nós entendemos que **criar uma camada de indireção (camada intermediária de abstração) entre o controller e `WebClient` sejá uma boa prática**.
+>
+> Essa nova classe de serviço funciona como uma interface pública (API) com métodos e tipos bem definidos. Dessa forma, não só podemos reutiliza-la em outras classes e camadas, como também encapsulamos os detalhes de implementação e minimizamos o acoplamento entre as camadas; de quebra, podemos testa-la de forma integrada e ainda facilitamos o uso de mocks ao escrever testes automatizados para o nosso código.
+
 Nosso HTTP client está configurado e pronto para uso, porém ele ainda não está completo, pois se tentarmos utiliza-lo para acessar endpoint do sistema Meus Contatos nós receberemos o erro com Statu HTTP `401 (Unauthorized)`, afinal não estamos repassando nenhum Access Token na requisição.
 
 ### 5. Configure o `WebClient` para trabalhar com fluxo OAuth 2.0
