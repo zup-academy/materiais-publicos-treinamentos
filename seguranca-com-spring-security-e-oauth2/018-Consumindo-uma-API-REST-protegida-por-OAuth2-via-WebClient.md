@@ -347,7 +347,7 @@ Como resposta temos um Status HTTP `200 (OK)` com o seguinte payload:
 ]
 ```
 
-Nosso código do controller utilizou a classe `MeusContatosClient` para  invocar o `WebClient` que fez toda comunicação com o serviço externo. Por debaixo dos panos nosso interceptor e configuração de fluxo OAuth 2.0 entrou em ação obtendo um Access Token do Authorization Server, adicionando-o no cabeçalho da requisição e, por fim, enviando a requisição para o Resource Server.
+Nosso código do controller utilizou a classe `MeusContatosClient` para  invocar o `WebClient` que fez toda comunicação com o serviço externo. Por debaixo dos panos nosso interceptor juntamente com a configuração de fluxo OAuth 2.0 que fizemos entrou em ação obtendo um Access Token do Authorization Server, adicionando-o no cabeçalho da requisição e, por fim, enviando a requisição para o Resource Server.
 
 Apesar de toda configuração do Spring Security e conhecimento sobre fluxos OAuth 2.0, não é uma tarefa dificil assim, não é mesmo?
 
