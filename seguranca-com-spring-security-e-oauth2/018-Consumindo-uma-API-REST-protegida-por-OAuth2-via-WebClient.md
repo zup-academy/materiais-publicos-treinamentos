@@ -359,11 +359,11 @@ logging.level.org.springframework.web.client=DEBUG
 logging.level.org.springframework.web.reactive.function.client=DEBUG
 ```
 
-Apenas com estas linhas temos uma idéia das requisições HTTP enviadas pelo `WebClient`, porém infelizmente não temos detalhes sobre os headers e body da requisição. Para habilitar o logging dos headers e body precisamos ir mais a fundo na configuração do `WebClient`.
+Apenas com estas linhas temos uma boa idéia das requisições HTTP enviadas pelo `WebClient`, o que já é bastante útil para resolver muitos tipos de problemas, mas infelizmente **não temos detalhes sobre os headers e body da requisição**. Para habilitar o logging dos headers e body precisamos ir mais a fundo na configuração do `WebClient`.
 
 Dessa forma, vamos configurar os logs do `WebClient` com suporte a headers e body para entendermos o que acontece por trás das cenas. Por o `WebClient` ser uma abstração de alto nível, ele utiliza outras bibliotecas reativas (non-blocking) de comunicação HTTP como implementação que são chamadas de **Client Http Connectors**, por esse motivo precisamos habilitar os logs destas implementações.
 
-Como estamos utilizando `WebClient` configurado com o client connector **Netty** (dependência `reactor-netty` no `pom.xml`), habilitamos seu log através do método `wiretap` de sua classe `HttpClient`. Portanto, na classe `ClientSecurityConfig` basta configurar o `HttpClient` e passa-lo para nosso `WebClient`, como abaixo:
+Como estamos utilizando `WebClient` configurado com o client connector **Netty** (dependência `reactor-netty` no `pom.xml`), nós podemos habilitar seu log através do método `wiretap` de sua classe `HttpClient` (que é de fato nosso connector). Portanto, na classe `ClientSecurityConfig` basta configurar o `HttpClient` e passa-lo para nosso `WebClient`, como abaixo:
 
 ```java
 @Configuration
@@ -397,6 +397,9 @@ Por fim, precisamos habilitar o log em modo `DEBUG` para categoria que configura
 ```yml
 logging.level.reactor.netty.http.client=DEBUG
 ```
+
+> **Lembre-se de desligar os logs em produção** <br/>
+> Habilitar os logs em modo `DEBUG` do `WebClient` faz sentido somente em ambiente de desenvolvimento e testes, mas não em produção. Em produção os mesmos acabariam gerando muito I/O devido ao volume de logs produzidos que poderia levar a problemas de performance na aplicação, especialmente se estamos falando de distributed logging na rede.
 
 A partir de agora ao rodarmos a aplicação e tentarmos nos comunicar com o Resource Server veremos algumas linhas de log semelhantes a estas:
 
