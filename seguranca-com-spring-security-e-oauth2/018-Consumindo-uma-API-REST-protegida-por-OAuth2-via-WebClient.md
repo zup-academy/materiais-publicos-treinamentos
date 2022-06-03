@@ -270,6 +270,11 @@ class ClientSecurityConfig {
 
 Repare que injetamos a nossa instância configurada de `OAuth2AuthorizedClientManager` para passa-la como dependência para nosso interceptor `ServletOAuth2AuthorizedClientExchangeFilterFunction`. **Este interceptor se encarregará de obter um token válido antes de cada requisição disparada ao Resource Server**. Em adição a isto, nós também indicamos ao interceptor qual registro de client padrão (default) ele deve utilizar para se comunicar com o Authorization Server, que no nosso caso é justamente o registro `meus-contatos` que configuramos no `application.yml` anteriormente.
 
+> ⚠️ **Cuidado com `WebClient` global na aplicação** <br/>
+> Nós criamos e declaramos nossa instância de `WebClient` no contexto do Spring, desta forma todos as requisições enviadas receberão o Access Token obtido do Authorization Server. Apesar de prático, devemos ter cuidado ao utilizar esta instância em funcionalidades que não participam de um fluxo OAuth 2.0, caso contrário podemos expor o Access Token para serviços externos, o que abre brechas sérias de segurança.
+>
+> Se você tem 2 ou mais serviços externos que sua aplicação precisa se integrar, lembre-se de revisar o uso do seu `WebClient`. Nestes cenários, você provavelmente terá instâncias distintas do `WebClient` para cada uma delas.
+
 Pronto! A partir de agora nosso `WebClient` consegue se comunicar com a API REST protegida do Resource Server (Meus Contatos). Isso acontece pois o interceptor vai obter um token válido do Authorization Server e em seguida adiciona-lo ao cabeçalho HTTP de todas as requisições enviadas ao Resource Server.
 
 E agora, vamos utiliza-lo?
@@ -355,8 +360,10 @@ O problema não é a mágica acontecer, mas sim não podermos visualiza-la enqua
 A forma mais simples de habilitar os logs do `WebClient` é adicinando as seguintes linhas no `application.yml` da nossa aplicação:
 
 ```yml
-logging.level.org.springframework.web.client=DEBUG
-logging.level.org.springframework.web.reactive.function.client=DEBUG
+logging: 
+  level:
+    org.springframework.web.client: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
 ```
 
 Apenas com estas linhas temos uma boa idéia das requisições HTTP enviadas pelo `WebClient`, o que já é bastante útil para resolver muitos tipos de problemas, mas infelizmente **não temos detalhes sobre os headers e body da requisição**. Para habilitar o logging dos headers e body precisamos ir mais a fundo na configuração do `WebClient`.
@@ -395,7 +402,9 @@ class ClientSecurityConfig {
 Por fim, precisamos habilitar o log em modo `DEBUG` para categoria que configuramos no `wiretap`, neste caso `reactor.netty.http.client.HttpClient`. Para isso, no seu `application.yml` adicione a seguinte linha de logging:
 
 ```yml
-logging.level.reactor.netty.http.client=DEBUG
+logging: 
+  level:
+    reactor.netty.http.client: DEBUG
 ```
 
 > ⚠️ **Lembre-se de desligar os logs em produção** <br/>
