@@ -346,7 +346,7 @@ Nosso código do controller utilizou a classe `MeusContatosClient` para  invocar
 
 Apesar de toda configuração do Spring Security e conhecimento sobre fluxos OAuth 2.0, não é uma tarefa dificil assim, não é mesmo?
 
-## Habilite o log do `WebClient`
+## Habilite os logs do `WebClient`
 
 Embora nosso código tenha funcionado como esperado não te incomoda saber que toda mágica ocorreu por debaixo dos panos?
 
@@ -398,7 +398,7 @@ Por fim, precisamos habilitar o log em modo `DEBUG` para categoria que configura
 logging.level.reactor.netty.http.client=DEBUG
 ```
 
-Agora, ao tentarmos nos comunicar com o Resource Server pela primeira vez veremos algumas linhas de log semelhantes a estas:
+A partir de agora ao rodarmos a aplicação e tentarmos nos comunicar com o Resource Server veremos algumas linhas de log semelhantes a estas:
 
 ```log
 [oundedElastic-1] o.s.web.client.RestTemplate              : HTTP POST http://localhost:18080/auth/realms/meus-contatos/protocol/openid-connect/token
@@ -418,7 +418,7 @@ accept: */*
 Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwR085RC1BTlhzU3pwWHBENlN2cm9Ca2tEaUlIb0otRnBiSkgxOTNnOUNVIn0.eyJleHAiOjE2NTQyNjY1MjgsIml...
 ```
 
-A partir da segunda requisição para o Resource Server você vai observar que não existe requisição para o Authorization Server, ou seja, o token foi obtido na primeira requisição pelo interceptor e cacheada em memória.
+Os logs acima são referentes a primeira requisição ao Resource Server, mas a partir da segunda requisição para o Resource Server não vai haver outra requisição para o Authorization Server para obter o Access Token, ou seja, o token foi obtido na primeira requisição pelo interceptor e cacheada em memória, somente quando ele expirar é que veremos o interceptor tentando obter um novo token via fluxo Refresh Token do OAuth 2.0.
 
 Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em caso de problemas, podemos analisa-los e resolve-los de maneira mais assertiva possível. Sem estes logs seria MUITO dificil fazer troubleshooting na nossa aplicação.
 
