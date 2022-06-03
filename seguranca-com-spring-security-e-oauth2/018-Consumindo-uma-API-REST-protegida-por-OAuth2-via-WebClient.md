@@ -188,17 +188,21 @@ Perceba que invocamos o método `block()` do `WebClient` justamente para que ele
 > 
 > Apesar de podermos usar o `WebClient` diretamente em qualquer bean do Spring, como um controller ou service por exemplo, nós entendemos que **criar uma camada de indireção (camada intermediária de abstração) entre o controller e `WebClient` sejá uma boa prática**.
 >
-> Essa nova classe de serviço funciona como uma interface pública (API) com métodos e tipos bem definidos. Dessa forma, não só podemos reutiliza-la em outras classes e camadas, como também encapsulamos os detalhes de implementação e minimizamos o acoplamento entre as camadas; de quebra, podemos testa-la de forma integrada e ainda facilitamos o uso de mocks ao escrever testes automatizados para o nosso código.
+> Essa nova classe de serviço funciona como uma interface pública (API) com métodos e tipos bem definidos. Dessa forma, não só podemos reutiliza-la em outras classes e camadas, como também encapsulamos os detalhes de implementação e minimizamos o acoplamento entre as camadas; de quebra, podemos testa-la de forma integrada e ainda facilitamos o uso de mocks ao escrever testes automatizados quando ela for uma dependência de outra classe.
 
-Nosso HTTP client está configurado e pronto para uso, porém ele ainda não está completo, pois se tentarmos utiliza-lo para acessar endpoint do sistema Meus Contatos nós receberemos o erro com Statu HTTP `401 (Unauthorized)`, afinal não estamos repassando nenhum Access Token na requisição.
+Nosso HTTP client está configurado e pronto para uso, porém ele ainda não está completo, pois se tentarmos utiliza-lo para acessar endpoint do sistema Meus Contatos nós receberemos um erro com Status HTTP `401 (Unauthorized)`, afinal não estamos repassando nenhum Access Token na requisição, não é mesmo?
+
+Portanto, vamos dar um jeito de repassar este token em cada uma das requisições 😉
 
 ### 5. Configure o `WebClient` para trabalhar com fluxo OAuth 2.0
 
-Para que nosso `WebClient` consiga se comunicar de maneira autenticada com o Resource Server, precisamos configurá-lo para que ele leve o fluxo OAuth 2.0 em consideração.
+Para que nosso `WebClient` consiga se comunicar de maneira autenticada/autorizada com o Resource Server, precisamos configurá-lo para que ele leve o fluxo OAuth 2.0 em consideração.
+
+**A idéia aqui é obter um Access Token válido do Authorization Server e em seguida adiciona-lo como cabeçalho HTTP (`Authorization: Bearer <token>`) em cada requisição enviada para o Resource Server**. Para não termos que implementar esse workflow manualmente, precisamos registrar um interceptor no `WebClient` que cuidará exatamente destes passos para nós.
 
 Antes de tudo, isso significa criar e configurar uma instância de `OAuth2AuthorizedClientManager`, que é o objeto responsável por gerenciar todo o workflow de solicitação de tokens para o Authorization Server assim como gerenciar o ciclo de vida destes tokens.
 
-Para isso, na nossa classe de configurações `ClientSecurityConfig`, vamos declarar um novo métoddo de fábrica para `OAuth2AuthorizedClientManager` configurado para Client Credentials Flow, como abaixo:
+Para isso, na nossa classe de configurações `ClientSecurityConfig`, vamos declarar um novo métoddo de fábrica para criar nosso `OAuth2AuthorizedClientManager` configurado para Client Credentials Flow, como abaixo:
 
 ```java
 @Configuration
@@ -210,9 +214,10 @@ class ClientSecurityConfig {
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrationRepository,
                                                                  OAuth2AuthorizedClientService clientService) {
 
-        OAuth2AuthorizedClientProvider provider = OAuth2AuthorizedClientProviderBuilder.builder()
-                                                                                .clientCredentials()
-                                                                                .build();
+        OAuth2AuthorizedClientProvider provider 
+                    = OAuth2AuthorizedClientProviderBuilder.builder()
+                                        .clientCredentials()
+                                        .build();
 
         AuthorizedClientServiceOAuth2AuthorizedClientManager manager 
                     = new AuthorizedClientServiceOAuth2AuthorizedClientManager(clientRegistrationRepository, clientService);
@@ -223,7 +228,9 @@ class ClientSecurityConfig {
 }
 ```
 
-Perceba que nosso `OAuth2AuthorizedClientManager` tem como implementação a classe `AuthorizedClientServiceOAuth2AuthorizedClientManager`, na qual recebe como dependência os beans `ClientRegistrationRepository` e `OAuth2AuthorizedClientService`, que serão os responsáveis, respectivamente, por obter as informações dos clients registrados no `application.yml` e gerenciar os tokens obtidos do Authorization Server. Além disso, também definimos um Provider através da classe `OAuth2AuthorizedClientProvider`, que é responsável por definir quais estratégias serão usadas para autenticar/autorizar nossos clients, que neste momento se limita a apenas Client Credentials Flow.
+Perceba que nosso `OAuth2AuthorizedClientManager`, que é uma interface, tem como implementação a classe `AuthorizedClientServiceOAuth2AuthorizedClientManager`, na qual recebe como dependência os beans `ClientRegistrationRepository` e `OAuth2AuthorizedClientService`, que serão os responsáveis, respectivamente, por carregar as informações dos clients registrados no `application.yml` e gerenciar os tokens obtidos do Authorization Server. Além disso, também definimos um Provider através da classe `OAuth2AuthorizedClientProvider`, que é responsável por definir quais estratégias serão usadas para autenticar/autorizar nossos clients, que neste momento se limita a apenas Client Credentials Flow.
+
+Este objeto `OAuth2AuthorizedClientManager` pode ser utilizado para obter os tokens manualmente se assim desejarmos, pois ele é quem de fato cuida de 90% deste workflow. Mas por se tratar de um workflow que se repetirá para cada requisição enviada, faz todo sentido que ele seja encapsulado num interceptor e configurado na nossa instância do `WebClient`.
 
 > **E se o token expirar?** <br/>
 > O que acontece quando um token obtido pelo `OAuth2AuthorizedClientManager` expira ou recebe um erro `401 (Unauthorized)` do Resource Server?
@@ -236,7 +243,7 @@ Perceba que nosso `OAuth2AuthorizedClientManager` tem como implementação a cla
 > - Se o token expirar ele será renovado (refreshed) através do fluxo OAuth2 Refresh Token Flow (se o fluxo original permitir);
 > - Substitui o token expirado pelo novo token;
 > 
-> Como podemos ver, se tivessemos que fazer tudo isso na mão teríamos um trabalho imenso e passível de erros, mas por sorte o Spring Security resolve isto para nós 😉
+> Como podemos ver, se tivessemos que fazer tudo isso na mão, sem o uso do `OAuth2AuthorizedClientManager`, teríamos um trabalho imenso e passível de erros, mas por sorte o Spring Security resolve isto para nós 😉
 
 
 Por fim, precisamos configurar o `WebClient` para trabalhar com o fluxo OAuth 2.0 esperado pelo Authorization Server e Resource Server. Para isso, ainda na classe `ClientSecurityConfig`, precisamos **configurar um interceptor** diretamente na nossa instância de `WebClient`, no momento de sua criação:
@@ -261,10 +268,10 @@ class ClientSecurityConfig {
 }
 ```
 
-Repare que injetamos a instância configurada de `OAuth2AuthorizedClientManager` para passa-la como dependência para nosso interceptor `ServletOAuth2AuthorizedClientExchangeFilterFunction`. **Este interceptor se encarregará de obter um token válido antes de cada requisição disparada ao Resource Server**. Em adição a isto, nós também indicamos ao interceptor qual registro de client padrão (default) ele deve utilizar para se comunicar com o Authorization Server, que no nosso caso é justamente o registro `meus-contatos` que configuramos no `application.yml` anteriormente.
+Repare que injetamos a nossa instância configurada de `OAuth2AuthorizedClientManager` para passa-la como dependência para nosso interceptor `ServletOAuth2AuthorizedClientExchangeFilterFunction`. **Este interceptor se encarregará de obter um token válido antes de cada requisição disparada ao Resource Server**. Em adição a isto, nós também indicamos ao interceptor qual registro de client padrão (default) ele deve utilizar para se comunicar com o Authorization Server, que no nosso caso é justamente o registro `meus-contatos` que configuramos no `application.yml` anteriormente.
 
 Pronto! A partir de agora nosso `WebClient` consegue se comunicar com a API REST protegida do Resource Server (Meus Contatos). Isso acontece pois o interceptor vai obter um token válido do Authorization Server e em seguida adiciona-lo ao cabeçalho HTTP de todas as requisições enviadas ao Resource Server.
 
 E agora, vamos utiliza-lo?
 
-### 6. Implemente o controller e consumindo o sistema externo
+### 6. Consuma o sistema externo protegido por OAuth 2.0
