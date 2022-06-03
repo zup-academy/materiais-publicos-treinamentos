@@ -339,11 +339,11 @@ Como resposta temos um Status HTTP `200 (OK)` com o seguinte payload:
 
 ```json
 [
-	{
-		"id": 9,
-		"nome": "Steve Jobs",
-		"empresa": "Apple"
-	}
+    {
+        "id": 9,
+        "nome": "Steve Jobs",
+        "empresa": "Apple"
+    }
 ]
 ```
 
