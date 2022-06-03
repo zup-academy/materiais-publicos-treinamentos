@@ -398,7 +398,7 @@ Por fim, precisamos habilitar o log em modo `DEBUG` para categoria que configura
 logging.level.reactor.netty.http.client=DEBUG
 ```
 
-> **Lembre-se de desligar os logs em produção** <br/>
+> ⚠️ **Lembre-se de desligar os logs em produção** <br/>
 > Habilitar os logs em modo `DEBUG` do `WebClient` faz sentido somente em ambiente de desenvolvimento e testes, mas não em produção. Em produção os mesmos acabariam gerando muito I/O devido ao volume de logs produzidos que poderia levar a problemas de performance na aplicação, especialmente se estamos falando de distributed logging na rede.
 
 A partir de agora ao rodarmos a aplicação e tentarmos nos comunicar com o Resource Server veremos algumas linhas de log semelhantes a estas:
