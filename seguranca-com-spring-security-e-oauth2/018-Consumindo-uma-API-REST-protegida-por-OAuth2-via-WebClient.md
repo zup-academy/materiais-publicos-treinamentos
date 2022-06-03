@@ -275,3 +275,158 @@ Pronto! A partir de agora nosso `WebClient` consegue se comunicar com a API REST
 E agora, vamos utiliza-lo?
 
 ### 6. Consuma o sistema externo protegido por OAuth 2.0
+
+Agora, vamos consumir a API REST do sistema Meus Contatos, para isso vamos implementar nosso controller para expor nossa própria API REST que, por sua vez, consumirá o endpoint do sistema Meus Contatos.
+
+Lembre-se, nossa API REST precisa expor um endpoint que permita filtrar todos os contatos pelo nome da empresa, deste modo o código do nosso controller seria algo semelhante a este:
+
+```java
+@RestController
+public class FiltraContatosPorEmpresaController {
+
+    @Autowired
+    private MeusContatosClient client;
+
+    @GetMapping("/api/contatos-por-empresa")
+    public ResponseEntity<?> listaPorEmpresa(@RequestParam(required = true) String empresa) {
+
+        List<ContatoFiltradoResponse> contatos = client.lista().stream()
+                                .filter(c -> empresa.equals(c.getEmpresa()))
+                                .map(contato -> new ContatoFiltradoResponse(contato))
+                                .collect(toList());
+
+        return ResponseEntity
+                    .ok(contatos);
+    }
+}
+
+
+/**
+ * Mapeado com base no payload de resposta
+ */
+public class ContatoFiltradoResponse {
+
+    private Long id;
+    private String nome;
+    private String empresa;
+
+    public ContatoFiltradoResponse(ContatoResponse contato) {
+        this.id = contato.getId();
+        this.nome = contato.getNome();
+        this.empresa = contato.getEmpresa();
+    }
+
+    // getters
+
+}
+```
+
+Perceba que injetamos nosso serviço cliente `MeusContatosClient` em vez do `WebClient` diretamente, e o usamos para consumir o sistema externo através do seu método `lista()`, o resto do código basicamente filtra a coleção de contatos pela empresa informada e transforma cada contato em um DTO de saída do nosso controller, no caso `ContatoFiltradoResponse`.
+
+Para testar nossa API REST, basta levantar a aplicação e executar o seguinte comando cURL na linha de comando:
+
+```sh
+curl --request GET \
+  --url 'http://localhost:8080/api/contatos-por-empresa?empresa=Apple'
+```
+
+Como resposta temos um Status HTTP `200 (OK)` com o seguinte payload:
+
+```json
+[
+	{
+		"id": 9,
+		"nome": "Steve Jobs",
+		"empresa": "Apple"
+	}
+]
+```
+
+Nosso código do controller utilizou a classe `MeusContatosClient` para  invocar o `WebClient` que fez toda comunicação com o serviço externo. Por debaixo dos panos nosso interceptor e configuração de fluxo OAuth 2.0 entrou em ação obtendo um Access Token do Authorization Server, adicionando-o no cabeçalho da requisição e, por fim, enviando a requisição para o Resource Server.
+
+Apesar de toda configuração do Spring Security e conhecimento sobre fluxos OAuth 2.0, não é uma tarefa dificil assim, não é mesmo?
+
+## Habilite o log do `WebClient`
+
+Embora nosso código tenha funcionado como esperado não te incomoda saber que toda mágica ocorreu por debaixo dos panos?
+
+O problema não é a mágica acontecer, mas sim não podermos visualiza-la enquanto desenvolvemos e testamos nosso código. Visualizar o que acontece  **através de logs** é muito importante para fazermos troubleshooting (analisar, identificar e corrigir erros) quando as coisas parecem não funcionar como esperado.
+
+A forma mais simples de habilitar os logs do `WebClient` é adicinando as seguintes linhas no `application.yml` da nossa aplicação:
+
+```yml
+logging.level.org.springframework.web.client=DEBUG
+logging.level.org.springframework.web.reactive.function.client=DEBUG
+```
+
+Apenas com estas linhas temos uma idéia das requisições HTTP enviadas pelo `WebClient`, porém infelizmente não temos detalhes sobre os headers e body da requisição. Para habilitar o logging dos headers e body precisamos ir mais a fundo na configuração do `WebClient`.
+
+Dessa forma, vamos configurar os logs do `WebClient` com suporte a headers e body para entendermos o que acontece por trás das cenas. Por o `WebClient` ser uma abstração de alto nível, ele utiliza outras bibliotecas reativas (non-blocking) de comunicação HTTP como implementação que são chamadas de **Client Http Connectors**, por esse motivo precisamos habilitar os logs destas implementações.
+
+Como estamos utilizando `WebClient` configurado com o client connector **Netty** (dependência `reactor-netty` no `pom.xml`), habilitamos seu log através do método `wiretap` de sua classe `HttpClient`. Portanto, na classe `ClientSecurityConfig` basta configurar o `HttpClient` e passa-lo para nosso `WebClient`, como abaixo:
+
+```java
+@Configuration
+class ClientSecurityConfig {
+
+    @Bean
+    public WebClient webClient(OAuth2AuthorizedClientManager manager) {
+
+        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2
+                = // ...;
+
+        HttpClient httpClient = HttpClient.create()
+                                .wiretap(
+                                    "reactor.netty.http.client.HttpClient", 
+                                    LogLevel.DEBUG, 
+                                    AdvancedByteBufFormat.TEXTUAL
+                                );
+
+        return WebClient.builder()
+                .apply(oauth2.oauth2Configuration())
+                .clientConnector(new ReactorClientHttpConnector(httpClient)) // configura connector com logging habilitado
+                .build();
+    }
+
+    // ...
+}
+```
+
+Por fim, precisamos habilitar o log em modo `DEBUG` para categoria que configuramos no `wiretap`, neste caso `reactor.netty.http.client.HttpClient`. Para isso, no seu `application.yml` adicione a seguinte linha de logging:
+
+```yml
+logging.level.reactor.netty.http.client=DEBUG
+```
+
+Agora, ao tentarmos nos comunicar com o Resource Server pela primeira vez veremos algumas linhas de log semelhantes a estas:
+
+```log
+[oundedElastic-1] o.s.web.client.RestTemplate              : HTTP POST http://localhost:18080/auth/realms/meus-contatos/protocol/openid-connect/token
+[oundedElastic-1] o.s.web.client.RestTemplate              : Accept=[application/json, application/*+json]
+[oundedElastic-1] o.s.web.client.RestTemplate              : Writing [{grant_type=[client_credentials], scope=[contatos:read]}] as "application/x-www-form-urlencoded;charset=UTF-8"
+[oundedElastic-1] o.s.web.client.RestTemplate              : Response 200 OK
+[oundedElastic-1] o.s.web.client.RestTemplate              : Reading to [org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse] as "application/json"
+[oundedElastic-1] o.s.w.r.f.client.ExchangeFunctions       : [7ff49fb7] HTTP GET http://localhost:8080/meus-contatos/api/contatos
+[ctor-http-nio-3] reactor.netty.http.client.HttpClient     : [cd8f0fe6] REGISTERED
+[ctor-http-nio-3] reactor.netty.http.client.HttpClient     : [cd8f0fe6] CONNECT: localhost/127.0.0.1:8080
+[ctor-http-nio-3] reactor.netty.http.client.HttpClient     : [cd8f0fe6, L:/127.0.0.1:11497 - R:localhost/127.0.0.1:8080] ACTIVE
+[ctor-http-nio-3] r.netty.http.client.HttpClientConnect    : [cd8f0fe6-1, L:/127.0.0.1:11497 - R:localhost/127.0.0.1:8080] Handler is being applied: {uri=http://localhost:8080/meus-contatos/api/contatos, method=GET}
+[ctor-http-nio-3] reactor.netty.http.client.HttpClient     : [cd8f0fe6-1, L:/127.0.0.1:11497 - R:localhost/127.0.0.1:8080] WRITE: 1462B GET /meus-contatos/api/contatos HTTP/1.1
+user-agent: ReactorNetty/1.0.18
+host: localhost:8080
+accept: */*
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwR085RC1BTlhzU3pwWHBENlN2cm9Ca2tEaUlIb0otRnBiSkgxOTNnOUNVIn0.eyJleHAiOjE2NTQyNjY1MjgsIml...
+```
+
+A partir da segunda requisição para o Resource Server você vai observar que não existe requisição para o Authorization Server, ou seja, o token foi obtido na primeira requisição pelo interceptor e cacheada em memória.
+
+Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em caso de problemas, podemos analisa-los e resolve-los de maneira mais assertiva possível. Sem estes logs seria MUITO dificil fazer troubleshooting na nossa aplicação.
+
+## Links e referências
+
+- []()
+- []()
+- []()
+- []()
+- []()
+
