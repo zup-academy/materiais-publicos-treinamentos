@@ -495,7 +495,7 @@ Para resolver isso, basta declararmos nosso Feign client como abaixo:
 @FeignClient(
     name = "meusContatos",
     url = "http://localhost:8080/meus-contatos",
-    configuration = MeusContatosClient.Configuration.class
+    configuration = MeusContatosClient.Configuration.class // habilita interceptor para este client
 )
 public interface MeusContatosClient {
 
