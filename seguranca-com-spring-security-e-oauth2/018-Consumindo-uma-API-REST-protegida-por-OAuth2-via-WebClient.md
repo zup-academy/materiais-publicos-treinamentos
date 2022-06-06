@@ -110,7 +110,7 @@ Perceba que configuramos a propriedade `token-uri` com a URI do Keycloak respons
 
 ### 4. Crie uma instância de WebClient
 
-Precisamos de um simples HTTP client para consumir a API REST do Resource Server (sistema Meus Contatos). Mas em vez de usarmos uma biblioteca de HTTP client qualquer, utilizaremos o HTTP client reativo do Spring Boot, que se tornou padrão no Spring 5, o **WebClient**.  
+Precisamos de um simples HTTP client para consumir a API REST do Resource Server (sistema Meus Contatos). Mas em vez de usarmos uma biblioteca de HTTP client qualquer, utilizaremos o HTTP client reativo do Spring Boot, que se tornou padrão no Spring 5, o **WebClient**. Se você é novo com `WebClient`, [este artigo ao estilo Cheet Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e) pode te ajudar a dar os primeiros passos.
 
 A vantagem de usar o WebClient aqui é que não precisaremos nos preocupar de solicitar o token ao Authorization Server, armazena-lo em um espaço de memória compartilhado e em seguida envia-lo como cabeçalho HTTP em cada requisição ao Resource Server. Este processo acontecerá automaticamente e de forma totalmente transparente para nós.
 
@@ -444,6 +444,7 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 - [Spring Security:  WebClient integration for Servlet Environments](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-webclient-servlet)
 - [Spring Security: OAuth2AuthorizedClientRepository / OAuth2AuthorizedClientService](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-repo-service)
 - [Spring Security: OAuth2AuthorizedClientManager / OAuth2AuthorizedClientProvider](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-manager-provider)
+- [Spring Boot: WebClient](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#webflux-client)
 - [Spring Boot WebClient Cheat Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e)
 - [Sending HTTP requests with Spring WebClient](https://reflectoring.io/spring-webclient/)
 - [Baeldung: Spring 5 WebClient](https://www.baeldung.com/spring-5-webclient)
