@@ -434,7 +434,7 @@ logging:
         br.com.zup.edu.meuscontatos.client.MeusContatosClient: DEBUG
 ```
 
-Perceba que além de configurar o logging do nosso Feign client `MeusContatosClient` eu também tive que configurar o logging do pacote `org.springframework.web.client` do Spring Boot, pois o Spring Boot utiliza seu HTTP client padrão, o `WebClient`, em vez do Open Feign para obter o token do Authorization Server. Sem esta configuração seria impossível visualizar os logs das requisições para obter o Access Token.
+Perceba que além de configurar o logging do nosso Feign client `MeusContatosClient` eu também tive que configurar o logging do pacote `org.springframework.web.client` do Spring Boot, pois o Spring Boot utiliza seu HTTP client padrão, o `WebClient`, em vez do Open Feign para obter o token do Authorization Server. Sem esta configuração de logging do Spring seria impossível visualizar os logs das requisições que obtém o Access Token do Authorization Server.
 
 Apenas com estas linhas temos uma boa idéia das requisições HTTP enviadas pelo OpenFeign, o que já é bastante útil para resolver muitos tipos de problemas, mas infelizmente **não temos detalhes sobre os headers e body da requisição**. Para habilitar o logging dos headers e body precisamos configurar o `Logger.Level` do nosso cliente:
 
