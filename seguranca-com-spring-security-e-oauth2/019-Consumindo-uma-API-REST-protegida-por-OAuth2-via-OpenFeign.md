@@ -495,7 +495,7 @@ Para resolver isso, basta declararmos nosso Feign client como abaixo:
 @FeignClient(
     name = "meusContatos",
     url = "http://localhost:8080/meus-contatos",
-    configuration = MeusContatosClient.Configuration.class // habilita interceptor para este client
+    configuration = MeusContatosClient.MyConfiguration.class // habilita interceptor para este client
 )
 public interface MeusContatosClient {
 
@@ -505,7 +505,7 @@ public interface MeusContatosClient {
     /**
      * Configurações especificas para este Feign client
      **/
-    class Configuration {
+    class MyConfiguration {
 
         @Bean
         public OAuth2FeignRequestInterceptor oAuth2FeignRequestInterceptor(OAuth2AuthorizedClientManager clientManager) {
@@ -515,9 +515,9 @@ public interface MeusContatosClient {
 }
 ```
 
-Perceba que a classe de configurações agora está dentro da interface `MeusContatosClient` e que adicionamos o atributo `configuration` na anotação `@FeignClient` para indicar qual configuração utilizar. Um detalhe importante é que a classe `Configuration` **não está anotada** com `@Configuration`, esse é um detalhe importante para que ela não se torne global na aplicação.
+Perceba que a classe de configurações agora está dentro da interface `MeusContatosClient`, e que também adicionamos o atributo `configuration` na anotação `@FeignClient` para indicar qual configuração utilizar (essa feature do OpenFeign te permite sobrescrever todas as configurações de um Feign client). Um detalhe importante é que a classe `MyConfiguration` **não está anotada** com a anotação `@Configuration` do Spring Boot, esse é um detalhe importante para que ela não se torne global na aplicação.
 
-Se você achar mais conveniente, você pode extrair essa classe `Configuration` para um arquivo separa, mas tendo o cuidado para não anota-lo com `@Configuration`, desta forma você pode reutiliza-la com múltiplos Feign clients.
+Se você achar mais conveniente, você pode extrair essa classe de configurações `MyConfiguration` para um arquivo separado no classpath, mas tendo o cuidado para não anota-lo com `@Configuration`, desta forma você pode reutiliza-la com múltiplos Feign clients.
 
 ## Links e referências
 
