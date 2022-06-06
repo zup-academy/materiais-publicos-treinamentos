@@ -443,6 +443,7 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 - [Spring Security:  WebClient integration for Servlet Environments](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-webclient-servlet)
 - [Spring Security: OAuth2AuthorizedClientRepository / OAuth2AuthorizedClientService](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-repo-service)
 - [Spring Security: OAuth2AuthorizedClientManager / OAuth2AuthorizedClientProvider](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-manager-provider)
+- [Spring Boot WebClient Cheat Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e)
 - [Sending HTTP requests with Spring WebClient](https://reflectoring.io/spring-webclient/)
 - [Baeldung: Spring 5 WebClient](https://www.baeldung.com/spring-5-webclient)
 - [Baeldung: Get List of JSON Objects with WebClient](https://www.baeldung.com/spring-webclient-json-list)
