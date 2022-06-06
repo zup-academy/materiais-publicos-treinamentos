@@ -202,7 +202,7 @@ Para que nosso `WebClient` consiga se comunicar de maneira autenticada/autorizad
 
 Antes de tudo, isso significa criar e configurar uma instância de `OAuth2AuthorizedClientManager`, que é o objeto responsável por gerenciar todo o workflow de solicitação de tokens para o Authorization Server assim como gerenciar o ciclo de vida destes tokens.
 
-Para isso, na nossa classe de configurações `ClientSecurityConfig`, vamos declarar um novo métoddo de fábrica para criar nosso `OAuth2AuthorizedClientManager` configurado para Client Credentials Flow, como abaixo:
+Para isso, na nossa classe de configurações `ClientSecurityConfig`, vamos declarar um novo método de fábrica para criar nosso `OAuth2AuthorizedClientManager` configurado para Client Credentials Flow, como abaixo:
 
 ```java
 @Configuration

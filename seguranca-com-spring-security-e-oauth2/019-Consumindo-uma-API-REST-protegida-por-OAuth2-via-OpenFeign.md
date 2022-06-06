@@ -317,7 +317,7 @@ public class OAuth2FeignRequestInterceptor implements RequestInterceptor {
 }
 ```
 
-Com a o interceptor no classpath da aplicação, o próximo passo é torna-lo um bean gerenciado pelo container do Spring. Para isso, ainda na classe `ClientSecurityConfig`, **declare e configure nosso interceptor** `OAuth2FeignRequestInterceptor` através de um método de fábrica do Spring:
+Com o interceptor no classpath da aplicação, o próximo passo é torna-lo um bean gerenciado pelo container do Spring. Para isso, ainda na classe `ClientSecurityConfig`, **declare e configure nosso interceptor** `OAuth2FeignRequestInterceptor` através de um método de fábrica do Spring:
 
 ```java
 @Configuration
