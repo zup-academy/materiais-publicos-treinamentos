@@ -211,8 +211,6 @@ Para isso, crie a classe de configurações `ClientSecurityConfig` e declare um 
 @Configuration
 class ClientSecurityConfig {
 
-    // ...
-
     @Bean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrationRepository,
                                                                  OAuth2AuthorizedClientService clientService) {
