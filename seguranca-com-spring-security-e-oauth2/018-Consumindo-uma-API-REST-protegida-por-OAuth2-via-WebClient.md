@@ -438,6 +438,7 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)
 - [RFC6749: Client Credentials](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3.4)
+- [OAuth 2.0 Refresh Token](https://oauth.net/2/grant-types/refresh-token/)
 - [Spring Security: Configuring Custom Provider Properties](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2login-custom-provider-properties)
 - [Spring Security: OAuth 2.0 Client](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2client)
 - [Spring Security:  WebClient integration for Servlet Environments](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-webclient-servlet)
