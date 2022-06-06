@@ -271,9 +271,9 @@ class ClientSecurityConfig {
 Repare que injetamos a nossa instância configurada de `OAuth2AuthorizedClientManager` para passa-la como dependência para nosso interceptor `ServletOAuth2AuthorizedClientExchangeFilterFunction`. **Este interceptor se encarregará de obter um token válido antes de cada requisição disparada ao Resource Server**. Em adição a isto, nós também indicamos ao interceptor qual registro de client padrão (default) ele deve utilizar para se comunicar com o Authorization Server, que no nosso caso é justamente o registro `meus-contatos` que configuramos no `application.yml` anteriormente.
 
 > ⚠️ **Cuidado com `WebClient` global na aplicação** <br/>
-> Nós criamos e declaramos nossa instância de `WebClient` no contexto do Spring, desta forma todos as requisições enviadas receberão o Access Token obtido do Authorization Server. Apesar de prático, devemos ter cuidado ao utilizar esta instância em funcionalidades que não participam de um fluxo OAuth 2.0, caso contrário podemos expor o Access Token para serviços externos, o que abre brechas sérias de segurança.
+> Nós criamos e declaramos nossa instância de `WebClient` no contexto do Spring, desta forma todos as requisições enviadas receberão o Access Token obtido do Authorization Server. Apesar de prático, devemos ter cuidado ao utilizar esta instância em funcionalidades que não participam de um fluxo OAuth 2.0, caso contrário podemos expor o token para serviços externos, o que abre brechas sérias de segurança.
 >
-> Se você tem 2 ou mais serviços externos que sua aplicação precisa se integrar, lembre-se de revisar o uso do seu `WebClient`. Nestes cenários, você provavelmente terá instâncias distintas do `WebClient` para cada uma delas.
+> Se você tem dois ou mais serviços externos que sua aplicação precisa se integrar, lembre-se de revisar o uso do seu `WebClient`. Nestes cenários, você provavelmente terá instâncias distintas do `WebClient` para cada um dos pontos de integração.
 
 Pronto! A partir de agora nosso `WebClient` consegue se comunicar com a API REST protegida do Resource Server (Meus Contatos). Isso acontece pois o interceptor vai obter um token válido do Authorization Server e em seguida adiciona-lo ao cabeçalho HTTP de todas as requisições enviadas ao Resource Server.
 
@@ -407,9 +407,6 @@ logging:
     reactor.netty.http.client: DEBUG
 ```
 
-> ⚠️ **Lembre-se de desligar os logs em produção** <br/>
-> Habilitar os logs em modo `DEBUG` do `WebClient` faz sentido somente em ambiente de desenvolvimento e testes, mas não em produção. Em produção os mesmos acabariam gerando muito I/O devido ao volume de logs produzidos que poderia levar a problemas de performance na aplicação, especialmente se estamos falando de distributed logging na rede.
-
 A partir de agora ao rodarmos a aplicação e tentarmos nos comunicar com o Resource Server veremos algumas linhas de log semelhantes a estas:
 
 ```log
@@ -431,6 +428,9 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwR085RC
 ```
 
 Os logs acima são referentes a primeira requisição ao Resource Server, mas a partir da segunda requisição para o Resource Server não vai haver outra requisição para o Authorization Server para obter o Access Token, ou seja, o token foi obtido na primeira requisição pelo interceptor e cacheada em memória, somente quando ele expirar é que veremos o interceptor tentando obter um novo token via fluxo Refresh Token do OAuth 2.0.
+
+> ⚠️ **Lembre-se de desligar os logs em produção** <br/>
+> Habilitar os logs em modo `DEBUG` do `WebClient` faz sentido somente em ambiente de desenvolvimento e testes, mas não em produção. Em produção os mesmos acabariam gerando muito I/O devido ao volume de logs produzidos que poderia levar a problemas de performance na aplicação, especialmente se estamos falando de distributed logging na rede.
 
 Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em caso de problemas, podemos analisa-los e resolve-los de maneira mais assertiva possível. Sem estes logs seria MUITO dificil fazer troubleshooting na nossa aplicação.
 
