@@ -112,7 +112,7 @@ Perceba que configuramos a propriedade `token-uri` com a URI do Keycloak respons
 
 Precisamos de um simples HTTP client para consumir a API REST do Resource Server (sistema Meus Contatos). Mas em vez de usarmos uma biblioteca de HTTP client qualquer, utilizaremos o HTTP client reativo do Spring Boot, que se tornou padrão no Spring 5, o **WebClient**. Se você é novo com `WebClient`, [este artigo ao estilo Cheat Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e) pode te ajudar a dar os primeiros passos.
 
-A vantagem de usar o WebClient aqui é que não precisaremos nos preocupar de solicitar o token ao Authorization Server, armazena-lo em um espaço de memória compartilhado e em seguida envia-lo como cabeçalho HTTP em cada requisição ao Resource Server. Este processo acontecerá automaticamente e de forma totalmente transparente para nós.
+A vantagem de usar o WebClient aqui é que ele possui uma excelente integração com Spring Security, de tal forma que não precisaremos nos preocupar de solicitar o token ao Authorization Server, armazena-lo em algum espaço de memória compartilhado e em seguida envia-lo como cabeçalho HTTP em cada requisição ao Resource Server. Este processo acontecerá automaticamente e de forma totalmente transparente para nós.
 
 Para isso, precisamos adicionar as dependências mínimas do WebClient no nosso `pom.xml`:
 
