@@ -485,6 +485,40 @@ Os logs acima são referentes a primeira requisição ao Resource Server, mas a 
 
 Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em caso de problemas, podemos analisa-los e resolve-los de maneira mais assertiva possível. Sem estes logs seria MUITO dificil fazer troubleshooting na nossa aplicação.
 
+## Configurando interceptor para um único OpenFeign client
+
+Como comentamos acima, ter um interceptor global é prático e facilita nossas vidas quando temos diversos endpoints que apontam para o mesmo Authorization Server ou utilizam o mesmo fluxo OAuth 2.0. Contudo, algumas vezes sua aplicação ou microsserviço precisa acessar dois ou mais sistemas externos usando OpenFeign, e nesse caso utilizar um interceptor compartilhado é perigoso na perspectiva de segurança.
+
+Para resolver isso, basta declararmos nosso Feign client como abaixo:
+
+```java
+@FeignClient(
+    name = "meusContatos",
+    url = "http://localhost:8080/meus-contatos",
+    configuration = MeusContatosClient.Configuration.class
+)
+public interface MeusContatosClient {
+
+    @GetMapping("/api/contatos")
+    public List<ContatoResponse> lista();
+
+    /**
+     * Configurações especificas para este Feign client
+     **/
+    class Configuration {
+
+        @Bean
+        public OAuth2FeignRequestInterceptor oAuth2FeignRequestInterceptor(OAuth2AuthorizedClientManager clientManager) {
+            return new OAuth2FeignRequestInterceptor(clientManager, "meus-contatos");
+        }
+    }
+}
+```
+
+Perceba que a classe de configurações agora está dentro da interface `MeusContatosClient` e que adicionamos o atributo `configuration` na anotação `@FeignClient` para indicar qual configuração utilizar. Um detalhe importante é que a classe `Configuration` **não está anotada** com `@Configuration`, esse é um detalhe importante para que ela não se torne global na aplicação.
+
+Se você achar mais conveniente, você pode extrair essa classe `Configuration` para um arquivo separa, mas tendo o cuidado para não anota-lo com `@Configuration`, desta forma você pode reutiliza-la com múltiplos Feign clients.
+
 ## Links e referências
 
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)
@@ -492,14 +526,14 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 - [OAuth 2.0 Refresh Token](https://oauth.net/2/grant-types/refresh-token/)
 - [Spring Security: Configuring Custom Provider Properties](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2login-custom-provider-properties)
 - [Spring Security: OAuth 2.0 Client](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2client)
-- [Spring Security:  WebClient integration for Servlet Environments](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-webclient-servlet)
 - [Spring Security: OAuth2AuthorizedClientRepository / OAuth2AuthorizedClientService](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-repo-service)
 - [Spring Security: OAuth2AuthorizedClientManager / OAuth2AuthorizedClientProvider](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-manager-provider)
-- [Spring Boot: WebClient](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#webflux-client)
-- [Spring Boot WebClient Cheat Sheet](https://medium.com/swlh/spring-boot-webclient-cheat-sheet-5be26cfa3e)
-- [Sending HTTP requests with Spring WebClient](https://reflectoring.io/spring-webclient/)
-- [Baeldung: Spring 5 WebClient](https://www.baeldung.com/spring-5-webclient)
-- [Baeldung: Get List of JSON Objects with WebClient](https://www.baeldung.com/spring-webclient-json-list)
-- [Baeldung: Logging Spring WebClient Calls](https://www.baeldung.com/spring-log-webclient-calls)
-- [Adding a Wiretap to a Spring WebFlux WebClient to Log All Request/Response Data](https://www.jvt.me/posts/2022/02/13/log-webflux-client/)
+- [Spring Cloud OpenFeign](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/#spring-cloud-feign)
+- [Spring Cloud: Release train Spring Boot compatibility](https://spring.io/projects/spring-cloud/)
+- [Github: OpenFeign](https://github.com/OpenFeign/feign)
+- [Baeldung: Introduction to Spring Cloud OpenFeign](https://www.baeldung.com/spring-cloud-openfeign)
+- [Baeldung: Feign Logging Configuration](https://www.baeldung.com/java-feign-logging)
+- [Baeldung: Provide an OAuth2 Token to a Feign Client](https://www.baeldung.com/spring-cloud-feign-oauth-token)
+- [Sensible feign client configuration](https://blog.wick.technology/sensible-feign/)
+- [OAuth2FeignRequestInterceptor: original implementation](https://github.com/loesak/spring-security-openfeign)
 
