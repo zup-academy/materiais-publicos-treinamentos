@@ -487,9 +487,9 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 
 ## Configurando interceptor para um único OpenFeign client
 
-Como comentamos acima, ter um interceptor global é prático e facilita nossas vidas quando temos diversos endpoints que apontam para o mesmo Authorization Server ou utilizam o mesmo fluxo OAuth 2.0. Contudo, algumas vezes sua aplicação ou microsserviço precisa acessar dois ou mais sistemas externos usando OpenFeign, e nesse caso utilizar um interceptor compartilhado é perigoso na perspectiva de segurança.
+Como comentamos acima, ter um interceptor global é prático e facilita nossas vidas quando temos diversos endpoints que apontam para o mesmo Authorization Server ou utilizam o mesmo fluxo OAuth 2.0. Contudo, algumas vezes sua aplicação ou microsserviço precisa acessar dois ou mais sistemas externos que não compartilham o mesmo fluxo OAuth 2.0 usando OpenFeign, e nesse caso utilizar um interceptor global é perigoso na perspectiva de segurança.
 
-Para resolver isso, basta declararmos nosso Feign client como abaixo:
+Para resolver isso, podemos configurar cada Feign client com sua configuração especifica, incluindo nosso interceptor. Para isso, basta declararmos nosso Feign client como abaixo:
 
 ```java
 @FeignClient(
@@ -517,7 +517,7 @@ public interface MeusContatosClient {
 
 Perceba que a classe de configurações agora está dentro da interface `MeusContatosClient`, e que também adicionamos o atributo `configuration` na anotação `@FeignClient` para indicar qual configuração utilizar (essa feature do OpenFeign te permite sobrescrever todas as configurações de um Feign client). Um detalhe importante é que a classe `MyConfiguration` **não está anotada** com a anotação `@Configuration` do Spring Boot, esse é um detalhe importante para que ela não se torne global na aplicação.
 
-Se você achar mais conveniente, você pode extrair essa classe de configurações `MyConfiguration` para um arquivo separado no classpath, mas tendo o cuidado para não anota-lo com `@Configuration`, desta forma você pode reutiliza-la com múltiplos Feign clients.
+Se você achar mais conveniente ou precisar reutilizar esta configuração com múltiplos Feign clients, você pode extrair a classe de configurações `MyConfiguration` para um arquivo separado no classpath, mas lembre-se de ter o cuidado para não anota-la com `@Configuration`.
 
 ## Links e referências
 
