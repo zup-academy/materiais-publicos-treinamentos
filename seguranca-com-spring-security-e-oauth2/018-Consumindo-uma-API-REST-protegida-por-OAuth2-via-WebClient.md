@@ -1,6 +1,6 @@
 # Consumindo uma API REST protegida por OAuth2 via WebClient
 
-Nesse conteúdo veremos como podemos consumir uma API REST protegida por OAuth 2.0 de um sistema externo utilizando o cliente HTTP reativo `WebClient` do Spring Boot.
+Nesse conteúdo veremos como podemos consumir uma API REST protegida por OAuth 2.0 de um sistema externo utilizando o cliente HTTP reativo **WebClient** do Spring Boot.
 
 ## Nosso contexto: filtrando os contatos de uma empresa
 
