@@ -437,6 +437,8 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 ## Links e referências
 
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)
+- [Spring Security: Configuring Custom Provider Properties](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2login-custom-provider-properties)
+- [Spring Security: OAuth 2.0 Client](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2client)
 - [Spring Security:  WebClient integration for Servlet Environments](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-webclient-servlet)
 - [Spring Security: OAuth2AuthorizedClientRepository / OAuth2AuthorizedClientService](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-repo-service)
 - [Spring Security: OAuth2AuthorizedClientManager / OAuth2AuthorizedClientProvider](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2Client-authorized-manager-provider)
