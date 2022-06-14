@@ -82,7 +82,6 @@ Dado a divisão entre dois numeros, onde exista um dividendo positivo, onde o di
 
 Uma implementação desta especificação é: 
 
-
 ```java
 public class Calculadora {
 1.
@@ -227,6 +226,321 @@ Então a seguinte suite sera suficiente para cobrir 100% dos blocos.
         assertFalse(numero.isPrimo(15));
     }
 ```
+As vezes garantir que apenas o blocos onde a condição atinge o valor de `true`, não pode ser suficiente, dado que não há garantias que o mesmo deve falhar quando resultados que não satisfaçam o valor `false` para condição. Nestas situações podemos incrementar a quantidade de blocos, buscando exercicitar o bloco da resultante da condição com valor false para cada decisão. É o que chamamos de `Cobertura Decisão (Filial)`.
+
+## `Cobertura condicional ((Basic) condition coverage)`
+
+As decisões geram sempre duas filiais ou ramificações, não importa o quão grande ou complexa pode ser a condição que esta sendo avaliada. Conforme a condição se torne mais complicada, os criterios de cobertura estudados anteriormente vão se tornando menos efetivos, isto significa que testar buscando a cobertura de filiais, não é mais suficiente.
+
+Condições complexas aos serem testadas utilizando o criterio de cobertura filial não tem todas as decisões cobertas, dado que avaliamos o resultado da condição como um só. Então para que as demais decisões sejam cobertas precisamos de um criterio que vise exercitar todas condições para o resutlado `true` e pelo menos uma vez para `false`.
+
+Para entender melhor observe o codigo, que visa identificar que dado 3 numeros, o primeiro é maior que o segundo, o segundo é maior que o terceiro, então o terceiro é menor que o primeiro. 
+
+```java
+public boolean crescente(int a, int b, int c){
+    if(a > b && b > c && c < a){
+        return true;
+    }
+
+    return false;
+}
+```
+se informamos os valores para a,b e c, encontramos os seguintes resultados:
+- a = 10, b = 8, c = 5 -> `true`;
+- a = 10, b = 15, c = 5 -> `false`;
+
+Dado os valores de entrada demostrados acima conseguimos validar os blocos que são gerados a partir da condição, porém, qualquer decisão que quebre uma sub-condição não foi coberta, por exemplo `(a = 20 , b = 30, c = 10)`. Desta forma não garantimos que todas as possibilidades de decisão estejam sendo exercitadas em nossa suite de testes.
+
+A solução é fazer uma remodelagem em nosso grafico de blocos, agora para cada subcondição criaremos dois novos caminhos, onde iremos exercicitar de maneira individual. Isto significa que iremos criar testes que validam e invalidam as seguintes condicições:
+
+- (a > b)
+- (b > c)
+- (c < a)
+
+então, para realizar a cobertura teriamos que exercitar a condição `(a > b && b > c && c < a)` pelo menos uma vez para `verdadeiro` e outra para `falso`. O que equivaleria a 25% de cobertura dos blocos. Para alcancar os 75% restantes cobriremos as subcondições, pelo menos uma vez para `verdadeiro` e outra para `falso`. Teriamos uma suite de testes como:
+
+``` java
+class CrescenteTest {
+    private Crescente numero;
+
+    @BeforeEach
+    void setUp() {
+        this.numero = new Crescente();
+    }
+
+    @Test
+    @DisplayName("a deve ser maior que b, e b maior que c, por fim c menor que a")
+    void test() {
+        assertTrue(this.numero.crescente(10, 8, 5));
+    }
 
 
-## `Cobertura condicional`
+    @Test
+    @DisplayName("a deve ser menor que b, e b maior que c, por fim c maior que a")
+    void test1() {
+        assertFalse(this.numero.crescente(10, 20, 15));
+    }
+
+    @Test
+    @DisplayName("A deve ser maior que B")
+    void test2() {
+        assertTrue(this.numero.crescente(25, 20, 15));
+    }
+
+    @Test
+    @DisplayName("A deve ser menor que B")
+    void test3() {
+        assertFalse(this.numero.crescente(15, 20, 15));
+    }
+
+    @Test
+    @DisplayName("B deve ser maior que C")
+    void test4() {
+        assertTrue(this.numero.crescente(23, 22, 15));
+    }
+
+    @Test
+    @DisplayName("b deve ser menor que C")
+    void test5() {
+        assertFalse(this.numero.crescente(15, 20, 25));
+    }
+
+
+    @Test
+    @DisplayName("C deve ser menor que A")
+    void test6() {
+        assertTrue(this.numero.crescente(23, 22, 21));
+    }
+
+    @Test
+    @DisplayName("C deve ser maior que A")
+    void test7() {
+        assertFalse(this.numero.crescente(21, 20, 25));
+    }
+}
+```
+
+Criar testes olhando apenas para cobertura de condição basica não é uma estratégia inteligente, dado que estamos analisando sempre as subcondições sem se importar com resultado final da condição, o que pode resultar em testes que sempre exercitam o caminho de sucesso ou falha. A solução é sempre trazer a cobertura filial junto, pois então cobriremos cada possivel tomada de decisão e os caminho que o software poderá percorrer, ao juntar as duas técnicas trabalhamos com o que chamamos de `Cobertura Condição + Decisão (Filial) -  (Condition + Branch coverage)`.
+
+## Cobertura de Caminho `(Path Coverage)`
+
+Ao utilizar o criterio de `Cobertura Condição + Decisão (Filial)`, estamos criando cenarios para cada `condição` e `branch` de maneira individual, isto proporciona alta quantidade de ramificações para construção de testes, ainda mais se comparamos ao criterio de cobertura por `linhas`. Embora cada condição esteja sendo exercitada para `true` e `false`, isso não garante que todos os caminhois que um programa pode ter estejam cobertos.
+
+A cobertura de `caminho` visa criar testes apartir da combinação **completa** das condições de uma decisão. Cada combinação é um caminho que deve ser exercicitado por teste. 
+
+A maneira de calcular uma cobertura por caminhos é simular as demais, devemos multiplicar por cem, o resultado da divisão dos caminhos percorridos pela quantidade total de caminhos. 
+
+```
+cobertura de caminhos = (caminhos percorridos/total de caminhos) * 100
+
+caminhos percoridos= 2
+total de camimhos = 6
+
+cobertura de caminhos ->  (2/6) * 100 =  33,33%
+```
+
+### Testando através da cobertura de caminhos.
+
+O primeiro passo para exercitar a cobertura de caminho, é encontrar todos os caminhos possivéis, uma maneira simples e rapida é construir a tabela verdade, para isto vamos precisar identificar as condições. Após ter as condições, criaremos as possibilidades. Observe o codigo abaixo.
+
+```java
+public boolean condition(int a, int b, int c){
+    if(a > b && b < c || (b+c) < a){
+        return true;
+    }
+
+    return false;
+}
+```
+
+Agora iremos extrair as sub-codições:
+- A = (a > b)
+- B = (b < c)
+- C = ((b+c) < a )
+
+Com as condições podemos calcular o numero de casos de teste, com a seguinte formula:  `2 ^ (NumeroCondicoes)`. O proximo passo é criar a tabela verdade.
+
+
+| `A` | `B` | `C` | `A AND B` | `(A AND B) OR C` |
+|:---:|:---:|:---:|:---:|:---:|
+|V|V|V|V|V|
+|V|V|F|V|V|
+|V|F|V|F|V|
+|V|F|F|F|F|
+|F|V|V|F|V|
+|F|V|F|F|F|
+|F|F|V|F|V|
+|F|F|F|F|F|
+
+Agora basta criar teste de exercite cada uma das possibilidades  da coluna `(A AND B) OR C`, que obteriamos 100% de cobertura de caminhos. 
+
+É importante notar que a medida que as condições aumentarem o custo de fazer uma cobertura por caminho aumentaram exponencialmente, isto significa que não pode ser uma estrategia eficiente  dado alguma restrição de tempo para entrega.
+
+## MC/DC - Condição Modificada/Cobertura de decisão `(Modified Condition/Decision Coverage)`
+
+Testar todas as combinações de caminho de um software pode ser algo tão custoso a ponto de se tornar inviavel, dado que a cada condição o numero de testes ira crescer consideravelmente. Uma boa pergunta a se fazer é será que não existe um subconjuto de testes que garantiriam 100% da cobertura de caminho? A resposta é **`sim`**, existem algumas combinações mais importantes, onde dada uma condição ela consiga alternar o resultado de toda a decisão, e é nestas combinações que o `MC/DC` se foca.
+
+A ideia principal é buscar testes onde, uma condição possa alterar o resultado de uma decisão de maneira independente das outras condições. Isto significa que todas as condições devem influenciar o resultado da decisão pelo menos uma vez. A influencia no resultado é dada quanto encontramos um **`Par de Independência`**, que é quando olhamos para  uma condição de decisão, e dada uma subcondição, encontramos um par de combinação onde, a penas a troca do falor de uma condição tem o poder de alterar o resultado.
+
+Caso avaliemos o bloco de decisão dos caminhos da condição `A && (B || C)`, devemos encontrar pelo menos um Par de independencia para cada condição. 
+
+### Como identificar um Par de Independencia? 
+
+Primeiro deve-se escolher uma condição, por exemplo A. Dada esta condição precisamos observar o conjunto de testes da decisão, e buscar  casos de testes onde apenas o valor de A, seja capaz de alterar o valor da Decisão, isto significa, que se ao alterar o valor de A de `true` para `false` o valor final deve mudar. Então olhando apenas para o valor da condição A:  
+
+- Deve conter um caso de teste onde o valor de A seja **`Verdadeiro`** e o valor da Decisão seja `Verdadeiro`, chamaremos de `caso 1`. Com por exemplo :
+
+    | `Teste`  | `A` | B | C |  `Decision`: `A AND (B OR C)` |
+    |:---:|:---:|:---:|:---:|:---:|
+    |1|**`V`**|V|V|**V**|
+
+
+- Deve conter um caso de teste onde o valor de A seja **`Falso`** e o valor da Decisão seja `Falso`, chamaremos de `caso 2`.
+    | `Teste`  | `A` | B | C |  `Decision`: `A AND (B OR C)` |
+    |:---:|:---:|:---:|:---:|:---:|
+    |2|**`F`**|V|V|**F**|
+- Quanto no `caso 1` tanto no `caso 2`, os valores de `B` e `C` devem ser iguais, isto nos dara o que chamamos de par de independencia.
+    | `Teste`  | `A` | B | C |  `Decision`: `A AND (B OR C)` |
+    |:---:|:---:|:---:|:---:|:---:|
+    |1|V|**`V`**|**`V`**|**V**|
+    |2|F|**`V`**|**`V`**|**F**|
+
+Os pares de independência tem como responsabilidade auxiliar na escolha de casos de testes, de forma que sejam reduzidos de **`2^N`** para **`N+1`** que é o criterio medio de cobertura do **`MC/DC`**. 
+
+
+### Como selecionar os casos de Testes que satisfaçam o **`MC/DC`**?
+
+Selecionar os `Pares de Independência` para cada uma das subcondições. Adicionar um Par para cada condição, favoreca os pares das condições que conténham apenas um Par. Selecionar um teste que faça par com os casos já selecionados nas condições restantes. Por Exemplo: 
+
+- A: {T1, T5}, {T2, T6}, {T3, T7}  
+- B: {T2, T4}
+- C: {T3, T4}
+
+Como as condições `B e C` contém apenas um par cada, adicionaremos os testes que estão em seus pares, resultando nos casos: `T2, T3 e T4`. Até o momento existem 3 casos, o que corresponde ao **`N`**, então nosso papel é encontrar um  ou dois testes para completar nossa cobertura.
+
+Ao observar os pares da condição `A` notamos que quanto o caso T3 e T2  estão presentes, então podemos escolher um caso que faça par com algum deles para completar nossa suite. Caso a gente não escolha acabaremos com 5 casos de testes, o que não é errado, porém, se temos a oportunidade de favorecer testes que já estão na suitem é o caminho mais eficiente. Então poderiamos ter as seguintes Suites.
+
+- Suite 1: `T2, T3, T4 e T6`.
+- Suite 2: `T2, T3, T4 e T7`.
+
+## Aplicando o `MC/DC`
+
+Como dito anteriormente, o `MC/DC` é traz de forma inteligente um guia para construção de testes que cobrem 100% dos caminhos do software. E Após conhecer os conceitos de `Pares de Independência` e como reduzir nossos casos, podemos sintetizar um passo a passo de como aplica-lo.
+
+1. Identificar as subcondições da condição de decisão.
+2. Construir todas as combinações de caminhos do software (Tabela Verdade).
+3. Encontrar os Pares de Independencia para cada uma das subcondições.
+4. Selecionar os casos de testes que forme uma suite com N + 1 testes.
+
+Após ter ciência de cada uma das etapas necessárias, iremos construir os casos de testes para o metodo que permite que um aluno se matricule a uma universidade. Para que um aluno se matricule em um curso, é necessário que seja maior de idade, ou que o Pai assine sua declaração e page a taxa de matricula. Uma implementação esta disponivel abaixo.
+
+```java
+ public boolean aptoAMatricula(Pessoa pessoa){
+	if((pessoa.paiAssina() && pessoa.matriculaPaga()) ||  pessoa.isMaiorDeIdade()){
+		return true;
+	}
+	return false;
+  }
+```
+
+
+### Etapa 01: Identificar as subcondições da condição de decisão.
+Neste metodo existe três condições, que são representadas por:
+
+- A: Pai assina
+- B: taxa de matricula paga
+- C: Maior de idade
+
+Podemos rescrever a condição de decisão como: `(A && B) || C`. 
+
+### Etapa 02: Construir todas as combinações de caminhos do software (Tabela Verdade)
+
+Para construção da tabela verdade precisamos elevar a dois, o numero de subcondições da condição de decisão. Neste caso temos 3 sub-condições, o que resulta em 2^3 = 8 possibilidades.
+
+Para construir a tabela iremos construtir uma matriz de 8 Linhas por N sub-condições em colunas. A primeira ira conter 4 valores verdadeiros consecutivos e 4 falsos, nas proximas colunas a quantidade de valores consecutivos sera dividido por 2. Isto signfica que na segunda coluna teremos 2 valores verdadeiros conseguitivos e 2 falsos, e a mesma regra se aplica a terceira coluna, resultando na seguinte matriz.
+
+
+|`Teste`| `A` | `B` | `C` | `A AND B` | `(A AND B) OR C` |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|V|V|V|V|V|
+|2|V|V|F|V|V|
+|3|V|F|V|F|V|
+|4|V|F|F|F|F|
+|5|F|V|V|F|V|
+|6|F|V|F|F|F|
+|7|F|F|V|F|V|
+|8|F|F|F|F|F|
+
+
+### Etapa 03: Encontrar os Pares de Independencia para cada uma das subcondições.
+
+Nesta etapa iremos encontrar os pares de independencia para cada uma das condições, comecando pela condição A.
+
+#### Pares de idependencia condição A.
+
+
+Nesta etapa iremos procurar para cada caso de teste, um teste onde invertemos o valor da condição A e mantemos os valores das condições B e C, e temos o resultado da decisão invertida. 
+
+Olhando para condição A encontramos o par de 2 e 6.
+
+|`Teste`| `A` | `B` | `C` | `A AND B` | `(A AND B) OR C` |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|V|V|V|V|V|
+|`2`|`V`|V|F|V|`V`|
+|3|V|F|V|F|V|
+|4|V|F|F|F|F|
+|5|F|V|V|F|V|
+|`6`|`F`|V|F|F|`F`|
+|7|F|F|V|F|V|
+|8|F|F|F|F|F|
+
+#### Pares de idependencia condição B.
+
+Nesta etapa iremos procurar para cada caso de teste, um teste onde invertemos o valor da condição B e mantemos os valores das condições A e C, e temos o resultado da decisão invertida. 
+
+Olhando para condição B, encontramos o par de 2 e 4.
+
+|`Teste`| `A` | `B` | `C` | `A AND B` | `(A AND B) OR C` |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|V|V|V|V|V|
+|`2`|V|`V`|F|V|`V`|
+|3|V|F|V|F|V|
+|`4`|V|`F`|F|F|`F`|
+|5|F|V|V|F|V|
+|6|F|V|F|F|F|
+|7|F|F|V|F|V|
+|8|F|F|F|F|F|
+
+#### Pares de idependencia condição C.
+
+Nesta etapa iremos procurar para cada caso de teste, um teste onde invertemos o valor da condição C e mantemos os valores das condições A e B, e temos o resultado da decisão invertida. 
+
+Olhando para condição C, encontramos os seguintes pares: {3,4}, {5,6} e {7,8}.
+
+|`Teste`| `A` | `B` | `C` | `A AND B` | `(A AND B) OR C` |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|1|V|V|V|V|V|
+|2|V|V|F|V|V|
+|`3`|V|F|`V`|F|`V`|
+|`4`|V|F|`F`|F|`F`|
+|`5`|F|V|`V`|F|`V`|
+|`6`|F|V|`F`|F|`F`|
+|`7`|F|F|`V`|F|`V`|
+|`8`|F|F|`F`|F|`F`|
+
+### Etapa 04: Selecionar os casos de testes que forme uma suite com N + 1 testes.
+
+Após ter disponivel os pares de independencia para cada condição, iremos selecionar os testes que satisfaçam a cobertura do `MC/DC`. Lembrando que as condições que possuem um unico par devem ser favorecidas.
+
+- Condição A: {2,6}
+- Condição B: {2,4}
+- Condição C: {3,4}, {5,6} e {7,8}
+
+Como dito anteriormente é importante que exista pelo menos um par de independencia para cada condição, dado isso favorecemos os pares das condições que possuem apenas um par. 
+
+O caso de teste 2, se repete em A e B, portanto temos o primeiro caso da nossa suite. O caso 4 e 6 também farão parte do conjunto de testes, então a tarefa é escolher um caso de teste entre os pares da condição C para completar a suite.
+
+Os casos 4 e 6 já fazem parte do conjunto, o que é um bom indicativo para escolhar de um par da condição C, logo podemos fazer duas suites que contemplem `N + 1` casos, como:
+
+- Suite 1: 2, 4, 6 e 3
+- Suite 2: 2, 4, 6 e 5
