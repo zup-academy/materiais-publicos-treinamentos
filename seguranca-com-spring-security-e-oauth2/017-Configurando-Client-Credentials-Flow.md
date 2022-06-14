@@ -99,8 +99,8 @@ Por simplicidade, vamos considerar que o POSTman ou Insomnina sejam nossas aplic
 
 Após criar o novo Client, o formulário foi expandido com novos campos novas e novas abas. A partir de agora podemos configurar em mais detalhes nosso Client, como por exemplo configurando seus fluxos OAuth2, tipo de acesso, URLs de redirecionamento permitidas, detalhes do OpenID Connect e muitas outras.
 
-> ⚠️ **Use esse fluxo para comunicação Machine-Machine** <br/>
-> Este fluxo OAuth 2.0 foi desenhado e é indicado apenas para comunicação segura onde **não há a interação do usuário**, ou seja, de aplicação para aplicação: **Machine-Machine**.
+> ⚠️ **Use esse fluxo para comunicação Machine-to-Machine (M2M)** <br/>
+> Este fluxo OAuth 2.0 foi desenhado e é indicado apenas para comunicação segura onde **não há a interação do usuário**, ou seja, de aplicação para aplicação, máquina para máquina: **Machine-to-Machine (M2M)**.
 >
 > Seu uso é muito comum em jobs que rodam background, agendamento de tarefas feito pelo próprio sistema, integração entre microsserviços etc.
 
