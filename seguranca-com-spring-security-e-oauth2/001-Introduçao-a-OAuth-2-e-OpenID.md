@@ -2,6 +2,8 @@
 
 Nesse conteúdo teremos uma visão de alto nível sobre o que e como funciona o protocolo OAuth 2.0 e OpenID Connect. A idéia aqui é termos uma visão clara de como o protocolo (também chamado de framework) OAuth 2.0 funciona, seus principais fluxos e seus atores (roles).
 
+Não se sinta mal ao consumir este material, pois trata-se de um tema de fato denso e complicado. Segurança por si só já é uma área da computação ampla,  complexa e cheia de detalhes, e OAuth2 e todo seu ecossistema não fica atrás. Se necessário, leia mais de uma vez este material para maximizar suas chances de aprendizado.
+
 ## Segurança: Autenticação Vs Autorização
 
 Sempre que falamos sobre segurança de uma aplicação web ou sistema distribuído é comum encontrarmos dois conceitos comums porém de extrema importância: **Autenticação** e **Autorização**. Embora exista uma relação estreita entre eles, eles tem semânticas e papeis diferentes numa arquitetura.
@@ -164,7 +166,7 @@ Mas não se engane, o protocolo OAuth2 permite que outros formatos sejam adotado
 
 ## Links e referências
 
-Alguns são alguns links de artigos, referências oficiais e não oficiais que podem te ajudar no aprendizado e aprofundamento:
+Aqui são alguns links de artigos, referências oficiais e não oficiais que podem te ajudar no aprendizado e aprofundamento:
 
 - [RFC6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
 - [OpenID Connect FAQ and Q&As](https://openid.net/connect/faq/)
