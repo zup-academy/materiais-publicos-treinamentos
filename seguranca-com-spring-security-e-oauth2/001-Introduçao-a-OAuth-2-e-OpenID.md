@@ -4,7 +4,7 @@ Nesse conteúdo teremos uma visão de alto nível sobre o que e como funciona o 
 
 ## Segurança: Autenticação Vs Autorização
 
-Sempre que falamos sobre segurança de uma aplicação web ou sistema distribuído, é comum encontrarmos dois conceitos comums mas muito importantes: **Autenticação** e **Autorização**. Embora exista uma relação estreita entre eles, eles tem semântica e papeis diferentes numa arquitetura.
+Sempre que falamos sobre segurança de uma aplicação web ou sistema distribuído é comum encontrarmos dois conceitos comums porém de extrema importância: **Autenticação** e **Autorização**. Embora exista uma relação estreita entre eles, eles tem semânticas e papeis diferentes numa arquitetura.
 
 Quando falamos de **autenticação** estamos falando sobre **identificar um usuário** no sistema, estamos falando do sistema ter que lidar com suas credenciais (username e password), valida-las e carregar as informações pertinentes deste usuário para uma sessão ativa dentro do sistema, e somente a partir daí o usuário poderia começar a navegar pelo sistema.
 
@@ -12,7 +12,7 @@ Resumindo, queremos responder a seguinte pergunta:
 
 > "Quem é este usuário?"
 
-Por outro lado, quando falamos de **autorização**, estamos falando sobre **determinar o que o usuário pode fazer** no sistema. Nesse momento, entende-se que o sistema já sabe quem é o usuário pois ele está autenticado, porém o sistema deve verificar se o mesmo possui determinadas permissões (ou papeis) para executar alguma ação ou se pode acessar dados no sistema.
+Por outro lado, quando falamos de **autorização**, estamos falando sobre **determinar o que um usuário pode fazer** no sistema. Nesse momento, entende-se que o sistema já sabe quem é o usuário pois ele está autenticado (logou com suas credenciais), porém o sistema deve verificar se o mesmo possui determinadas permissões (ou pápeis) para executar alguma ação ou acessar dados no sistema.
 
 Aqui, queremos responder a seguinte pergunta:
 
@@ -42,12 +42,25 @@ Para que esse modelo funcione, foi necessário desenhar e criar um framework e p
 
 ## Entendendo o protocolo OAuth 2.0
 
-OAuth 2.0, ou simplesmente OAuth2, é basicamente um padrão para autorização entre sistemas, serviços, aplicações e dispositivos. Aqui é importante entender que **OAuth2 é sobre AUTORIZAÇÃO**, e não autenticação.
+OAuth 2.0, ou simplesmente OAuth2, que significa "Open Authorization", é basicamente um padrão sobre HTTP para autorização entre sistemas, serviços, aplicações e dispositivos que permite a um usuário (ou outra aplicação) conceder acesso limitado a seus recursos para aplicações terceiras (third-party applications). Ele se baseia na emissão e troca de tokens de acessso (access tokens) entre as aplicações e serviços. Por ser um padrão ela possui sua especificação aberta na [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749), onde o mesmo é descrito como abaixo:
 
-Para recaptular, em termos simples:
+> OAuth 2.0 is an authorization framework that enables a third-party application to obtain limited access to an HTTP service, either on behalf of a resource owner by orchestrating an approval interaction between the resource owner and the HTTP service, or by allowing the third-party application to obtain access on its own behalf.
 
-- autenticação (authentication) é sobre identificar um usuário;
-- autorização (authorization) é sobre determinar o que um usuário pode fazer ou acessar;
+Apesar de chamarmos OAuth2 de protocolo, o que não está errado, ele está mais para um framework de autorização por permitir que muitas features sejam opcionais para quem resolver implementa-lo, o que acaba não garantindo uma interoperabilidade 100% entre serviços. 
+
+Aqui é importante entender que **OAuth2 é sobre AUTORIZAÇÃO**, e não autenticação. Tanto é que sua RFC nem entra muito nesses detalhes. Quem cuida de fato da autenticação no OAuth2 é o protocolo **OpenID Connect**, que funciona como uma camada fina sobre o OAuth2 para padronizar aspectos relacionados a autenticação, endpoints, tokens e formatos e também permitir que desenvolvedores(as) consigam autenticar seus usuários em sites ou aplicativos sem a necessidade de manter e gerenciar credenciais. 
+
+> **OpenID Connect, Single Sign-On e Social Logins** <br/>
+> OpenID Connect é o protocolo em cima do OAuth2 que nos permite implementar **Single Sign-On (SSO)**. É justamente ele que habilita um usuário se autenticar uma única vez com o IdP (Identity Provider) e consiga acessar qualquer aplicação ou sistema que tenha uma relação de confiança com esse IdP, ou seja, que esteja configurado neste IdP.
+>
+> Também é através OpenID Connect que implementamos o que chamamos de **Social Logins**, ou seja, usamos nossas contas de redes sociais como Facebook, Instagram, Google etc para criar contas e/ou se autenticar em sites e serviços na internet, como seu e-commerce preferido ou algum site de jogos.
+>
+> No fim, podemos dizer que OpenID Connect está em todo lugar assim como OAuth2 😉
+
+Separar autenticação de autorização nem sempre é fácil, mas para recaptular, em termos simples:
+
+- authentication: autenticação é sobre identificar um usuário;
+- authorization: autorização é sobre determinar o que um usuário pode fazer ou acessar;
 
 **OAuth2 é sobre conceder autorização (permissão) para que aplicações terceiras (third-party applications) consigam executar ações ou acessar dados a um determinado recurso em nome do usuário.**
 
@@ -63,5 +76,99 @@ Falando em acesso limitado, o protocolo tem como uma de suas principais caracter
 
 No fim, o usuário basicamente autoriza uma aplicação terceira a acessar seus recursos como se fosse o próprio usuário executando a ação. Por se tratar de autorizações especificas para determinadas ações, fica fácil para o usuário limitar o que diferentes aplicações terceiras podem ou não fazer em seu nome.
 
+## OAuth2 Flows, Roles e Access Tokens
 
+Um aspecto muito importante do OAuth2 são seus fluxos (flows) de autorização, mas para entendê-los temos antes que nos acostumarmos com seus atores/pápeis (roles) e terminologia adotada pelo framework. A grosso modo existem **4 atores** num fluxo de autorização OAuth2, são eles:
 
+- **Resource Owner**: é o dono do recurso. Pode ser uma pessoa ou um serviço. Por exemplo, você é o dono das suas "coisas no Facebook (fotos, perfil etc) e é você quem permite ou não acesso a elas;
+- **Resource Server**: é onde ficam os recursos protegidos (suas fotos do Instagram, arquivos do Dropbox, eventos do Google Calendar", por exemplo). Esse servidor precisa ser capaz de lidar com tokens de acesso (access tokens) pra fornecer, negar e revogar os acessos aos recursos protegidos;
+- **Client**: é basicamente a aplicação que quer acessar os recursos protegidos. A aplicação acessa os recursos EM NOME do Resource Owner (do dono do recurso). Por exemplo, a aplicação que você usa para acessar o Twitter seria um Client no fluxo OAuth2;
+- **Authorization Server**: é a entidade (server) que emite os tokens de acesso. É para ela que o Client envia as requisições solicitando os tokens de acesso para consumir algum recurso do Resource Owner. Apesar dele geralmente ser um serviço separado, ele pode ser o mesmo serviço do Resource Server;
+
+Vamos entrar um pouco mais em detalhes para entendermos melhor o papel de cada um destes atores:
+
+**O Resource Owner é o ator capaz de conceder acesso a seus recursos protegidos**. Na maioria das vezes ele será um usuário, mas ele também pode ser outra aplicação ou serviço.
+
+**O Resource Server hospeda os recursos protegidos**. Geralmente é uma API REST, como API do Facebook, Google Drive ou Instagram.
+
+Enquanto o **Authorization Server é a aplicação que emite os tokens** para autorizar os Clients. Existem diversos serviços opensource que podemos rodar localmente ou no nosso próprio datacenter, como Keycloak, e SaaS (Software as a Service) como Okta e Auth0. Geralmente tem-se um Authorization Server centralizado para atender múltiplos Resource Servers.
+
+Por fim, **o Client é a aplicação fazendo as requisições para os recursos protegidos** em nome do Resource Owner. Ela pode ser um website, aplicativo mobile, microsserviço, SmartTV etc.
+
+### Existe uma relação de confiança entre os atores
+
+Para que os fluxos do OAuth2 funcionem, deve haver uma **relação de confiança** entre os atores.
+
+Primeiro, entre o Resource Server e Authorization Server: o Resource Server precisa ser capaz de validar as keys e tokens emitidas pelo Authorization Server antes de permitir acesso aos recursos solicitados pelos Clients.
+
+O Client também deve se registrar no Authorization Server para que seja possível solicitar e receber os tokens, ou seja, o Authorization Server precisa ter conhecimento da existência de cada Client.
+
+### Overview do OAuth2 Flow
+
+Como vimos, OAuth2 tem a ver com os fluxos de interação entre seus atores (resource owner, client, resource server e authorization server), por esse motivo é importante que você se sinta confortável com estes fluxos. 
+
+Tecnicamente, temos **4 tipos de fluxos (grant types)** que podem ser usados ao implementarmos autorização com OAuth2:
+
+1. Authorization Code;
+2. Client Credentials;
+3. Implicit;
+4. Resource Owner Password Credentials;
+
+Estes 4 fluxos são utilizados para obter um access token. Mas antes de discutirmos em detalhes seus principais fluxos de autorização (grant types), vamos ter uma **visão geral e de alto nível** do fluxo deste protocolo:
+
+```
++--------+                               +---------------+
+|        |--(A)- Authorization Request ->|   Resource    |
+|        |                               |     Owner     |
+|        |<-(B)-- Authorization Grant ---|               |
+|        |                               +---------------+
+|        |
+|        |                               +---------------+
+|        |--(C)-- Authorization Grant -->| Authorization |
+| Client |                               |     Server    |
+|        |<-(D)----- Access Token -------|               |
+|        |                               +---------------+
+|        |
+|        |                               +---------------+
+|        |--(E)----- Access Token ------>|    Resource   |
+|        |                               |     Server    |
+|        |<-(F)--- Protected Resource ---|               |
++--------+                               +---------------+
+```
+
+A figura acima descreve em alto nível as interações entre os 4 atores e inclui os seguintes passos:
+
+- (A) O client pede autorização do resource owner. Este pedido de autorização pode ser feito diretamente ao resource owner (como mostrado na figura), ou preferencialmente ao authorization server, na qual funcionaria como um intermediário;
+
+- (B) O client recebe uma concessão de autorização (authorization grant), na qual é uma credencial representando a autorização do resource owner. Aqui esta concessão de autorização pode ser expressada pelos 4 grant types definidos na especificação;
+
+- (C) Agora, o client solicita um token de acesso (access token) autenticando-se com o authorization server e apresentando sua concessão de autorização;
+
+- (D) O authorization server autentica o client e valida sua concessão de autorização, e se ela for válida, ele emite um token de acesso para o client;
+
+- (E) Com o access token em mãos, o client solicita acesso ao recurso protegido hospeado pelo resource server apresentando o token que foi obtido do authorization server;
+
+- (F) Por fim, o resource server valida o access token, e se válido, libera acesso ao recurso protegido;
+
+Perceba que OAuth2 tenta a todo custo não induzir o resource owner (end-user) a informar suas credenciais (username e password) ao client (aplicação terceira). Por isso a preferência de ter um authorization server como intermediário e a importância de toda a discussão sobre relação de confiança entre os atores.
+
+### Access Tokens
+
+Outro conceito importante na terminologia do OAuth2 e que discutimos anteriormente é o **Access Token**, que é utilizado como concessão de autorização para um Client em vez das credenciais (username e password) do Resource Owner (end-user). 
+
+**Estes access tokens são emitidos pelo Authorization Server para os Clients e são utilizados para acessar recursos protegidos hospedados pelo Resource Server**. Eles podem ter diferentes formatos e estruturas e podem ser utilizados de diferentes formas de acordo com os requisitos do Resource Server.
+
+Sem dúvida o formato mais popular e utilizado hoje em dia com OAuth2 para access token é o **JWT (JSON Web Token)**, que nada mais do que um JSON com informações e detalhes sobre o token, resource owner, authorization server entre outras, tanto é que você pode copiar este token (em formato derivado de Base64) e decodifica-lo no site [JWT.io](https://jwt.io/). Não à toa, por questões de segurança, o JWT pode ser (e geralmente é) assinado e até encriptado para evitar que o mesmo seja adulterado ou lido no meio do caminho.
+
+Mas não se engane, o protocolo OAuth2 permite que outros formatos sejam adotados, como os formatos opacos (opaque tokens). Não há restrições na especificação sobre quais formatos e estruturas devem ser adotados.
+
+## Links e referências
+
+Alguns são alguns links de artigos, referências oficiais e não oficiais que podem te ajudar no aprendizado e aprofundamento:
+
+- [RFC6749: The OAuth 2.0 Authorization Framework](https://datatracker.ietf.org/doc/html/rfc6749)
+- [OpenID Connect FAQ and Q&As](https://openid.net/connect/faq/)
+- [What’s the Difference Between OAuth, OpenID Connect, and SAML?](https://www.okta.com/identity-101/whats-the-difference-between-oauth-openid-connect-and-saml/)
+- [[Conceito] - Básico sobre OAuth 2.0](https://dev.to/zanfranceschi/conceito-basico-sobre-oauth-20-3bfb)
+- [Wikipedia: OAuth2](https://en.wikipedia.org/wiki/OAuth)
+- [Identity Providers (IdPs): What They Are and Why You Need One](https://www.okta.com/identity-101/why-your-company-needs-an-identity-provider/)
