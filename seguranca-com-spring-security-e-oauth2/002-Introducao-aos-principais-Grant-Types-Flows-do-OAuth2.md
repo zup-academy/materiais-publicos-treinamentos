@@ -98,7 +98,7 @@ O fluxo ilustrado na figura acima inclui os seguintes passos:
 >
 > A idéia básica do PKCE é o client criar uma chave de uso único (one-time key) e utiliza-la no processo de autorização para que o authorization server possa verificar sua autenticidade. Isso significa que o authorization server precisa fornecer essa feature. 
 
-Se você percebeu, este fluxo precisa obrigatoriamente da interação do usuário (end-user) no processo de autorização. Se não existe este usuário então o Authorization Code flow não se aplica.
+Se você percebeu, este fluxo precisa obrigatoriamente da interação do usuário (end-user) no processo de autorização. Se não existe a figura do usuário então o Authorization Code flow não se aplica.
 
 ## Client Credentials flow
 
