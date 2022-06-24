@@ -191,5 +191,6 @@ Aqui são alguns links de artigos, referências oficiais e não oficiais que pod
 - [OAuth 2.0 Implicit Grant](https://oauth.net/2/grant-types/implicit/)
 - [OAuth 2.0  Refresh Token](https://oauth.net/2/grant-types/refresh-token/)
 - [OAuth 2.0 Device Authorization Grant](https://oauth.net/2/grant-types/device-code/)
+- [OAuth 2.0 and OpenID Connect Overview](https://developer.okta.com/docs/concepts/oauth-openid/)
 
 
