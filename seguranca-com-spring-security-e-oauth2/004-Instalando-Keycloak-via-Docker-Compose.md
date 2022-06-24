@@ -10,9 +10,9 @@ O mesmo foi iniciado em 2014 mantido pela Red Hat e tem crescido e conquistado e
 
 O Keycloak tem diversas features como páginas de logins customizadas, recuperação de senhas, termos de aceite, 2FA (two-factor authentication), entre outras. A idéia é delegar a autenticação de usuários das suas aplicações e serviços para o Keycloak, onde o mesmo cuidadria de todo o gerencimamento e segurança dos dados do usuários e suas credenciais.
 
-Uma das principais features do Keycloak é seu Single Sign-On (SSO), na qual ele fornece um forte aparato de features para gerenciamento de sessões, o que permite que um usuário se logue uma única vez e tenha acesso a múltiplas aplicações. Além disso, ele suporta padrões de industria como os protocolos OAuth 2.0, OpenID Connect e SAML 2.0, e também Social Logins, que permite que usuários usem suas contas de redes sociais para se autenticar em outros sistemas e aplicacações.
+Uma das principais features do Keycloak é seu Single Sign-On (SSO), na qual ele fornece um forte aparato de features para gerenciamento de sessões, o que permite que um usuário se logue uma única vez e tenha acesso a múltiplas aplicações. Além disso, ele suporta padrões de industria como os protocolos OAuth 2.0, OpenID Connect e SAML 2.0, e também Social Logins, que permite que usuários usem suas contas de redes sociais como Google, Github, Facebook, Twitter etc para se autenticar em outros sistemas e aplicações.
 
-O mesmo possui seu próprio banco de dados para gerenciar os usuários e suas credenciais, mas você também pode integrá-lo a outros serviços de gerenciamento de usuários como Active Directory e servidores LDAP.
+O mesmo possui seu próprio banco de dados para gerenciar os usuários e suas credenciais, o que facilita a vida para pequenas e médias empresas além de simplificar a vida do desenvolvedor(a) ao roda-lo localmente, mas você também pode integrá-lo a outros serviços de gerenciamento de usuários como Active Directory e servidores LDAP.
 
 Enfim, durante todo esse treinamento utilizaremos o Keycloak como nosso Authorization Server e tentaremos tirar o máximo de proveito de suas features em ambiente de desenvolvimento e testes.
 
