@@ -1,10 +1,24 @@
 # Instalando e rodando Keycloak via Docker-Compose
 
-Nesse conteúdo veremos como podemos instalar e rodar o Keyclock em nossas máquinas através do Docker e Docker-Compose, dessa forma poderemos configura-lo e usa-lo durante o desenvolvimento de aplicações e durante este treinamento, tudo isso sem a necessidade de um servidor externo.
+Nesse conteúdo teremos um overview sobre o Keycloak que será nosso Authorization Server durante o treinamento, e como podemos instalar e rodar o Keyclock em nossas máquinas através do Docker e Docker-Compose, dessa forma poderemos configura-lo e usa-lo durante o desenvolvimento de aplicações e durante este treinamento, tudo isso sem a necessidade de um servidor externo.
+
+## Keycloak: Conhecendo nosso Authorization Server
+
+Keycloak é uma ferramenta opensource de Identity and Access Management (IAM) com foco em aplicações modernas como Single-Page Applications (SPAs), aplicativos mobile e REST APIs.
+
+O mesmo foi iniciado em 2014 mantido pela Red Hat e tem crescido e conquistado espaço na comunidade como um projeto opensource, principalmente depois que o mesmo substituiu o antigo jBoss SSO (Single-Sign On) da Red Hat. Ele também é utilizado em projetos pequenos até grandes e corporativos.
+
+O Keycloak tem diversas features como páginas de logins customizadas, recuperação de senhas, termos de aceite, 2FA (two-factor authentication), entre outras. A idéia é delegar a autenticação de usuários das suas aplicações e serviços para o Keycloak, onde o mesmo cuidadria de todo o gerencimamento e segurança dos dados do usuários e suas credenciais.
+
+Uma das principais features do Keycloak é seu Single Sign-On (SSO), na qual ele fornece um forte aparato de features para gerenciamento de sessões, o que permite que um usuário se logue uma única vez e tenha acesso a múltiplas aplicações. Além disso, ele suporta padrões de industria como os protocolos OAuth 2.0, OpenID Connect e SAML 2.0, e também Social Logins, que permite que usuários usem suas contas de redes sociais para se autenticar em outros sistemas e aplicacações.
+
+O mesmo possui seu próprio banco de dados para gerenciar os usuários e suas credenciais, mas você também pode integrá-lo a outros serviços de gerenciamento de usuários como Active Directory e servidores LDAP.
+
+Enfim, durante todo esse treinamento utilizaremos o Keycloak como nosso Authorization Server e tentaremos tirar o máximo de proveito de suas features em ambiente de desenvolvimento e testes.
 
 ## Keycloak: entendendo as diferentes versões
 
-Como sabemos, para trabalharmos com OAuth2 precisamos de um Authorization Server, e durante todo o treinamento usaremos o Keycloak para isso. Ao pensar em baixar o Keycloak, podemos baixo-lo, instala-lo e rodá-lo de 2 maneiras diferentes: stand-alone ou imagem de container. Durante o treinamento favoreceremos a o Keycloak via container Docker.
+Como sabemos, para trabalharmos com OAuth2 precisamos de um Authorization Server, e durante todo o treinamento usaremos o Keycloak para isso. Ao pensar em baixar o Keycloak, podemos baixo-lo, instala-lo e rodá-lo de 2 maneiras diferentes: stand-alone ou imagem de container. Durante o treinamento favoreceremos o Keycloak via container Docker por ser mais simples e comum no dia a dia do desenvolvedor(a).
 
 Ao pensar em utilizar o Keycloak via Docker, é interessante sabermos que atualmente existem 2 versões:
 
