@@ -124,6 +124,7 @@ Os seguintes passos acontecem:
 
 - (B) O authorization server autentica o client, e se válido, emite um access token de volta;
 
+Sempre que precisar de um fluxo de autorização onde não existe a figura do usuário (end-user), ou seja, numa comunicação máquina-para-máquina (M2M) você poderá utilizar o fluxo Client Credentials. 
 
 ## Resource Owner Password Credentials flow
 
