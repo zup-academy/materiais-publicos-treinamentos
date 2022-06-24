@@ -133,6 +133,9 @@ Entre suas limitações, não é possível implementar mecanismos como 2FA (aute
 
 Contudo, o mesmo ainda pode ser útil em cenários onde o resource owner (end-user) tem uma forte relação de confiança com o client, como o aplicativo do seu banco, ou para dispositivos e aplicações altamente privilegiados; o mesmo também pode ser interessante para empresas com sistemas legados que estejam migrando gradualmente suas aplicações e serviços para o OAuth2.
 
+> **Pode user útil em ambiente de desenvolvimento** <br/>
+> Apesar deste fluxo não ser recomendado para uso em produção, o mesmo ainda pode ser útil em tempo de desenvolvimento e testes locais, isso porque o mesmo se trata de um fluxo mais simples de utilizar e mais comum para o desenvolvedor(a).
+
 Segue imagem com os passos deste fluxo:
 
 ```
@@ -168,6 +171,8 @@ No fim, você somente deveria utiliza-lo se não for possivel utilizar outro flu
 O Implicit flow era um fluxo simplificado do OAuth recomendado para aplicativos mobile nativos e aplicações JavaScript (como SPAs) onde o access token era retornado imediatamente sem o passo extra de troca de authorization code.
 
 Devido aos riscos inerentes de retornar o access token via HTTP Redirect sem qualquer confirmação de recebimento por parte client **seu uso é desencorajado** pela especificação e guia de boas práticas de segurança do OAuth2. Por esta razão, é recomenado que Public Clients, como aplicativos mobile e SPAs, utilizem o Authorization Code flow com o PCKE extension no lugar do Implicit flow.
+
+Por ser um fluxo totalmente desencorajado, não entraremos em detalhes. De qualquer forma, caso tenha interesse em entender mais sobre este fluxo e os passos de interação no processo de autorização, basta [consultar a especificação do OAuth2](https://datatracker.ietf.org/doc/html/rfc6749#section-4.2).
 
 
 ## Links e referências
