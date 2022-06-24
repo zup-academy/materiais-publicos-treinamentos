@@ -175,6 +175,13 @@ Devido aos riscos inerentes de retornar o access token via HTTP Redirect sem qua
 
 Por ser um fluxo totalmente desencorajado, não entraremos em detalhes. De qualquer forma, caso tenha interesse em entender mais sobre este fluxo e os passos de interação no processo de autorização, basta [consultar a especificação do OAuth2](https://datatracker.ietf.org/doc/html/rfc6749#section-4.2).
 
+## Enfim, qual fluxo devo utilizar?
+
+Conhecer os fluxos e suas particularidades ajuda bastante na hora de decidir qual fluxo adotar ao construir um processo de autorização e autenticação entre serviços. Para facilitar esta decisão, segue um flowchart que resume tudo que discutimos neste conteúdo:
+
+![OAuth 2 Decision Flowchart](/seguranca-com-spring-security-e-oauth2/imagens/flowchat-oauth2-decision.png)
+
+Como você pode ver, os fatores determinantes na hora de decidir qual fluxo adotar tem tudo a ver com **Client Type (public ou confidential)** e **quem assume o papel de Resource Owner**. 😉
 
 ## Links e referências
 
