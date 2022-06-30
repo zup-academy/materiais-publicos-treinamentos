@@ -175,7 +175,7 @@ Se acessarmos o site [JWT.io](https://jwt.io/) e copiarmos o access token acima,
 }
 ```
 
-Como podemos ver, além das claims padões da especificação, o Keycloak adiciona diversas outras claims.
+Como podemos ver, além das claims padrões da especificação, o Keycloak adiciona diversas outras claims.
 
 ## Links e referências
 
