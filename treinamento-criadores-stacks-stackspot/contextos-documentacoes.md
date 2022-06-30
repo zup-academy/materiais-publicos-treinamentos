@@ -12,6 +12,8 @@ Existem diversas documentações muito completas no mercado, citando algumas:
 8. [Solução de blockchain como o Sawtooth](https://www.hyperledger.org/use/sawtooth)
 9. [Outra solução de blockchain como Ethereum](https://ethereum.org/en/dapps/) 
 10. [AngularJS](https://angularjs.org/)
+11. [Kubernetes](https://cloud.google.com/kubernetes-engine)
+12. [Docker](https://www.docker.com/)
 
 Um possível problema que existe para alguém que quer mergulhar em qualquer uma delas é que, além de estudar o que é necessário para começar a construir algo, tem também o fato de precisar pegar esse conhecimento e materializar em código. 
 

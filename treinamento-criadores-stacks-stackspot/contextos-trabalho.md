@@ -33,12 +33,12 @@ A galera da stackspot fez um aprofundamento sobre os desafios de distribuição 
 
 1. Um novo projeto vai começar, independente da stack, e ninguém sabe quais são as versões dos artefatos que normalmente são usadas. Todo projeto tem versão diferente de framework de orm, lib de comunicação http, lib de validação, framework mvc etc. 
 1. Tem projeto que começa precisando apenas se comunicar com um banco de dados relacional. Só que também tem projeto que já começa sabendo que, além de falar com o banco de dados relacional, também vai precisar mandar uma mensagem para nosso kafka. Vamos deixar algumas situações que foram investigadas. 
+
     1. Projeto quer utilizar uma stack básica já utilizada em outros lugares
     1. Projeto precisa falar com um postgresql
     1. Projeto precisa mandar mensagem para nosso kafka. 
     1. Projeto precisa receber mensagem de uma ou mais filas do kafka
-    1. Projeto precisa mandar e consumir informação do cache. No caso utilizamos o redis. 
-    1. Projeto precisa falar com uma api que existe internamente no nosso ecossistema. 
+    1. Projeto precisa mandar e consumir informação do cache. No caso utilizamos o redis.     
     1. Projeto precisa seguir a arquitetura de software sugerida pela Clean Architecture
     1. Projeto precisa habilitar autenticar e autorização usando o que é recomendado internamente. 
     1. De vez em quando tem projeto que precisa falar com o SNS da AWS. 
@@ -50,9 +50,12 @@ Além disso, existem as situações que acontecem dentro dos projetos que estão
 1. Quero adicionar um novo endpoint get dentro da minha api que recebe alguns parâmetros, tem validação e precisa ser implementado seguindo a sugestão arquitetural do projeot. 
 1. Quero adicionar um novo código que manda mensagem para uma fila do kafka que já existe
 1. Quero adicionar um novo listener para uma fila do kafka que já existe
-1. Agora eu preciso consumir uma api interna que eu sei que existe, mas não conheço o contrato e nem sei para quem perguntar direito. Isso daqui machua demais o nosso o time. 
+1. Agora eu preciso consumir uma api interna que eu sei que existe, mas não conheço o contrato e nem sei para quem perguntar direito. Isso daqui machuca demais o nosso o time. 
 1. Quero consumir algum serviço da aws que eu sei que existe lib, mas nunca usei. 
 1. Quero consumir algum serviço da aws que eu sei que existe lib, já usei e agora tenho que copiar o meu código mais uma vez. 
+1. É necessário realizar a configuração de containers docker que são usados recorrentemente dentro dos serviços;
+1. É necessário realizar a configuração de containers docker que sobem serviços secundários;
+1. É necessário realizar configurações relativas ao kunernetes para facilitar o deploy;
 
 
 ## Exemplos de desafios para clientes que consomem nossas apis
