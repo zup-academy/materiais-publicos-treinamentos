@@ -146,41 +146,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes que configuramos no Keycloack para nosso Client. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
 > ⚠️ **Spring Security 5.7 descontinuou a classe `WebSecurityConfigurerAdapter`** <br/>
-> A classe `WebSecurityConfigurerAdapter` foi descontinuada a partir do **Spring Security 5.7**, o que significa que em versões futuras ela será removida do framework. A idéia é encorajar o desenvolvedor(a) a configurar os detalhes de segurança baseado em componentes, ou seja, para configurar as regras de *HTTP Security* sem a necessidade estender a classe `WebSecurityConfigurerAdapter`.
->
-> Embora você ainda possa continuar utilizando-a é importante que você fique atento com a migração ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação. Então, o que era configurado assim:
->```java
->@Configuration
->public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
->
->    @Override
->    protected void configure(HttpSecurity http) throws Exception {
->        http
->            .authorizeHttpRequests((authz) -> authz
->                .anyRequest().authenticated()
->            )
->            .httpBasic(withDefaults());
->    }
->}
->```
-> Passa a ser recomendado assim, por exemplo:
->```java
->@Configuration
->public class SecurityConfiguration {
->
->    @Bean
->    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
->        http
->            .authorizeHttpRequests((authz) -> authz
->                .anyRequest().authenticated()
->            )
->            .httpBasic(withDefaults());
->        return http.build();
->    }
->}
->```
->
-> Para mais detalhes, leia este artigo publicado pela equipe do Spring: [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter).
+> Em versões futuras o Spring Security não dará mais suporte a classe `WebSecurityConfigurerAdapter`, substituindo-a por uma abordagem mais flexível e compatível com a API do WebFlux (programação reativa) baseada sem componentes. Para maiores detalhes, pule para o tópico [Spring Security 5.7: classe `WebSecurityConfigurerAdapter` está deprecated](#4-spring-security-57-classe-websecurityconfigureradapter-está-deprecated) deste material.
 
 
 #### 3.2. Habilite as regras de acesso por anotações
@@ -471,6 +437,45 @@ Essa solução pode ser útil quando você não desejar lidar com o tipo `Jwt` e
 
 Para mais detalhes sobre uso da anotação `@AuthenticationPrincipal` ou como tirar melhor proveito dela no seu código, você pode consultar a [documentação oficial do Spring Security](https://docs.spring.io/spring-security/reference/servlet/integrations/mvc.html#mvc-authentication-principal).
 
+
+### 4. Spring Security 5.7: classe `WebSecurityConfigurerAdapter` está deprecated
+
+A classe `WebSecurityConfigurerAdapter` foi descontinuada a partir do **Spring Security 5.7**, e isto significa que em versões futuras ela será removida do framework. Isso aconteceu pois a idéia é encorajar o desenvolvedor(a) a configurar os detalhes de segurança baseado em componentes, ou seja, sem a necessidade estender a classe `WebSecurityConfigurerAdapter`.
+
+Embora você ainda seja possível utilizar a classe `WebSecurityConfigurerAdapter`, é importante que você fique atento com a migração ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação. Então, o que antes era configurado assim:
+```java
+@Configuration
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests((authz) -> authz
+                .anyRequest().authenticated()
+            )
+            .httpBasic(withDefaults());
+    }
+}
+```
+
+Passa a ser recomendado assim:
+```java
+@Configuration
+public class SecurityConfiguration {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests((authz) -> authz
+                .anyRequest().authenticated()
+            )
+            .httpBasic(withDefaults());
+        return http.build();
+    }
+}
+```
+
+Para mais detalhes, leia este artigo publicado pela equipe do Spring: [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter).
 
 ## Links e referências
 
