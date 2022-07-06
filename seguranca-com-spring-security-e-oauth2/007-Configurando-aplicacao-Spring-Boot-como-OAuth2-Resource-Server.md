@@ -6,7 +6,13 @@ Nesse conteúdo veremos como podemos criar ou configurar uma aplicação Spring 
 
 Antes de começar, você já está rodando seu Keycloak local? 
 
-Para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak, sugerimos a leitura do material teorico sobre como [instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md).
+Para que você consiga testar a configuração da aplicação ao final deste conteúdo é preciso ter um servidor Keycloak configurado e rodando localmente (assumimos a porta `18080`). Caso não tenha preparado o ambiente com Keycloak nem configurado seus Realms, Clients e Scopes, sugerimos a leitura dos seguintes materiais teoricos antes de tudo:
+
+- [Como instalar e rodar o Keycloak em um container Docker](/seguranca-com-spring-security-e-oauth2/004-Instalando-Keycloak-via-Docker-Compose.md);
+- [Como configurar o Authorization Code Flow no Keycloak](/seguranca-com-spring-security-e-oauth2/005-Configurando-Authorization-Code-Flow.md);
+- [Como configurar o Resource Owner Password Credentials Flow no Keycloak](/seguranca-com-spring-security-e-oauth2/006-Configurando-Resource-Owner-Password-Credentials-Flow.md);
+
+Você vai precisar ter o Keycloak rodando com um Realm configurado contendo um Client utilizando algum OAuth2 flow (grant type), como Authorization Code ou Resource Owner Password Credentials.
 
 ### 1. Adicione a dependência do Maven no projeto
 
