@@ -54,6 +54,9 @@ Diferente de quando requisitamos um serviço diretamente, por exemplo, usando o 
 Claro que quando falamos de comunicação asincrona entre sistemas não existe apenas mensageria, mas esta é a mais popular dentre elas.
 Muitas vezes estamos habituados a pensarmos apenas em fluxos sincronos, entendermos fluxos asincronos requer que mude a forma como exergamos uma solução.
 
+## Payload
+
+O conteúdo da mensagem assim como trafegamos por uma api, possui o body e cabeçalho, geralmente quando usamos o termo Payload estamos nos referindo ao conteúdo da mensagem que esta sendo trafegada.
 
 #### Materiais de Apoio 
 
