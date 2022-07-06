@@ -15,7 +15,7 @@ Porém integrar sistemas é muito mais antigo do que imaginamos, são décadas q
 
 ## Voltando a Mensageria
 
-No uso de mensageria existem alguns pontos principais que devemos entender, dentre eles que vocês utilizarão um sistema intermediário, este sistema geralmente é chamado de Barramento, Message Broker, Broker, MOM (Message oriented middleware). 
+No uso de mensageria existem alguns pontos principais que devemos entender, dentre eles que vocês utilizarão um sistema intermediário, este sistema geralmente é chamado de Barramento, Message Broker, Broker, MOM (Message oriented middleware), Producer e Consumer. 
 O Broker tem como objetivo gerenciar as mensagens entre produtores e consumidores.
 Os produtores(producer) são quem geram a mensagem e os consumidores(consumer) são quem recebem a mensagem.
 Quando utilizamos o termo Queue estamos nos referindo a uma fila que pode ter o propósito de receber mensagens especificas, pode ser que em um projeto vocês sejam produtores ou consumidores de várias filas.
