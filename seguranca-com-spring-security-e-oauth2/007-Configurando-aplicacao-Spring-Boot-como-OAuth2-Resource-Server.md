@@ -61,7 +61,7 @@ spring:
           jwk-set-uri: http://localhost:18080/realms/meus-contatos/protocol/openid-connect/certs
 ```
 
-A partir de agora a propriedade `issuer-uri` se torna opcional, contudo **entendemos como boa prática manter ambas as propriedades** pois assim o Spring Security pode utiliza-la como opçõa extra de segurança em alguns cenários.
+A partir de agora a propriedade `issuer-uri` se torna opcional, contudo **entendemos como boa prática manter ambas as propriedades** pois assim o Spring Security pode utiliza-la como opção extra de segurança em alguns cenários.
 
 > **Configurando chaves públicas locais** <br/>
 > Em vez de indicar o endpoint das chaves públicas do Keycloak nós podemos armazena-la localmente em um arquivo e configurar seu caminho no disco, ou mesmo passar declará-la estaticamente via texto.
