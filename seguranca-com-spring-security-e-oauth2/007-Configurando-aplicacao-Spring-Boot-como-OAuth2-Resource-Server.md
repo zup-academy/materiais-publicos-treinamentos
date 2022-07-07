@@ -440,9 +440,9 @@ Para mais detalhes sobre uso da anotação `@AuthenticationPrincipal` ou como ti
 
 ### 4. Spring Security 5.7: classe `WebSecurityConfigurerAdapter` está deprecated
 
-A classe `WebSecurityConfigurerAdapter` foi descontinuada a partir do **Spring Security 5.7**, e isto significa que em versões futuras ela será removida do framework. Isso aconteceu pois a idéia é encorajar o desenvolvedor(a) a configurar os detalhes de segurança baseado em componentes, ou seja, sem a necessidade estender a classe `WebSecurityConfigurerAdapter`.
+A classe `WebSecurityConfigurerAdapter` foi descontinuada a partir do **Spring Security 5.7**, que foi adotada no **Spring Boot 2.7.x**. Isto significa que em versões futuras ela será removida do framework. Isso aconteceu pois a idéia é encorajar o desenvolvedor(a) a configurar os detalhes de segurança baseado em componentes, ou seja, sem a necessidade estender a classe `WebSecurityConfigurerAdapter`.
 
-Embora você ainda seja possível utilizar a classe `WebSecurityConfigurerAdapter`, é importante que você fique atento com a migração ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação. Então, o que antes era configurado assim:
+Embora ainda seja possível utilizar e estender a classe `WebSecurityConfigurerAdapter`, é importante que você fique atento com a migração ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação. Então, o que antes era configurado assim:
 ```java
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -486,3 +486,5 @@ Para mais detalhes, leia este artigo publicado pela equipe do Spring: [Spring Se
 - [Protection Against Exploits](https://docs.spring.io/spring-security/reference/servlet/exploits/index.html)
 - [Baeldung: Introduction to Spring Method Security](https://www.baeldung.com/spring-security-method-security)
 - [Spring Security: @AuthenticationPrincipal](https://docs.spring.io/spring-security/reference/servlet/integrations/mvc.html#mvc-authentication-principal)
+- [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter)
+- [Spring Security: Authorize HttpServletRequests with AuthorizationFilter](https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html)
