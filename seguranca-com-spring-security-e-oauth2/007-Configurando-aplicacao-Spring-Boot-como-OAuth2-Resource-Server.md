@@ -442,7 +442,10 @@ Para mais detalhes sobre uso da anotação `@AuthenticationPrincipal` ou como ti
 
 A classe `WebSecurityConfigurerAdapter` foi descontinuada a partir do **Spring Security 5.7**, que foi adotada no **Spring Boot 2.7.x**. Isto significa que em versões futuras ela será removida do framework. Isso aconteceu pois a idéia é encorajar o desenvolvedor(a) a configurar os detalhes de segurança baseado em componentes, ou seja, sem a necessidade estender a classe `WebSecurityConfigurerAdapter`.
 
-Embora ainda seja possível utilizar e estender a classe `WebSecurityConfigurerAdapter`, é importante que você fique atento com a migração ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação. Então, o que antes era configurado assim:
+Embora ainda seja possível utilizar e estender a classe `WebSecurityConfigurerAdapter` como estamos acostumados há quase uma decada, é importante que você fique atento com esta mudaça ao atualizar as versões do Spring Security ou mesmo Spring Boot na sua aplicação.
+
+Sem mais delongas, o que antes era configurado assim:
+
 ```java
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -459,6 +462,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 ```
 
 Passa a ser recomendado assim:
+
 ```java
 @Configuration
 public class SecurityConfiguration {
@@ -475,7 +479,9 @@ public class SecurityConfiguration {
 }
 ```
 
-Para mais detalhes, leia este artigo publicado pela equipe do Spring: [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter).
+Repare que a classe `SecurityConfiguration` não estende mais a classe `WebSecurityConfigurerAdapter`. E em vez de sobrescrever o método `configure`, nós declaramos um método de fábrica (factory method) com `@Bean` para customizar o `SecurityFilterChain` como nossas regras de segurança.
+
+Para mais detalhes, recomendamos a leitura deste artigo publicado pela equipe do Spring: [Spring Security without the WebSecurityConfigurerAdapter](https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter).
 
 ## Links e referências
 
