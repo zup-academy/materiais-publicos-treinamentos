@@ -105,7 +105,7 @@ Por este momento, vamos configurar somente o fluxo OAuth2 necessário para nosso
     - Access Type: `confidential`;
     - **Standard Flow Enabled**: configure-o como `ON` para habilitar o Authorization Code Flow;
     - Direct Access Grants Enabled: configure-o como `OFF`;
-    - Valid Redirect URIs: preencha com `*` (asterisco), pois estamos em ambiente de DEV/TEST, porém em ambiente de PROD devemos entrar com as URIs dos clients previamente autorizados;
+    - Valid Redirect URIs: preencha com `*` (asterisco) pois estamos em ambiente de DEV/TEST, porém em ambiente de PROD devemos entrar com as URIs dos clients previamente autorizados;
 2. Clique em `Save`;
 
 ![Novo Client - Configurando Authorization Code Flow](imagens/keycloak-new-client-authorization-code-flow.png)
