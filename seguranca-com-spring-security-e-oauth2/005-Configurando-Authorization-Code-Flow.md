@@ -105,6 +105,7 @@ Por este momento, vamos configurar somente o fluxo OAuth2 necessário para nosso
     - Access Type: `confidential`;
     - **Standard Flow Enabled**: configure-o como `ON` para habilitar o Authorization Code Flow;
     - Direct Access Grants Enabled: configure-o como `OFF`;
+    - Valid Redirect URIs: preencha com `*` (asterisco), pois estamos em ambiente de DEV/TEST, porém em ambiente de PROD devemos entrar com as URIs dos clients previamente autorizados;
 2. Clique em `Save`;
 
 ![Novo Client - Configurando Authorization Code Flow](imagens/keycloak-new-client-authorization-code-flow.png)
@@ -116,7 +117,7 @@ A configuração mais importante neste formulário foi a do campo **Standard Flo
 >
 > No caso do Keycloak, em caso de dúvida sobre algum campo de um formulário, basta passar o mouse em cima do **icone de interrogação `(?)`** para que apareça uma tooltip descrevendo o campo e sua relação com o protocolo OAuth2.
 
-Além disso, repare que configuramos o campo _Access Type_ como `confidential` para indicar que o Client (aplicação) precisa de uma Secret para iniciar o protocolo de login. Ao fazer isso, e após clicar em `Save`, uma nova aba `Credentials` aparece no formulário de Client, e é justamente nela que obtemos e gerenciamos a **Secret** do nosso Client.
+Além disso, repare que configuramos o campo _Access Type_ como `confidential` para indicar que o Client (aplicação) precisa de uma Secret para iniciar o protocolo de login. Ao fazer isso, e após clicar em `Save`, uma nova aba `Credentials` aparece no formulário de Client, e é justamente nela que obtemos e gerenciamos a **Secret** do nosso Client. Em contrapartida, quando o Client trata-se de uma aplicação mobile ou SPA (Single-Page Application), onde é impossível proteger a Secret, recomenda-se configurar o _Access Type_ como `public`.
 
 Embora opcional, nós também desabilitamos o _Direct Access Grants Enabled_, pois se trata de um outro fluxo OAuth2 que não precisamos neste momento.
 
