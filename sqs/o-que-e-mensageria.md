@@ -39,8 +39,14 @@ Existem diversos Brokers famosos, dentre eles :
 Você provavelmente já foi a um mercado e lá teve que pegar uma fila.
 Vamos pensar que os caixas são os consumidores, as pessoas na fila são as mensagens que estão em uma fila do Broker e o produtor das mensagens nesse caso é o próprio mercado.
 Se analisarmos o que percebemos logo de cara, cada pessoa / mensagem na fila é único, cada caixa/consumidor processa uma mensagem por vez mas ambos tem a mesma finalidade que é processar a compra, uma mensagem/ pessoa não é processada mais de uma vez, existe ordenação.
+As filas trabalham no modelo Ponto a Ponto, quando apenas uma mensagem enviada é entregue a apenas um consumidor.
 Sobre a ordenação, chamamos o tipo FIFO(First in, first out) o tipo de ordenação mais comum que utilizamos para filas, ou seja no mercado quem entra na fila primeiro é quem vai ser atendido primeiro, o mesmo ocorre para filas que possuem esse tipo de ordenação, as mensagens geradas primeiro, são processadas primeiro.
 Existem outros modelos, mas isso pode depender do modelo de Broker que você irá utilizar.
+No caso da fila, podem haver vários produtores, tanto instâncias da mesma aplicação, quanto aplicações diferentes produzindo mensagens para a fila, enquanto no consumo há somente uma única aplicação, podendo ser várias instâncias da mesma aplicação, vejamos um exemplo para entender melhor.
+Neste exemplo, podemos ver que todos os serviços em um dado momento enviam para a fila email, porém somente o sistema responsável pelas notificações é que lê a mensagem, isso porque imagine que se outro sistema lê-sse a mensagem juntamente haveria mensagens que notificação não receberia.
+<p align="center">
+<img src="./imagens/exemplo-fila.png" />
+</p>
 
 ### Tópicos
 Quem nunca fez inscrição para receber alertas/notificações de publicações, ou de um podcast que lançou um episódio novo, uma atualização de um amigo em uma rede social.
@@ -57,6 +63,12 @@ Muitas vezes estamos habituados a pensarmos apenas em fluxos sincronos, entender
 ## Payload
 
 O conteúdo da mensagem assim como trafegamos por uma api, possui o body e cabeçalho, geralmente quando usamos o termo Payload estamos nos referindo ao conteúdo da mensagem que esta sendo trafegada.
+
+## Contrato
+
+Assim como uma api possui seu contrato pré estabelecido para que um cliente consuma, uma fila precisa ter o modelo de mensagem pré estabelecido.
+Então é necessário entender que ao produzir uma mensagem você deverá entender qual o modelo que foi projeto receber na fila que você irá encaminhar a mensagem, ou ao seu time criar uma fila deverá pensar bem em como projetar o modelo do objeto esperado na mensagem.
+Muitos problemas podem ocorrer por um planejamento ruim na estrutura da mensagem, pois o produtor e consumidor sempre deverá mudar como produz e como lê a mensagem.
 
 #### Materiais de Apoio 
 

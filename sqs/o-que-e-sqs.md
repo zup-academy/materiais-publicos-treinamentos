@@ -41,7 +41,7 @@ Vamos ver alguns comandos que podemos realizar utilizando o Localstack:
 - Enviar uma mensagem para uma fila
   - aws --endpoint-url=http://localhost:4566 sqs send-message --queue-url http://localhost:4576/queue/teste --message-body Mensagem de teste
 - Criar um listener / consumidor no CLI
-  - aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url
+  - aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/email
 
 
 Estes e outros comandos do SQS no AWS CLI você consegue ver nesse link da documentação oficial:
