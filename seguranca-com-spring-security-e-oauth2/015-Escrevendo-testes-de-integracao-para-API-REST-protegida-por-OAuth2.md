@@ -150,7 +150,7 @@ O teste esperava um Status HTTP `201 (Created)` mas recebeu um `401 (Unauthorize
 
 Embora o teste esteja correto, o mesmo quebrou pois nossa API REST está protegida pelo Spring Security com OAuth 2.0. A partir de agora, para podermos consumir esta API REST precisamos obter um Access Token válido do Keycloak e em seguida envia-lo como cabeçalho HTTP `Authorization` da requisição do `MockMvc`.
 
-Mas será que faz sentido rodar um Keycloak para rodar para nosso testes? Na nossa opinião, **com toda certeza não**.
+Mas será que faz sentido rodar um Keycloak para executar nossos testes? Na nossa opinião, **com toda certeza não**.
 
 ### 2. Configure a dependência no `pom.xml`
 
