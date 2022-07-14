@@ -84,6 +84,12 @@ O _view controller_ atualiza o lado direito da barra de navegação da seguinte 
 
 * Se nenhum item de botão personalizado para a barra à direita for especificado, a barra de navegação não exibirá nada no lado direito da barra.
 
+### Composição do navigation item
+
+<p align="center">
+<img alt="Imagem mostrando um modelo de classes expandido explicando a relação do navigation controller para com sua ui navigation bar e por sua vez do view controller apresentado para com seu navigation item. O foco da imagem é apresentar a composição de objetos da barra de navegação que por sua vez podem ser configuráveis através do navigation item do controlador visível no momento. A imagem mostra a relação do navigation item com os objetos para a barra de botões à esquerda, leftBarButtonItem, o item central, titleView, e a barra de botões à direita, rightBarButtonItem" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/navigation-controllers-teoria-imagem-estrutura-views-navigation-bar.jpg?raw=true" width="80%"/>
+</p>
+
 ## Adaptando-se a diferentes orientações
 
 A interface de navegação permanece a mesma em orientações horizontais. Ao alternar entre as orientações, apenas o tamanho da _view_ do _navigation controller_ é alterado. O _navigation controller_ não altera sua hierarquia de _view_ ou o layout de suas _views_.
