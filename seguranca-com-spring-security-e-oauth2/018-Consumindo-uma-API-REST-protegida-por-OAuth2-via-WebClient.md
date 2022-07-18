@@ -434,6 +434,75 @@ Os logs acima são referentes a primeira requisição ao Resource Server, mas a 
 
 Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em caso de problemas, podemos analisa-los e resolve-los de maneira mais assertiva possível. Sem estes logs seria MUITO dificil fazer troubleshooting na nossa aplicação.
 
+## Favoreça o uso da `WebClient.Builder` do Spring Boot
+
+Por simplicidade, nós criamos uma nova instância de `WebClient` através de seu método estático `WebClient.builder()` que nos retorna uma instância de `WebClient.Builder`, e somente a partir dela é que configuramos e criamos novas instâncias de `WebClient`, como podemos ver no código abaixo:
+
+```java
+@Configuration
+class ClientSecurityConfig {
+
+    @Bean
+    public WebClient webClient() {
+
+        // ...
+
+        return WebClient.builder()
+                    .apply(oauth2.oauth2Configuration())
+                    .clientConnector(new ReactorClientHttpConnector(httpClient))
+                    .build();
+    }
+
+}
+```
+
+Apesar de funcional e fazer sentido em alguns contextos, esta abordagem abre mão das configurações default do Spring Boot e de sua integração com o módulo do Spring Web, como conversores, formatadores, mappers, interceptors, suporte a customizações via `application.yml` etc.
+
+Idealmente, em vez de criarmos o builder na mão nós podemos pedir ao container do Spring sua instância pré-configurada de `WebClient.Builder` e pronta para uso. Para isso, basta injetá-la na nossa classe de configuração, como abaixo:
+
+```java
+@Configuration
+class ClientSecurityConfig {
+
+    @Autowire
+    private WebClient.Builder webClientBuilder;
+
+    @Bean
+    public WebClient webClient() {
+
+        // ...
+
+        return webClientBuilder // usa instância do Spring
+                    .apply(oauth2.oauth2Configuration())
+                    .clientConnector(new ReactorClientHttpConnector(httpClient))
+                    .build();
+    }
+
+}
+```
+
+Além de ganharmos toda as pré-configurações do Spring Boot, nós também temos a possibilidade de customizar este builder com nossas próprias configurações de forma global na aplicação. Para isso, basta criar uma classe que implemente a interface `WebClientCustomizer` e implemente seu método `customize` que recebe a instância atual do `WebClient.Builder` do Spring, como podemos ver a seguir:
+
+```java
+@Configuration
+public class WebClientConfig implements WebClientCustomizer {
+
+    @Override
+    public void customize(WebClient.Builder builder) {
+        builder
+            .apply(oauth2Configuration()) // oauth2 interceptor
+            .clientConnector(clientHttpConnector()) // logging
+        ;
+    }
+
+}
+```
+
+Dessa forma, com a classe acima, todas as intâncias de `WebClient` criadas a partir da instância de `WebClient.Builder` do Spring terão exatamente estas configurações. Um detalhe importante, é que podemos ter várias destas classes no projeto 😉
+
+Enfim, não esqueça de tomar cuidado ao configurar o interceptor de OAuth2 neste builder, pois o mesmo será definido globalmente para toda a aplicação.
+
+
 ## Links e referências
 
 - [OAuth 2.0 Client Credentials Grant](https://oauth.net/2/grant-types/client-credentials/)
