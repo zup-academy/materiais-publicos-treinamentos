@@ -458,7 +458,7 @@ class ClientSecurityConfig {
 
 Apesar de funcional e fazer sentido em alguns contextos, esta abordagem abre mão das configurações default do Spring Boot e de sua integração com o módulo do Spring Web, como conversores, formatadores, mappers, interceptors, suporte a customizações via `application.yml` etc.
 
-Idealmente, em vez de criarmos o builder na mão nós podemos pedir ao container do Spring uma instância pré-configurada de `WebClient.Builder` e pronta para uso (na verdade, sempre será injetado uma nova instância, pois seu escopo é `prototype`). Para isso, basta injetá-la na nossa classe de configuração, como abaixo:
+Idealmente, em vez de criarmos o builder na mão nós podemos pedir ao container do Spring uma instância pré-configurada de `WebClient.Builder` e pronta para uso (na verdade, sempre será fornecida uma nova instância do builder, pois seu escopo é `prototype`). Para isso, basta injetá-la na nossa classe de configuração, como abaixo:
 
 ```java
 @Configuration
@@ -481,7 +481,7 @@ class ClientSecurityConfig {
 }
 ```
 
-Além de ganharmos toda as pré-configurações do Spring Boot, nós também temos a possibilidade de customizar este builder com nossas próprias configurações de forma global na aplicação. Para isso, basta criar uma classe que implemente a interface `WebClientCustomizer` e implemente seu método `customize` que recebe a instância atual do `WebClient.Builder` do Spring, como podemos ver a seguir:
+Além de ganharmos todas as pré-configurações do Spring Boot, nós também temos a possibilidade de customizar este builder com nossas próprias configurações de forma global na aplicação. Para isso, basta criar uma classe que implemente a interface `WebClientCustomizer` e implemente seu método `customize` que recebe a instância atual do `WebClient.Builder` do Spring, como podemos ver a seguir:
 
 ```java
 @Configuration
