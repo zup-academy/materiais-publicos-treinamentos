@@ -436,7 +436,7 @@ Com os logs habilitados podemos ver o que acontece por debaixo dos panos e, em c
 
 ## Favoreça o uso da `WebClient.Builder` do Spring Boot
 
-Por simplicidade, nós criamos uma nova instância de `WebClient` através de seu método estático `WebClient.builder()` que nos retorna uma instância de `WebClient.Builder`, e somente a partir dela é que configuramos e criamos novas instâncias de `WebClient`, como podemos ver no código abaixo:
+Por simplicidade, nós criamos uma nova instância de `WebClient` através de seu método estático `WebClient.builder()` que nos retorna uma instância de `WebClient.Builder` e, somente a partir dela, é que configuramos e criamos nossa instância de `WebClient`, como podemos ver no código abaixo:
 
 ```java
 @Configuration
