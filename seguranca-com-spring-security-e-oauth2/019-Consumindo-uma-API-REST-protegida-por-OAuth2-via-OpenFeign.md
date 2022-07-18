@@ -222,7 +222,7 @@ class ClientSecurityConfig {
 
         AuthorizedClientServiceOAuth2AuthorizedClientManager manager 
                     = new AuthorizedClientServiceOAuth2AuthorizedClientManager(clientRegistrationRepository, clientService);
-        authorizedClientManager.setAuthorizedClientProvider(provider);
+        manager.setAuthorizedClientProvider(provider);
 
         return manager;
     }
