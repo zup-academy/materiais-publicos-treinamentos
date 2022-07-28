@@ -19,9 +19,17 @@ Criaremos o Bean através da classe client AmazonSQSAsync.
 
 Devido ao limite de tamanho da mensagem que há no SQS, objetos que ultrapassem esse valor não serão enviadas. 
 
-# Consumer
+## Consumer
 O SQS possui transações, então, as mensagens podem ser lidas duas vezes. Imagine que dois consumers da mesma aplicação leiam a mesma mensagem, isso pode gerar duplicidade e inconsistência nos dados ou ações geradas através da leitura da mensagem.
 As aplicações precisam ter seu código desenvolvido de forma idempotente para lidar com essa duplicidade de leitura de mensagens que pode acontecer.
+
+
+## Properties
+
+
+
+[Documentação das configurações](https://docs.awspring.io/spring-cloud-aws/docs/current/reference/html/appendix.html)
+
 
 #### Links de referência
 
