@@ -132,5 +132,7 @@ Envolve o momento que o bean é criado e o momento que ele é destruído.
 #### Link de referência 
 
 https://docs.spring.io/spring-framework/docs/current/reference/html/core.html
+
 https://www.baeldung.com/spring-bean-scopes
+
 https://www.baeldung.com/spring-bean-annotations
