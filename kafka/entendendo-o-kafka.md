@@ -17,6 +17,9 @@ O Cluster é o conjunto desses nós em uma única unidade. Nesse caso o Zookeepe
 Ou seja, esses "nós" são em si broker Kafka em execução que em conjunto vários formam um cluster Kafka.
 O uso de mais um broker permite uma maior tolerância a falhas, visto que mais de um Broker estará disponível para execução.
 
+## Zookeeper
+Essa aplicação da Apache é utilizada para gerenciar o Cluster Kafka, pois de forma centralizada armazena as configurações dos serviços dos brokers que fazem parte do Cluster.
+
 ## Tópico
 O Kafka trabalha com Tópicos, o que significa que para cada evento é necessário ter um tópico especifico, que é a únicade de armazenamento e gerencialmente menor do kafka.
 
@@ -29,6 +32,8 @@ Aplicação responsável por produzir o record no tópico.
 
 ## Partição
 Cada Broker dentro do cluster gerencia um grupo de tópicos e cada tópico possui uma ou N partições, falo uma mas na prática não faz sentido usar o Kafka sem este recurso, o ideal e orientado pelos construtores da ferramenta é que seja pelo menos 3 o número de partições.
+Um tópico pode ser dividido em partes sendo cada parte uma localização do cluster Kafka, cada parte aramazena um grupo dos eventos recebidos, podendo assim dar mais elasticidade, tolerância a falhas e escalabilidade.
+
 
 ## Offset
 Um tópico possui offsets, que são a sequência dos eventos dentro da partição do tópico, isso é utilizado para controlar em que posição de leitura esta cada consumidor.
@@ -43,4 +48,8 @@ Ou seja, caso onde esta a partição falhe, ele ativará uma réplica, isso perm
 
 ## Log file
 Os tópicos salvam registros em formato de log, ou seja, de forma estrutura e sequencial, quando nos referimos a log file estamos falando dos arquivos que contem a informação de um tópico.
+
+
+### Links de Referência
+https://www.infoq.com/br/articles/apache-kafka-licoes/
 
