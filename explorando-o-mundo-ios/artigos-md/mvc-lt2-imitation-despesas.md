@@ -119,7 +119,7 @@ Nesse momento devemos ter algo como mostra a imagem abaixo.
 <img alt="Imagem do Interface Builder com a seção do formulário construída" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/mvc-lt2-imitation-view-secao-formulario.png?raw=true" width="80%"/>
 </p>
 
-Não se preocupe se algo ainda parecer estranho em relação às alturas dos campos de texto nessa prévia, provavelmente seja apenas o Interface Builder confuso em relação aos cálculos no canvas. Você pode rodar sua aplicação nesse momento para se certificar de que tudo vai bem _(comentando o código dos componentes que ainda possam conter erros de compilação)_.
+Não se preocupe se algo ainda parecer estranho em relação às alturas dos campos de texto nessa prévia, provavelmente seja apenas o Interface Builder confuso em relação aos cálculos no canvas. Você pode rodar sua aplicação nesse momento para se certificar de que tudo vai bem.
 
 ### A seção _Relatório parcial_
 
@@ -219,8 +219,8 @@ class RelatorioDeDespesasViewController: UIViewController {
     @IBOutlet weak var tipoTextField: UITextField!
     @IBOutlet weak var valorTextField: UITextField!
     
-    @IBOutlet weak var listaDeDespesas: ListaDeDespesasView!
-    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var listaDeDespesasView: ListaDeDespesasView!
+    @IBOutlet weak var valorTotalLabel: UILabel!
     
     @IBOutlet weak var registrarButton: UIButton!
     
@@ -295,13 +295,15 @@ Com os requisitos e detalhes de funcionamento claros, já é possível modelar n
 
 ## Implementando o modelo
 
+> Nota: Este pode ser um bom momento para descomentar o conteúdo fornecido nos arquivos `RelatorioDeDespesas.swift` e `ListaDeDespesasView.swift`. Por um momento é possível que a aplicação não consiga compilar com sucesso, mas isso se dá justamente pela ausência de modelos criados nos passos a seguir. 🙂
+
 Agora que temos tudo bem definido, podemos prosseguir com a implementação para o modelo conceitual produzido anteriormente. Começando por `RelatorioDeDespesas`, abra o arquivo que vive no grupo `Models/`, e perceba que já existe a implementação de parte do modelo. Os detalhes de implementação do código existente não são importantes para o escopo desta atividade, então concentre-se em expressar a ideia do relatório apenas.
 
 Adicione a seguinte implementação para o modelo:
 
 ``` swift
 struct RelatorioDeDespesas {
-    let dataDeCriacao: Date = .now
+    let dataDeCriacao: Date = Date.now
     private(set) var despesas: Despesas = Despesas()
     private(set) var valorTotal: Decimal = 0
     
@@ -337,7 +339,7 @@ Assim temos quase tudo pronto, exceto por ainda não representar adequadamente a
 ``` swift
 struct Despesa {
     let titulo: String
-    let tipo: Tipo
+    let tipo: Tipo // <--- tipo agora é um Tipo (enum type) e não String
     let valor: Decimal
     
     enum Tipo: Int {
@@ -759,4 +761,4 @@ Pronto! Neste momento nossa implementação está completa. Fique à vontade par
 
 ## Conclusão
 
-Conseguimos concluir nosso trabalho passando por todos os pontos do desenvolvimento de uma tela. Espero que tenha curtido navegar por este caminho cognitivo e construir a funcionalidade entendendo os aspectos da arquitetura padrão de um projeto iOS. Existem pontos positivos e negativos no design proposto pelo padrão, assim como algumas alternativas a ele propostas pela comunidade, mas já temos um bom ponto de partida para pensar sobre nossas solução e como as decisões de design podem impactar a qualidade do código proposto do dia-a-dia do desenvolvimento.
+Conseguimos concluir nosso trabalho passando por todos os pontos do desenvolvimento de uma tela. Espero que tenha curtido navegar por este caminho cognitivo e construir a funcionalidade entendendo os aspectos da arquitetura padrão de um projeto iOS. Existem pontos positivos e negativos no design proposto pelo padrão, assim como algumas alternativas a ele propostas pela comunidade, mas já temos um bom ponto de partida para pensar sobre nossas soluções e como as decisões de design podem impactar a qualidade do código proposto do dia-a-dia do desenvolvimento.
