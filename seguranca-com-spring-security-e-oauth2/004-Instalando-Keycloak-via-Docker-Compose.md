@@ -70,7 +70,7 @@ Repare que estamos rodando o Keycloak em **Dev Mode** (comando `start-dev`), que
 > **Evitando conflito de portas** <br/>
 > Repare que configuramos o Keycloak para rodar na **porta `18080`** para evitar conflitos com aplicações web desenvolvidas com Spring Boot ou Tomcat.
 
-Além disso, também configuramos o usuário ADMIN do Keycloak com login `admin` e senha `admin` para facilitar seu uso. Outro detalhe é que ela está rodando com o banco de dados **H2 em memória**. Mas não se preocupe, embora seja um H2, o mesmo está configurado para persistir os banco de dados em si em disco para suportar restarts do container.
+Além disso, também configuramos o usuário ADMIN do Keycloak com login `admin` e senha `admin` para facilitar seu uso. Outro detalhe é que ela está rodando com o banco de dados **H2 em memória**. Mas não se preocupe, embora seja um H2, o mesmo está configurado para persistir o banco de dados em si em disco para suportar restarts do container.
 
 Para parar e restartar o container, basta rodar os comandos abaixo:
 ```sh
