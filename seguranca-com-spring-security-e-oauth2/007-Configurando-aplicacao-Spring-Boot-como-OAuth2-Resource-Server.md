@@ -337,7 +337,7 @@ public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt principalUse
 
 A anotação se encarrega de invocar o método `Authentication.getPrincipal()` e preencher o atributo `principalUser` anotado do método do controller. Deste modo eliminamos a necessidade do casting que havíamos feito anteriormente.
 
-Se acessarmos o endpoing `/user/info/` teremos como resposta o payload abaixo:
+Se acessarmos o endpoint `/user/info/` teremos como resposta o payload abaixo:
 
 ```json
 {
