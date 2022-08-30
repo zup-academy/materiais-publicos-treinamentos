@@ -290,7 +290,7 @@ Nós usamos o cURL, mas sinta-se a vontade para usar a ferramenta de cliente HTT
 
 Podemos extrair diretamente os atributos do Access Token na nossa aplicação Resource Server para utilizar em lógicas de negócio, dados de auditoria ou qualquer regra de segurança nas nossas rotas ou métodos.
 
-Normalmente o Resource Server não se preocupa sobre quem é o usuário requisitando acesso a um recurso, em vez disso ele geralmente se importa mais com as permissões concedidas a este usuário. Apesar de não o principal interesse do Resource Server, não é incomum precisarmos acessar alguns dados básicos do usuário/cliente que está acessando nossa aplicação, como seu nome, email, username etc, por esse motivo é importante entendermos como podemos extrair essas informações do Access Token da requisição.
+Normalmente o Resource Server não se preocupa sobre quem é o usuário requisitando acesso a um recurso, em vez disso ele geralmente se importa mais com as permissões concedidas a este usuário. Apesar de não ser o principal interesse do Resource Server, não é incomum precisarmos acessar alguns dados básicos do usuário/cliente que está acessando nossa aplicação, como seu nome, email, username etc, por esse motivo é importante entendermos como podemos extrair essas informações do Access Token da requisição.
 
 ### 1. Injetando o objeto `Authentication` no controller
 
