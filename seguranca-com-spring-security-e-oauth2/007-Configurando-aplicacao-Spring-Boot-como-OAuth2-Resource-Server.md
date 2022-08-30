@@ -321,7 +321,7 @@ Perceba que tivemos que fazer o casting explicito do _Principal_ para o tipo `Jw
 > **Qual a diferença entre Authentication e Principal?** <br/>
 >  No Spring Security, o objeto [Authentication](https://docs.spring.io/spring-security/reference/servlet/authentication/architecture.html#servlet-authentication-authentication) representa a request de autenticação do usuário dentro do framework. Ele é composto de metadados da estratégia de autenticação, um objeto que representa o usuário (_Principal_), suas credenciais, coleção de permissões e um `boolean` indicando se o usuário está de fato autenticado ou não.
 >
-> Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` com o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende estritamente da estratégia de autenticação utilizada.
+> Enquanto o _Principal_ identifica o usuário logado. Essa identificação pode ser desde uma `String` contendo o username ou email, até um objeto customizado do framework ou aplicação como `UserDetails`, mas seu tipo depende estritamente da estratégia de autenticação utilizada.
 
 ### 2. Injetando o Principal no controller via anotação `@AuthenticationPrincipal`
 
