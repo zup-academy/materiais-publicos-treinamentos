@@ -146,7 +146,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 Repare que as _authorities_ declaradas no método `hasAuthority` são os Scopes que configuramos no Keycloack para nosso Client. Para que o Spring Security reconheça estas authorities como Scopes, se faz necessário usar o prefixo `SCOPE_`.
 
 > ⚠️ **Spring Security 5.7 descontinuou a classe `WebSecurityConfigurerAdapter`** <br/>
-> Em versões futuras o Spring Security não dará mais suporte a classe `WebSecurityConfigurerAdapter`, substituindo-a por uma abordagem mais flexível e compatível com a API do WebFlux (programação reativa) baseada sem componentes. Para maiores detalhes, pule para o tópico [Spring Security 5.7: classe `WebSecurityConfigurerAdapter` está deprecated](#4-spring-security-57-classe-websecurityconfigureradapter-está-deprecated) deste material.
+> Em versões futuras o Spring Security não dará mais suporte a classe `WebSecurityConfigurerAdapter`, substituindo-a por uma abordagem mais flexível e compatível com a API do WebFlux (programação reativa) baseada em componentes. Para maiores detalhes, pule para o tópico [Spring Security 5.7: classe `WebSecurityConfigurerAdapter` está deprecated](#4-spring-security-57-classe-websecurityconfigureradapter-está-deprecated) deste material.
 
 
 #### 3.2. Habilite as regras de acesso por anotações
