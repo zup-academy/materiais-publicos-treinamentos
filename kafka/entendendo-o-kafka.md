@@ -24,16 +24,16 @@ Essa aplicação da Apache é utilizada para gerenciar o Cluster Kafka, pois de 
 O Kafka trabalha com Tópicos, o que significa que para cada evento é necessário ter um tópico especifico, que é a únicade de armazenamento e gerencialmente menor do kafka.
 
 ## Consumer
-Cada consumer é considerado por um id de grupo, esse identificador entenderá que somente 1 evento deverá ser lido por esse identificador.
-Podemos ter vários consumers groups relacionados a um mesmo tópico, cada um com uma posição diferente de leitura dos records.
+A parte relaciona que tem responsabilidade de consumir os eventos.
 
 ## Producer
 Aplicação responsável por produzir o record no tópico.
 
 ## Partição
-Cada Broker dentro do cluster gerencia um grupo de tópicos e cada tópico possui uma ou N partições, falo uma mas na prática não faz sentido usar o Kafka sem este recurso, o ideal e orientado pelos construtores da ferramenta é que seja pelo menos 3 o número de partições.
+Cada Broker dentro do cluster gerencia um grupo de tópicos e cada tópico possui uma ou N partições, falo uma mas na prática não faz sentido usar o Kafka sem este recurso.
 Um tópico pode ser dividido em partes sendo cada parte uma localização do cluster Kafka, cada parte aramazena um grupo dos eventos recebidos, podendo assim dar mais elasticidade, tolerância a falhas e escalabilidade.
-
+Inclusive o que diferencia o Apache Kafka de outros Brokers é a capacidade que vários consumnidores tem de ler o mesmo tópico paralelamente , pois cada um esta lendo uma partição especifica, permitindo assim uma alta taxa de processamento.
+É possível ter várias partições para um tópico, por exemplo é possível termos um tópico em um cluster de 3 brokers com 6 partições .
 
 ## Offset
 Um tópico possui offsets, que são a sequência dos eventos dentro da partição do tópico, isso é utilizado para controlar em que posição de leitura esta cada consumidor.

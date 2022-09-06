@@ -25,5 +25,5 @@ Um dos destaques na biblioteca é a possibilidade de registro dos logs de forma 
 ### Logback
 
 Logback foi construido com base no que o Log4j não tinha, por isso assim que ele foi lançado foi amplamente utilizado.
-A construção dele partiu da insastifação com a biblioteca do Log4j e na demora da implementação de novas atualizações.
+A construção dele partiu da insatisfação com a biblioteca do Log4j e na demora da implementação de novas atualizações.
 
