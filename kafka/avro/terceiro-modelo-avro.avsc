@@ -1,0 +1,9 @@
+{
+  "namespace": "br.com.zup.usuario",
+  "type": "record",
+  "name": "Usuario",
+  "fields": [
+    {"name": "login", "type": "string"},
+    {"name": "email", "type": ["string", "null"]}
+  ]
+}

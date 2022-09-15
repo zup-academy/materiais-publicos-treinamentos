@@ -66,7 +66,7 @@ Usar Avro é uma forma poderosa de trabalhar com evolução dos esquemas sem dor
 
 ## Como usar?
 
-Vamos implementar a dependência no projeto :
+Vamos implementar as dependências no projeto :
 
 ```xml
 <dependency>
@@ -74,7 +74,25 @@ Vamos implementar a dependência no projeto :
   <artifactId>avro</artifactId>
   <version>1.11.1</version>
 </dependency>
+
+<dependency>
+<groupId>io.confluent</groupId>
+<artifactId>kafka-avro-serializer</artifactId>
+<version>5.3.0</version>
+</dependency>
 ```
+
+Porém para que consiga ter acesso a dependência da confluente terá que adicionar o repositório da Confluente no seu pom.xml
+```xml
+<repositories>
+    <repository>
+        <id>confluent</id>
+        <url>https://packages.confluent.io/maven/</url>
+    </repository>
+</repositories>
+```
+
+
 
 Além disso vamos adicionar o Plugin, que irá gerar as classes Java através do schema:
 
@@ -90,8 +108,8 @@ Além disso vamos adicionar o Plugin, que irá gerar as classes Java através do
         <goal>schema</goal>
       </goals>
       <configuration>
-        <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
-        <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+          <sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
+          <outputDirectory>${project.basedir}/target/classes/</outputDirectory>
       </configuration>
     </execution>
   </executions>
@@ -105,6 +123,23 @@ Além disso vamos adicionar o Plugin, que irá gerar as classes Java através do
   </configuration>
 </plugin>
 ```
+
+Para projetos com Spring faremos ajuste nas configurações para utilizarmos o serealizador da Confluente e o schema registry:
+```yml
+
+  kafka:
+    properties:
+      schema:
+        registry:
+          url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+    producer:
+      bootstrap-servers: ${KAFKA_URL:http://localhost:9092}
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
+```
+
+Os schemas deverão ser criados na pasta que foi configurada no plugin no sourceDirectory, ou seja, conforme o exemplo abaixo vamos adicionar no /src/main/resources/avro/, então criaremos a pasta avro e criaremos os nossos schemas lá, os arquivos devem ser criados com extensão .avsc e o modelo do arquivo deve seguir as especificações abaixo:
 
 ## Schema Avro
 
@@ -177,11 +212,11 @@ No exemplo acima seguimos as seguintes regras:
       - values : o esquema dos valores do mapa.
 		
 Todos os detalhes do que é aceito ou não esta na [especificação do Avro.](https://avro.apache.org/docs/1.11.1/specification/)		
-		
-		
-		
-
+	
 
 ## Referências
 https://avro.apache.org/docs/1.11.1/
+
 https://medium.com/@st4rl0rd/apache-kafka-trabalhando-com-convers%C3%B5es-do-avro-schema-2aa11b382af8
+
+https://avro.apache.org/docs/1.6.2/api/java/org/apache/avro/reflect/package-summary.html

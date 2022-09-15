@@ -1,0 +1,21 @@
+{
+  "type" : "record",
+  "namespace" : "br.com.zup.rh",
+  "name" : "FuncionarioEvent",
+  "fields" : [
+    { "name" : "nome" , "type" : "string" },
+    { "name" : "idade" , "type" : "int" },
+    {
+      "name": "dataAdmissao",
+      "type": [ "null", { "type": "long", "logicalType": "local-timestamp-micros" } ]
+    },
+    {
+      "name": "tipoContrato",
+      "type": {
+        "type" : "enum",
+        "name" : "TipoContrato",
+        "symbols" : [ "REGULAR", "CONTRATO", "ESTAGIO", "TREINEE" ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "namespace": "com.empresa.compras",
+  "type": "record",
+  "name": "CompraEfetuadaEvent",
+  "version":"1",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "dataCompra",
+      "type": [ "null", { "type": "long", "logicalType": "local-timestamp-millis" } ]
+    },
+    {
+      "name": "produtos",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "ProdutoCompraEvent",
+          "fields": [
+            {
+              "name": "id",
+              "type": "long"
+            },
+            {
+              "name": "quantidade",
+              "type": "int"
+            },
+            {
+              "name": "valor",
+              "type": [ {
+                "type": "string",
+                "java-class": "java.math.BigDecimal"
+              } ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
