@@ -25,7 +25,7 @@ princípios da programação orientada a objetos no artigo _Principles Of OOD_.
 
 A palavra SOLID é um acrônimo que significa:
 
-- **S**ingle Responsiblity Principle (Princípio da responsabilidade única)
+- **S**ingle Responsibility Principle (Princípio da responsabilidade única)
 - **O**pen-Closed Principle (Princípio Aberto-Fechado)
 - **L**iskov Substitution Principle (Princípio da substituição de Liskov)
 - **I**nterface Segregation Principle (Princípio da Segregação da Interface)
