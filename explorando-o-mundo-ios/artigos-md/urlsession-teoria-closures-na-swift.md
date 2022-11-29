@@ -64,7 +64,7 @@ No entanto, esta é uma maneira bastante prolixa de escrever o que é essencialm
 A sintaxe da expressão _closure_ tem a seguinte forma geral:
 
 <p align="center">
-<img alt="Imagem com a sintaxe da expressão clojure" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/urlsession-teoria-_closures_-sintaxe-expressao-_closure_.png?raw=true" width="70%" />
+<img alt="Imagem com a sintaxe da expressão clojure" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/urlsession-teoria-closures-sintaxe-expressao-closure.png?raw=true" width="70%" />
 </p>
 
 Os parâmetros na sintaxe da expressão _closure_ podem ser parâmetros de entrada e saída, mas não podem ter um valor padrão. Parâmetros variadic podem ser usados ​​se você nomear o parâmetro variadic. As tuplas também podem ser usadas como tipos de parâmetro e tipos de retorno.
