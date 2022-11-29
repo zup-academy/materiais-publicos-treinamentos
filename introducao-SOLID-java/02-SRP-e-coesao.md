@@ -29,7 +29,7 @@ Trazendo para o mundo do 'software', esse todo seria nossa classe, por exemplo, 
 elementos dessa classe, sendo esses elementos os atributos e métodos. Os atributos e os métodos devem estar em harmonia,
 devem estar unidos e representar coisas em comum.
 
-Temos duas maneiras de observar a coesão do nosso código:
+Entendo que temos duas maneiras de observar a coesão do nosso código:
 
 - **Maneira lógica**: uma classe 100% coesa é aquela que cada método utiliza todos os atributos da classe.
   Claro que dessa forma seria muito difícil encontrar coesão em classes de domínio (entidades, por exemplo), onde
