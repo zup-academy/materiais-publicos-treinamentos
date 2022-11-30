@@ -2,9 +2,7 @@
 
 Aplicações no geral executam uma série de chamadas para obter dados de servidores através da rede. Este material introduz a API de URLSession, através da qual é possível executar requisições HTTP para consumir serviços web através da rede.
 
-> Esse material teórico foi baseado nas fontes originais disponíveis em: 
->   * https://developer.apple.com/documentation/foundation/urlsession
->   * 
+> Esse material teórico foi baseado na fonte original disponível em https://developer.apple.com/documentation/foundation/urlsession
 
 ## URLSession
 
