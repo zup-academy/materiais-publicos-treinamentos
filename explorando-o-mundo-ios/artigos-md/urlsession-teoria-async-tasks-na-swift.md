@@ -242,7 +242,7 @@ Veja que ao pressionar o botão, o mesmo sequer termina de executar sua resposta
 
 Todo o trabalho atual esta sendo realizado na _main queue_ (lê-se também, _main thread_) que está sendo bloquada e impedida de realizar sua responsabilidade, processar as tarefas de interação com o usuário e manter a UI atualizada e respondendo. Essa deve ser sua prioridade máxima.
 
-Processamentos como o que o `ImageDownload` executa devem ser levado para longe da _thread_ de UI, e, preferencialmente, sendo executados de forma _async_ em prioridade mais baixa. Tudo para favorecer a responsabilidade principal da aplicação, o fluxo de atualização e resposta da UI. 
+Processamentos como o que o `ImageDownload` executa devem ser levados para longe da _thread_ de UI, e, preferencialmente, sendo executados de forma _async_ em prioridade mais baixa. Tudo para favorecer a responsabilidade principal da aplicação, o fluxo de atualização e resposta da UI. 
 
 Podemos colocar nosso conhecimento adquirido sobre o GCD para jogo neste exemplo de download de imagem. `DispatchQueue.global().async { ... }` habilita exatamente o que precisamos:
 
