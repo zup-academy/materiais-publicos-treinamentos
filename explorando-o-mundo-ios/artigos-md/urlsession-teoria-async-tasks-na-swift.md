@@ -91,7 +91,7 @@ let queueConcorrente = DispatchQueue(
 )                               
 ```
 
-Existem diferentes maneiras de se usar _DispatchQueues_, mas talvez o caso de uso mais mais comum entre todos seja o de levar algum processamento pesado ou oneroso para _queues_ seperadas paralelas à _main queue_ para não bloquear a UI e a interação com o usuário.
+Existem diferentes maneiras de se usar _DispatchQueues_, mas talvez o caso de uso mais comum entre todos seja o de levar algum processamento pesado ou oneroso para _queues_ seperadas paralelas à _main queue_ para não bloquear a UI e a interação com o usuário.
 
 ## Aplicação prática em um cenário comum
 
