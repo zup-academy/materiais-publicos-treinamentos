@@ -86,7 +86,7 @@ A introdução oferecida pela documentação nos ajuda a ter uma visão geral da
 
 _URLSession_ é ao mesmo tempo uma classe e um grande grupo de objetos relacionados dentro da organização de sua API, dos quais podemos tirar proveito para construir código que faz o carregamento de dados. A classe nos dá a representação de uma sessão, através da qual podemos processar diversas operações (_tasks_) em seu contexto.
 
-Para obter uma URLSession devidamente configurada para uso apropriado, é possível se utilizar da classe URLSessionConfiguration. Com uma URLSession em mãos, ép ossível criar tarefas através de seus métodos utilitário. Por sua vez, para que seja possível responder ao processamento das operações (assíncronas por definição) é possível se utilizar de simples _completionHandlers_, ou mesmo implementar um _delegate_ para um maior nível de controle sobre o processamento. 
+Para obter uma URLSession devidamente configurada para uso apropriado, é possível se utilizar da classe URLSessionConfiguration. Com uma URLSession em mãos, é possível criar tarefas através de seus métodos utilitários. Por sua vez, para que seja possível responder ao processamento das operações (assíncronas por definição) é possível se utilizar de simples _completionHandlers_, ou mesmo implementar um _delegate_ para um maior nível de controle sobre o processamento. 
 
 <p align="center">
 <img alt="Imagem com relação entre os objetos centrais da API de URLSession" src="https://github.com/zup-academy/materiais-publicos-treinamentos/blob/main/explorando-o-mundo-ios/imagens/urlsession-teoria-urlsession-api-imagem-urlsession.jpeg?raw=true" width="70%" />
@@ -114,7 +114,7 @@ A imagem acima ilustra as diferenças entre possíveis URLSessionTasks.
 
 ### Aplicando em um exemplo
 
-Nesta seção trataremos de colocar em prática a conteúdo da anterior. Através de alguns trechos de código, trabalharemos com a URLSession a partir da instância compartilhada para construir _data tasks_ que carregam representação de dados em JSON junto a servidores HTTP.
+Nesta seção trataremos de colocar em prática o conteúdo da anterior. Através de alguns trechos de código, trabalharemos com a URLSession a partir da instância compartilhada para construir _data tasks_ que carregam representações de dados em JSON junto a servidores HTTP.
 
 Para isso, utilizaremos o contexto da ITunes Search API, da própria Apple. Através de uma simples requisição HTTP de tipo GET, vamos pedir pelos dados de músicas dado um determinado termo de busca. A resposta da API será como o exemplo de JSON abaixo:
 
@@ -197,7 +197,7 @@ class ITunesSearchAPI {
 }
 ```
 
-A classe acima já nos traz algumas coisas. Primeiro, ela define propriedades armazenadas para lidar com a _session_ e com a _dataTask_ que criaremos, assim como um inicializador para construir o objeto em um estado adequado. O inicializador oferece uma valor padrão para configurar a _session_ a partir da instância compartilhada caso nenhuma outra seja passada como argumento. Por hora também, a propriedade para a _data task_ prevê a possibilidade de nulidade. Voltaremos a trabalhar com ela em breve.
+A classe acima já nos traz alguma funcionalidade. Primeiro, ela define propriedades armazenadas para lidar com a _session_ e com a _dataTask_ que criaremos, assim como um inicializador para construir o objeto em um estado adequado. O inicializador oferece uma valor padrão para configurar a _session_ a partir da instância compartilhada caso nenhuma outra seja passada como argumento. Por hora também, a propriedade para a _data task_ prevê a possibilidade de nulidade. Voltaremos a trabalhar com ela em breve.
 
 Para além das propriedades e inicializador, a classe também introduz uma constante com a URL base para o request, além de uma função utilitária que nos ajuda a obter os parâmetros de requisição já com o encoding adequado para cada uma. (Onde `"zeca pagodinho"`, por exemplo, se torna `"zeca%20pagodinho"`). Ao construir uma URL com a função para o exemplo, devemos obter `"https://itunes.apple.com/search?media=music&entity=song&term=zeca%20pagodinho"`.
 
@@ -232,7 +232,7 @@ class ITunesSearchAPI {
 
 Perceba que já adicionamos a função `getSongs` que recebe, além do termo de busca, uma closure para que seja possível executar algum código ao final do processamento do request, por exemplo, para obter a informação da lista de músicas (lembrando da assincronicidade da API). Além disso, a função já tira proveito da API de URLSession para construir uma simples _data task_ através da função `dataTask(with:completionHandler:)`. A presença da chamada `dataTask.resume()` se dá pela necessidade de acionar a execução da tarefa em uma _thread_ secundária, já que a invocação da função `dataTask(with:completionHandler:)` apenas constroi uma nova tarefa (como se fosse um _factory method_).
 
-Precisamos agora lidar com o código que opera sobre o resultado da requisição. Mas antes disso, já podemos adicionar mais controle sobre a execução das tarefas. O que aconteceria se chamassemos a função `getSongs(for:completionHandler:)` várias vezes em sequência, antes de recebermos uma resposta, por exemplo? A resposta é, criariamos uma série de requisições em segundo plano, provavelente desnecessárias. (Esse caso de uso poderia ocorrer por exemplo a partir de funcionalidade de refresh em alguma tela por exemplo, somada a alguma conexão de rede mais lenta). Deveríamos evitar isso.
+Precisamos agora lidar com o código que opera sobre o resultado da requisição. Mas antes disso, já podemos adicionar mais controle sobre a execução das tarefas. O que aconteceria se chamassemos a função `getSongs(for:completionHandler:)` várias vezes em sequência, antes de recebermos uma resposta, por exemplo? A resposta é, criariamos uma série de requisições em segundo plano, provavelmente desnecessárias. (Esse caso de uso poderia ocorrer por exemplo a partir de funcionalidade de refresh em alguma tela por exemplo, somada a alguma conexão de rede mais lenta). Deveríamos evitar isso.
 
 ``` swift
 class ITunesSearchAPI {
