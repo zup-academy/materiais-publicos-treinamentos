@@ -20,6 +20,7 @@ recursos.
   aumenta a eficiência do código.
 
 [//]: # (Os exemplos precisam ser melhor trabalhados)
+
 ## Exemplos de códigos:
 
 ## Utilizando Interface
@@ -68,7 +69,7 @@ class PagamentoCartaoCredito implements Pagamento {
 class CarrinhoDeCompras {
     private Pagamento pagamento;
 
-    public CarrinhoDeCompras (Pagamento pagamento) {
+    public CarrinhoDeCompras(Pagamento pagamento) {
         this.pagamento = pagamento;
     }
 
@@ -79,10 +80,94 @@ class CarrinhoDeCompras {
 ```
 
 Neste exemplo, criamos uma interface `Pagamento` que define um método para pagar, e duas classes `PagamentoBoleto` e
-`PagamentoCartaoCredito` que implementam essa interface. A classe `CarrinhoDeCompras` tem uma propriedade pagamento do tipo
+`PagamentoCartaoCredito` que implementam essa interface. A classe `CarrinhoDeCompras` tem uma propriedade pagamento do
+tipo
 `Pagamento` e um método para setar o pagamento. Dessa forma, podemos adicionar novos tipos de pagamento sem precisar
 modificar a classe `CarrinhoDeCompras`, o que segue o princípio do Aberto-Fechado. Isso torna o código mais flexível e
 fácil de ser mantido.
+
+### Exemplo 2: Adicionando novos tipos de relatórios
+
+#### Antes:
+
+```java
+class GeradorDeRelatorios {
+    public void gerarRelatorio(String tipoRelatorio) {
+        if (tipoRelatorio.equals("pdf")) {
+// Lógica para gerar relatório em pdf
+        } else if (tipoRelatorio.equals("xls")) {
+// Lógica para gerar relatório em xls
+        } else {
+// Lógica para gerar relatório em outro formato
+        }
+    }
+}
+```
+
+Neste exemplo, temos uma classe GeradorDeRelatorios que tem um método para gerar relatórios. Esse método recebe como
+parâmetro o tipo de relatório que deseja ser gerado e, de acordo com o tipo, é chamado o código correspondente. Se, no
+futuro, precisarmos adicionar novos tipos de relatórios (por exemplo, relatórios em CSV ou em HTML), precisaríamos
+modificar essa classe, o que violaria o princípio do Aberto-Fechado.
+
+#### Depois:
+
+```java
+interface GeradorDeRelatorio {
+    void gerar();
+}
+```
+
+```java
+class GeradorDeRelatorioPDF implements GeradorDeRelatorio {
+    public void gerar() {
+        // Lógica para gerar relatório em pdf
+    }
+}
+```
+
+```java
+class GeradorDeRelatorioXLS implements GeradorDeRelatorio {
+    public void gerar() {
+        // Lógica para gerar relatório em xls
+    }
+}
+```
+
+```java
+class GeradorDeRelatorioHTML implements GeradorDeRelatorio {
+    public void gerar() {
+        // Lógica para gerar relatório em HTML
+    }
+}
+```
+
+```java
+class GeradorDeRelatorios {
+    private GeradorDeRelatorio geradorDeRelatorio;
+
+    public GeradorDeRelatorios(GeradorDeRelatorio geradorDeRelatorio) {
+        this.geradorDeRelatorio = geradorDeRelatorio;
+    }
+
+    public void gerarRelatorio() {
+        geradorDeRelatorio.gerar();
+    }
+}
+``` 
+
+Neste exemplo, criamos uma interface `GeradorDeRelatorio` que define um método para gerar relatórios e classes como
+`GeradorDeRelatorioPDF`, `GeradorDeRelatorioXLS` e `GeradorDeRelatorioHTML` que implementam essa interface. A classe
+`GeradorDeRelatorios` tem uma propriedade geradorDeRelatorio do tipo `GeradorDeRelatorio` e um método gerarRelatorio que
+chama o método gerar do objeto armazenado na propriedade. Dessa forma, podemos adicionar novos tipos de relatórios sem
+precisar modificar a classe `GeradorDeRelatorios`, o que segue o princípio do Aberto-Fechado. Isso torna o código mais
+flexível e fácil de ser mantido.
+
+Além disso, a classe `GeradorDeRelatorios` possui um construtor que pode ser utilizado para atribuir
+qualquer objeto que implemente a interface `GeradorDeRelatorio`, permitindo trocar dinamicamente a forma de geração de
+relatório.
+
+Assim, temos uma solução flexível, que permite a adição de novos tipos de relatórios sem precisar mexer no código
+existente, além de possibilitar a troca dinâmica do gerador de relatórios.
 
 ## Utilizando Herança
 
@@ -97,8 +182,9 @@ class ControleDeFrota {
     }
 }
 ```
+
 ```java
-class Veiculo{
+class Veiculo {
     // atributos e lógicas de veículo
 }
 ```
@@ -114,16 +200,19 @@ abstract class Veiculo {
     // atributos e métodos comuns a todos os veículos
 }
 ```
+
 ```java
 class Carro extends Veiculo {
 // atributos e métodos específicos de carro
 }
 ```
+
 ```java
 class Caminhao extends Veiculo {
     // atributos e métodos específicos de caminhão
 }
 ```
+
 ```java
 class Motocicleta extends Veiculo {
 // atributos e métodos específicos de motocicleta
@@ -139,10 +228,13 @@ class ControleDeFrota {
 ```
 
 Neste exemplo, criamos uma classe abstrata `Veiculo` que define os atributos e métodos comuns a todos os veículos e as
-classes `Carro`, `Caminhao` e `Motocicleta` que estendem essa classe abstrata e definem os atributos e métodos específicos de
-cada tipo de veículo. A classe `ControleDeFrota` tem um método para adicionar veículos e este método aceita como parâmetro
+classes `Carro`, `Caminhao` e `Motocicleta` que estendem essa classe abstrata e definem os atributos e métodos
+específicos de
+cada tipo de veículo. A classe `ControleDeFrota` tem um método para adicionar veículos e este método aceita como
+parâmetro
 qualquer objeto que seja uma subclasse de `Veiculo`. Dessa forma, podemos adicionar novos tipos de veículos sem precisar
-modificar a classe `ControleDeFrota`, o que segue o princípio do Aberto-Fechado. Isso torna o código mais flexível e fácil
+modificar a classe `ControleDeFrota`, o que segue o princípio do Aberto-Fechado. Isso torna o código mais flexível e
+fácil
 de ser mantido.
 
 ### Exemplo 2: Adicionando novos tipos de veículos
