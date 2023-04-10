@@ -1,12 +1,12 @@
 # Entendendo o protocolo HTTP
 
-Sempre que acessamos a um site, digitamos seu endereço na barra do navegador e, em seguida, é apresentado o conteúdo que buscamos, caso exista. Na web, esse é o fluxo padrão. Não importo o serviço que vamos acessar sempre fazemos um pedido (requisição) para um outro computador (servidor web) que nos gera uma resposta. Esse fluxo básico funciona através de uma regra de comunicação entre as máquinas chamada de HTTP.
+Sempre que acessamos a um site, digitamos seu endereço na barra do navegador e, em seguida, é apresentado o conteúdo que buscamos, caso exista. Na web, esse é o fluxo padrão. Não importa o serviço que vamos acessar sempre fazemos um pedido (requisição) para um outro computador (servidor web) que nos gera uma resposta. Esse fluxo básico funciona através de uma regra de comunicação entre as máquinas chamada de HTTP.
 
 ## Entendendo o HTTP
 
 O HTTP é um protocolo - isto é, uma regra de comunicação - utilizado na internet. É pelo utilizando o HTTP que os navegadores conseguem fazer requisições para os servidores executarem algo e devolverem uma resposta. Portanto, o HTTP é um protocolo do tipo Cliente/Servidor.
 
-Com esse protocolo, conseguimos definir como realizaremos a troca de dados pela web. Será via JSON? Receberemos um HTML? Sera texto puro? Todos esses dados são trafegados via HTTP pelo protocolo TCP (apesar que qualquer protocolo confiável poderia ser utilizado para transporte).
+Com esse protocolo, conseguimos definir como realizaremos a troca de dados pela web. Será via JSON? Receberemos um HTML? Será texto puro? Todos esses dados são trafegados via HTTP pelo protocolo TCP (apesar que qualquer protocolo confiável poderia ser utilizado para transporte).
 
 A imagem abaixo ilustra o modelo de Requisição/Resposta, também chamado de Request/Response:
 
