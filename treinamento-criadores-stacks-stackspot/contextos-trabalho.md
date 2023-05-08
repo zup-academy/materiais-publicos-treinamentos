@@ -55,7 +55,7 @@ Além disso, existem as situações que acontecem dentro dos projetos que estão
 1. Quero consumir algum serviço da aws que eu sei que existe lib, já usei e agora tenho que copiar o meu código mais uma vez. 
 1. É necessário realizar a configuração de containers docker que são usados recorrentemente dentro dos serviços;
 1. É necessário realizar a configuração de containers docker que sobem serviços secundários;
-1. É necessário realizar configurações relativas ao kunernetes para facilitar o deploy;
+1. É necessário realizar configurações relativas ao kubernetes para facilitar o deploy;
 
 
 ## Exemplos de desafios para clientes que consomem nossas apis
