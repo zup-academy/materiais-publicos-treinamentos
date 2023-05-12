@@ -11,7 +11,7 @@ Existem diversas documentações muito completas no mercado, citando algumas:
 7. [Github REST Api](https://docs.github.com/en/rest)
 8. [Solução de blockchain como o Sawtooth](https://www.hyperledger.org/use/sawtooth)
 9. [Outra solução de blockchain como Ethereum](https://ethereum.org/en/dapps/) 
-10. [AngularJS](https://angularjs.org/)
+10. [Angular](https://angular.io/)
 11. [Kubernetes](https://cloud.google.com/kubernetes-engine)
 12. [Docker](https://www.docker.com/)
 
