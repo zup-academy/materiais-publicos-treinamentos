@@ -36,10 +36,10 @@ certamente obteriamos um resultado como  a imagem abaixo. Uma lista com todos re
 
 
 <p align="center">
-<img alt="ilustração dos resultados de consulta de uma tabela de usuarios sem paginação" src="./imagens/resultado-consulta-usuario-sem-paginacao.png" />
+<img alt="ilustração dos resultados de consulta de uma tabela de usuarios sem paginação" src="./imagens/resultado-consulta-usuario-sem-paginacao-postgres.png" />
 </p>
 
-Olhando a imagem podemos notar o seguinte, os registros começam a ser exibidos apartir do id de valor 1,  e o tamanho da coleção não é determinado. 
+Olhando a imagem podemos notar o seguinte, os registros começam a ser exibidos apartir do id de valor 1,  e o tamanho da coleção não é determinado.
 
 E se apenas os 5 primeiros registros que são interessantes a partir do registro 4? De maneira simples podemos pensar vamos limitar a 5 registros,e vamos iniciar apos o registro 3.
 
