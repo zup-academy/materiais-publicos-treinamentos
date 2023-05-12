@@ -61,7 +61,7 @@ limit 5 offset 3;
 E obtemos o nosso resultado, com registros apartir do id de valor quatro, com uma lista de 5 registros.
 
 <p align="center">
-<img alt="ilustração dos resultados de consulta de uma tabela de usuarios com paginação" src="./imagens/consulta-com-paginacao-com-postgres.png" />
+<img alt="ilustração dos resultados de consulta de uma tabela de usuarios com paginação" src="./imagens/resultado-consulta-usuario-sem-paginacao-postgres.png" />
 </p>
 
 ## Paginação com Spring Data JPA
