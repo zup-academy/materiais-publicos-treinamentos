@@ -47,7 +47,7 @@ Além disso, existem as situações que acontecem dentro dos projetos que estão
 
 1. Qualquer configuração que foi citada acima pode ser aplicada também durante o projeto. 
 1. Quero adicionar um novo endpoint post dentro da minha api que recebe alguns parâmetros, tem validação e precisa ser implementado seguindo a sugestão arquitetural do projeto. 
-1. Quero adicionar um novo endpoint get dentro da minha api que recebe alguns parâmetros, tem validação e precisa ser implementado seguindo a sugestão arquitetural do projeot. 
+1. Quero adicionar um novo endpoint get dentro da minha api que recebe alguns parâmetros, tem validação e precisa ser implementado seguindo a sugestão arquitetural do projeto. 
 1. Quero adicionar um novo código que manda mensagem para uma fila do kafka que já existe
 1. Quero adicionar um novo listener para uma fila do kafka que já existe
 1. Agora eu preciso consumir uma api interna que eu sei que existe, mas não conheço o contrato e nem sei para quem perguntar direito. Isso daqui machuca demais o nosso o time. 
@@ -55,7 +55,7 @@ Além disso, existem as situações que acontecem dentro dos projetos que estão
 1. Quero consumir algum serviço da aws que eu sei que existe lib, já usei e agora tenho que copiar o meu código mais uma vez. 
 1. É necessário realizar a configuração de containers docker que são usados recorrentemente dentro dos serviços;
 1. É necessário realizar a configuração de containers docker que sobem serviços secundários;
-1. É necessário realizar configurações relativas ao kunernetes para facilitar o deploy;
+1. É necessário realizar configurações relativas ao kubernetes para facilitar o deploy;
 
 
 ## Exemplos de desafios para clientes que consomem nossas apis
