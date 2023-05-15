@@ -115,3 +115,4 @@ public class NossoControllerAdvice {
 
 - [Definindo Status HTTP para Exceções personalizadas](https://www.baeldung.com/spring-response-status)
 - [Tratamento de execeções com Spring](https://www.baeldung.com/exception-handling-for-rest-with-spring)
+- [Guia para Error Handler com Spring Boot](https://reflectoring.io/spring-boot-exception-handling/)
