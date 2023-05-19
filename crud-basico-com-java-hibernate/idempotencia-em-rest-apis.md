@@ -103,7 +103,7 @@ O código apresentado acima é bem similar a estratégia [Conditional Key](#cond
 
 A verdade é que nem sempre é possível obter uma chave de negocio exclusiva, e para estes casos é necessário combinar informações do payload para obter garantia de unicidade, uma boa alternativa é o fazer um `Hash` que combine caracteristicas da requisição.
 
-### Idempontecy Key
+### Idempotency Key
 
 Aqui é onde as estratégias mais se diferem, enquanto a [chave de condição](#conditional-key) e [chave secundaria](#secondary-key) focam em garantir idempotencia evitando criações e atualizações simultaneas, a Idempotency Key trabalha garantindo que uma vez que uma resposta foi gerada para uma chave, independente se a reposta foi de falha ou sucesso, a mesma deverá ser retornada para todas as demais solicitações. Esta estratégia poderá ser um pouco mais custosa, já que exige que as respostas sejam armazenadas temporariamente, e dado a isso é necessário que seja implementado uma politica de desepejo das chaves, ou uma instalação de um provedor da caching, e para ambientes clusterizados se justifica um provedor distribuido.
 
