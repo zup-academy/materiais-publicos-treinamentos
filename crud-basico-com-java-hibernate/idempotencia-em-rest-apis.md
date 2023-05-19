@@ -91,7 +91,7 @@ public class ProcessaPagamentoController{
            }
            
            DadosPagamento dadosPagamento = request.toModel();
-           Pagamento pagamento = processaPagamentoService.processarPagamento(idPedido, dadosPagamento);
+           Pagamento pagamento = processaPagamentoService.processarPagamento(dadosPagamento);
            
            URI location = uriBuilder.path("/api/v1/pagamentos").buildAndExpand(pagamento.getId()).toUri();
            return ResponseEntity.created(location).build();        
