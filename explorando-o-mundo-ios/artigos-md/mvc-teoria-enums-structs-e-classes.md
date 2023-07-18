@@ -486,7 +486,7 @@ print("O ponto agora está em (\(algumPonto.x), \(algumPonto.y))")
 
 A _struct_ `Ponto` acima define um método mutante `movePor(x:y:)`, que move uma instância de `Ponto` por uma certa quantidade. Em vez de retornar um novo ponto, esse método na verdade modifica o ponto no qual é chamado. A palavra-chave `mutating` é adicionada à sua definição para permitir que ela modifique suas propriedades.
 
-Observe que você não pode chamar um método mutante em uma constante de um tipo definido por um_struct_, porque suas propriedades não podem ser alteradas, mesmo que sejam propriedades variáveis:
+Observe que você não pode chamar um método mutante em uma constante de um tipo definido por um _struct_, porque suas propriedades não podem ser alteradas, mesmo que sejam propriedades variáveis:
 
 ``` swift
 let pontoFixo = Ponto(x: 3.0, y: 3.0)
@@ -625,7 +625,7 @@ O uso de _structs_ facilita o raciocínio sobre uma parte do seu código sem a n
 
 #### Use classes quando precisar de interoperabilidade Objective-C
 
-Se você usa uma API Objective-C que precisa processar seus dados ou precisa ajustar seu modelo de dados em uma hierarquia de classes existente definida em uma estrutura Objective-C, pode ser necessário usar classes e herança de classe para modelar seus dados. Por exemplo, muitos frameworks Objective-C expõem classes das quais você deve criar uma subclasses.
+Se você usa uma API Objective-C que precisa processar seus dados ou precisa ajustar seu modelo de dados em uma hierarquia de classes existente definida em uma estrutura Objective-C, pode ser necessário usar classes e herança de classe para modelar seus dados. Por exemplo, muitos frameworks Objective-C expõem classes das quais você deve criar uma subclasse.
 
 #### Use classes quando precisar controlar a identidade
 
