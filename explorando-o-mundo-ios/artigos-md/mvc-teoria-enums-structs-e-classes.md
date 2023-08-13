@@ -461,7 +461,7 @@ Quando `direcaoRecordada` recebe o valor de `direcaoAtual`, na verdade ele é de
 
 #### Modificando _value types_ em métodos de instância
 
-_Structs_ e _Enums são _value types_. Por padrão, as propriedades de um _value type_ não podem ser modificadas de dentro de seus métodos de instância.
+_Structs_ e _Enums_ são _value types_. Por padrão, as propriedades de um _value type_ não podem ser modificadas de dentro de seus métodos de instância.
 
 No entanto, se você precisar modificar as propriedades de sua _struct_ ou _enum_ em um método específico, poderá adotar a característica de mutabilidade para este método. O método pode então _mutar_ (ou seja, alterar durante o ciclo de vida da instância) o estado de suas propriedades de dentro do método, e quaisquer alterações feitas são gravadas de volta na estrutura original quando o método termina. Um método também pode atribuir uma instância completamente nova à sua propriedade `self` implícita, e essa nova instância substituirá a existente quando o método terminar.
 
